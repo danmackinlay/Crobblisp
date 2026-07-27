@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crobble — the crisp / crumble / cobbler simplex</title>
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Crobble</h1>
+    <p>
+      Crisp, crumble and cobbler differ along two physical axes — hydration and oat
+      fraction — so the triangle between them is a real composition space, not a
+      blend of three recipes. Pick a point. The chemistry, the shaping technique and
+      the quantities all follow from it.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label for="berry">Berry</label>
+      <select id="berry"></select>
+    </div>
+    <div class="field">
+      <label for="dish">Dish</label>
+      <select id="dish"></select>
+    </div>
+    <div class="field">
+      <label>Diet</label>
+      <div class="switches">
+        <label class="switch"><input type="checkbox" id="vegan"> Vegan</label>
+        <label class="switch"><input type="checkbox" id="gf"> Gluten-free</label>
+      </div>
+    </div>
+    <div class="field" style="flex:1">
+      <label>Jump to</label>
+      <div class="presets" id="presets"></div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <div class="panel">
+      <h2>Predicted quality surface</h2>
+      <figure class="chart-figure">
+        <div class="chart-stage">
+          <canvas id="triangle"></canvas>
+        </div>
+        <figcaption>
+          Click or drag to choose a blend; arrow keys nudge it. The surface is
+          <em>not</em> corrected — the model scores each point and shows the terrain,
+          including the trough it predicts along the lower crumble–cobbler edge.
+        </figcaption>
+      </figure>
+
+      <div class="legend">
+        <span id="lo">0.52</span>
+        <span class="ramp" id="ramp"></span>
+        <span id="hi">1.00</span>
+        <span style="color:var(--text-muted)">quality</span>
+      </div>
+
+      <div class="readout" id="readout"></div>
+
+      <details class="tableview">
+        <summary>Table view — the same surface as numbers</summary>
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Point</th>
+              <th class="n">Crumble / crisp / cobbler</th>
+              <th class="n">Hydration</th>
+              <th>Shaping</th>
+              <th class="n">Quality</th>
+            </tr>
+          </thead>
+          <tbody id="tablebody"></tbody>
+        </table>
+      </details>
+    </div>
+
+    <div class="panel" id="recipe"></div>
+
+  </div>
+</div>
+
+<script type="module" src="src/ui/app.js"></script>
+</body>
+</html>
