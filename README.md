@@ -17,10 +17,10 @@ python3 -m http.server 8765   # then open http://localhost:8765
 
 ---
 
-## Why triangle
+## Why a triangle
 
-The three toppings are not three arbitrary points. In baker's percentages they
-differ along essentially **two** physical axes:
+The three toppings are not arbitrary points. Two axes give the triangle its
+coordinates:
 
 - **Hydration** — added liquid per 100 parts dry structure. Crumble 0, crisp 0,
   cobbler 80.
@@ -28,7 +28,40 @@ differ along essentially **two** physical axes:
   cobbler 0.
 
 Plot those and crumble sits at the origin, crisp on one axis, cobbler on the
-other. 
+other, and the map from barycentric position to (hydration, oats) is a bijection.
+
+**But do not read that as "these doughs differ in only two things."** An earlier
+version of this file said they "differ along essentially two physical axes",
+which is wrong. The bijection is a fact about *coordinates*, not about the
+recipes. Fat, sugar, leavening and salt are all moving too, along lines fixed by
+the corner values — and those are independent choices, not consequences of
+hydration and oats. Walk the crumble-to-cobbler edge and three things move at
+once:
+
+| | crumble | midpoint | cobbler |
+|---|---|---|---|
+| hydration | 0 | 40 | 80 |
+| butter | 66.7 | **55.9** | 45 |
+| sugar | 57 | **43.5** | 30 |
+
+Nothing forces a 40%-hydration topping to carry butter 55.9 and sugar 43.5. The
+surveyed range at comparable hydration is butter 33.5–68.2 and sugar 11.4–60;
+this model draws one line through a wide box. Sugar has the largest relative
+spread of any variable here (2.5×) and does the heaviest lifting in the score,
+yet it is entirely determined by that line.
+
+So: **this is a two-dimensional slice through roughly six-dimensional recipe
+space.** The slice is a legitimate design, and the corner values are sourced, but
+the passengers are real. The interface now shows them — the strip under the
+recipe title reports fat, sugar, lift and salt alongside the two coordinates, so
+what is being carried along is visible rather than implied.
+
+A further consequence worth knowing: on a *triangle* the two axes cannot be
+varied independently. The reachable region is bounded by `h/80 + oats/41 ≤ 1`,
+so high hydration together with high oats is unreachable by construction. A
+fourth vertex would open it — see below.
+
+
 
 ## What is held constant
 
@@ -153,6 +186,35 @@ src/model/     pure, testable, no DOM
 src/ui/        canvas ternary chart + recipe view
 test/          42 tests
 ```
+
+## A fourth vertex
+
+The obvious candidate is **baked oatmeal**, which would sit at the missing
+high-hydration, high-oats corner. It does not fit, and the reason is structural
+rather than chemical: baked oatmeal mixes the fruit *through* the matrix. There
+is no topping and no interface.
+
+Everything load-bearing in this model assumes a fruit layer with a distinct
+topping over it. `coverage`, `exposureIndex`, `undercooked`, `stratification` and
+the entire filling-thickener calculation exist to describe that boundary. With
+the fruit dispersed, coverage is 100% by definition, the fruit's water enters the
+matrix instead of pooling beneath it, and "crisp above, tender below" becomes a
+browned skin on a homogeneous oat custard — a different phenomenon wearing the
+same words.
+
+Three ways forward, none of them free:
+
+1. **Oat drop-biscuit corner** — hydration 80, oats 41%, no egg. Layered, fits
+   the basis exactly, gives a true rectangle where the two axes are genuinely
+   independent. Least interesting as a fourth food; arguably just the
+   crisp–cobbler edge extended.
+2. **Baked oatmeal with a dispersion axis** — as you approach the corner, an
+   increasing fraction of the fruit is folded into the topping rather than
+   layered beneath. Continuous, physically meaningful, and a real technique; the
+   survey found partial cases already, such as King Arthur's fresh fruit cobbler
+   where the cake "rises up and over the fruit as it bakes". Costs a genuine
+   model branch: interface defects stop applying and matrix defects start.
+3. **Leave it at three.**
 
 ## Caveats
 

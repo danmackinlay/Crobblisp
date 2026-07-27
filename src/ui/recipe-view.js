@@ -1,5 +1,3 @@
-import { REGIMES } from '../model/morphology.js';
-
 const g = (v) => {
   if (v < 0.05) return '—';
   if (v < 10) return `${v.toFixed(1)} g`;
@@ -25,25 +23,49 @@ function row(name, qty, alt = '') {
   return `<tr><td>${esc(name)}</td><td class="qty">${qty}</td><td class="alt">${esc(alt)}</td></tr>`;
 }
 
+const head = (label) => `<tr class="subhead"><td colspan="3">${esc(label)}</td></tr>`;
+
+const COMPONENT_ORDER = [
+  'surfaceCrisp', 'depth', 'stratification',
+  'cooked', 'height', 'underside', 'cohesion',
+];
+
+/**
+ * One line instead of seven bars, for the part of the page you read at a glance.
+ *
+ * Phrased relative to the overall score rather than against a fixed threshold.
+ * A crumble scores 0.87 while sitting low on "structure beneath" and
+ * "stratification" — it is a single-texture dish and those criteria barely apply
+ * to it — so calling that "weak" would be misleading about a perfectly good
+ * recipe. Only a genuinely poor point gets called weak.
+ */
+function verdict(score) {
+  const ranked = COMPONENT_ORDER
+    .map((k) => score.components[k])
+    .filter(Boolean)
+    .sort((a, b) => a.value - b.value);
+  const [lowest, second] = ranked;
+
+  if (score.overall >= 0.85) return 'a strong point on the surface';
+  if (score.overall >= 0.7) return `sound — ${lowest.label.toLowerCase()} is the limiting factor`;
+  return `weak on ${[lowest, second].map((c) => c.label.toLowerCase()).join(' and ')}`;
+}
+
 function componentBars(score) {
-  const order = ['surfaceCrisp', 'depth', 'stratification', 'cooked', 'height', 'underside', 'cohesion'];
-  return order
-    .map((key) => {
-      const c = score.components[key];
-      if (!c) return '';
-      const dormant = (c.risk ?? 0) < 1e-9 && c.kind === 'defect';
-      return `
-        <div class="comp ${dormant ? 'dormant' : ''}" title="${esc(c.detail)}">
-          <span class="name">${esc(c.label)}</span>
-          <span class="track"><span class="fill" style="width:${(c.value * 100).toFixed(1)}%"></span></span>
-          <span class="val">${c.value.toFixed(2)}</span>
-        </div>`;
-    })
-    .join('');
+  return COMPONENT_ORDER.map((key) => {
+    const c = score.components[key];
+    if (!c) return '';
+    return `
+      <div class="comp" title="${esc(c.detail)}">
+        <span class="name">${esc(c.label)}</span>
+        <span class="track"><span class="fill" style="width:${(c.value * 100).toFixed(1)}%"></span></span>
+        <span class="val">${c.value.toFixed(2)}</span>
+      </div>`;
+  }).join('');
 }
 
 export function renderRecipe(el, r) {
-  const { topping: t, filling: f, morphology: m, bake, score, context, naming, axes } = r;
+  const { topping: t, filling: f, morphology: m, bake, score, context, naming, axes, basis } = r;
   const L = r.labels;
   const hasOats = t.oatsG > 0.5;
   const hasLiquid = t.buttermilkG > 0.5;
@@ -52,8 +74,6 @@ export function renderRecipe(el, r) {
   const dietTag = [r.diet.vegan && 'vegan', r.diet.glutenFree && 'gluten-free']
     .filter(Boolean)
     .join(' · ');
-
-  const regimeIdx = REGIMES.findIndex((x) => x.key === m.regime);
 
   el.innerHTML = `
     <div class="recipe-head">
@@ -68,46 +88,58 @@ export function renderRecipe(el, r) {
         <span class="chip">${pct(r.coords.crumble)} crumble</span>
         <span class="chip">${pct(r.coords.crisp)} crisp</span>
         <span class="chip">${pct(r.coords.cobbler)} cobbler</span>
-        <span class="chip">hydration ${axes.hydration.toFixed(0)}%</span>
-        <span class="chip">oats ${(axes.oatFraction * 100).toFixed(0)}%</span>
+      </div>
+      <!--
+        The carried variables. The triangle is a two-dimensional slice through a
+        much larger recipe space: hydration and oat fraction are the coordinates,
+        but fat, sugar, leavening and salt are all moving too, along lines fixed
+        by the corner values. Showing them makes that visible rather than implied.
+      -->
+      <div class="carried">
+        <span><b>${axes.hydration.toFixed(0)}</b> liquid</span>
+        <span><b>${(axes.oatFraction * 100).toFixed(0)}</b> oats</span>
+        <span><b>${basis.butter.toFixed(0)}</b> fat</span>
+        <span><b>${basis.sugar.toFixed(0)}</b> sugar</span>
+        <span><b>${axes.leaveningPower < 0.05 ? 'no' : axes.leaveningPower.toFixed(1)}</b> lift</span>
+        <span><b>${basis.salt.toFixed(1)}</b> salt</span>
+        <em>per 100 flour + oats</em>
       </div>
     </div>
 
-    <section class="block">
-      <h3>Predicted quality</h3>
-      <div class="score-hero">
-        <span class="num">${score.overall.toFixed(2)}</span>
-        <span class="lab">weighted geometric mean — one weak component drags the whole point down</span>
-      </div>
-      <div class="components">${componentBars(score)}</div>
-    </section>
+    <div class="verdict">
+      <span class="num">${score.overall.toFixed(2)}</span>
+      <span class="lab">predicted quality — ${esc(verdict(score))}</span>
+    </div>
 
     <section class="block">
-      <h3>Topping</h3>
+      <h3>Ingredients</h3>
       <table class="ing">
+        ${head('Topping')}
         ${row(L.flour, g(t.flourG))}
         ${hasOats ? row(L.oats, g(t.oatsG)) : ''}
         ${row(L.butter, g(t.butterG))}
         ${row('Light brown sugar', g(t.sugarBrownG))}
         ${row('White sugar', g(t.sugarWhiteG))}
         ${row('Fine sea salt', g(t.saltG), tsp(t.saltTsp))}
-        ${hasXanthan ? row('Xanthan gum', g(t.xanthanG), `${((t.xanthanG / t.flourG) * 100).toFixed(2)}% of flour`) : ''}
-        ${t.soyMilkPowderG > 0.02 ? row('Soy milk powder', g(t.soyMilkPowderG), 'for browning') : ''}
+        ${hasXanthan ? row('Xanthan gum', g(t.xanthanG)) : ''}
+        ${t.soyMilkPowderG > 0.02 ? row('Soy milk powder', g(t.soyMilkPowderG)) : ''}
         ${
           hasLiquid
             ? t.liquidSplit
               ? row('Soy milk, cold', g(t.liquidSplit.soyG)) +
-                row('Lemon juice (to sour it)', g(t.liquidSplit.lemonG))
+                row('Lemon juice, to sour it', g(t.liquidSplit.lemonG))
               : row(L.buttermilk, g(t.buttermilkG))
             : ''
         }
         ${hasLeaven ? row('Baking powder', g(t.bakingPowderG), tsp(t.bakingPowderTsp)) : ''}
         ${hasLeaven ? row('Bicarbonate of soda', g(t.bakingSodaG), tsp(t.bakingSodaTsp)) : ''}
-        <tr class="total">
-          <td>Total raw / dry weight</td>
-          <td class="qty">${g(t.totalG)}</td>
-          <td class="alt">${g(t.dryMassG)} dry</td>
-        </tr>
+
+        ${head('Filling')}
+        ${row(context.berry.label, g(f.berryMassG))}
+        ${row('Sugar', g(f.sugarG))}
+        ${row('Tapioca starch', g(f.tapiocaG), `or ${g(f.cornstarchAltG)} cornstarch`)}
+        ${row('Lemon juice', g(f.lemonJuiceG))}
+        ${row('Salt', g(f.saltG), 'a pinch')}
       </table>
       ${
         r.constraintNotes.length
@@ -117,138 +149,101 @@ export function renderRecipe(el, r) {
       ${r.dietNotes.map((n) => `<div class="callout">${esc(n)}</div>`).join('')}
     </section>
 
-    ${
-      r.substitutions.length
-        ? `<section class="block">
-            <h3>Substitutions and what they cost</h3>
-            <div class="prose">
-              <ul>${r.substitutions
-                .map(
-                  (s) =>
-                    `<li><strong>${esc(s.from)} → ${esc(s.to)}.</strong> ${esc(s.why)}</li>`,
-                )
-                .join('')}</ul>
-            </div>
-          </section>`
-        : ''
-    }
-
     <section class="block">
-      <h3>Filling</h3>
-      <table class="ing">
-        ${row(`${context.berry.label}`, g(f.berryMassG))}
-        ${row('Sugar', g(f.sugarG))}
-        ${row('Tapioca starch', g(f.tapiocaG), `or ${g(f.cornstarchAltG)} cornstarch`)}
-        ${row('Lemon juice', g(f.lemonJuiceG))}
-        ${row('Salt', g(f.saltG), 'a pinch')}
-      </table>
-      <div class="callout">${esc(f.starchNote)}</div>
-      <div class="prose">
-        <p>${esc(context.berry.note)} At pH ${esc(f.pH)}.</p>
-        <p>Dosage comes from King Arthur's per-fruit chart — <strong>${g(f.pieDosageG)}</strong>
-        for a double-crust pie — scaled to ${pct(f.openFaceFactor)} because an open topping
-        evaporates water throughout the bake and needs less starch to reach the same set.</p>
-      </div>
-    </section>
-
-    <section class="block">
-      <h3>Shaping — ${esc(m.label)}</h3>
-      <div class="prose">
-        <p>${esc(m.method)}</p>
-        <p>Heat reaches it by <strong>${esc(m.heatPath)}</strong>. Coverage
-        ${pct(m.coverage)} of the surface; ${pct(m.effectiveExposure)} of it meets dry
-        oven air rather than sitting against the fruit${
-          m.effectiveSlump > 0.08
-            ? `, after losing ${pct(m.effectiveSlump)} of it to slump`
-            : ''
-        }.</p>
+      <h3>Method</h3>
+      <ol class="method">
+        <li>Heat the oven to ${bake.celsius} °C / ${bake.fahrenheit} °F. Butter the dish.</li>
         ${
-          regimeIdx === 2
-            ? `<div class="callout">The pastry band — cohesive enough to roll, and with
-               almost no porosity of its own. The gaps you cut are the only thing keeping
-               most of this topping off the fruit, and anything touching wet fruit is held
-               near 100 °C and can never crisp. It is the sonker's trick: the surveyed
-               Rockford crust runs about 51 parts liquid per 100 flour against a cobbler
-               median of 77.</div>`
+          r.diet.vegan && hasLiquid
+            ? `<li>Stir the lemon juice into the soy milk and leave it 10 minutes to sour. Keep it cold.</li>`
             : ''
         }
-        ${
-          regimeIdx === 3
-            ? `<div class="callout warn">The awkward band: too slack to hold a cut edge, too
-               stiff to drop cleanly, and at its greatest tendency to spread flat — which
-               drives more of its mass down into the pinned zone against the fruit. Chilling
-               the shaped mounds is doing real work here.</div>`
-            : ''
-        }
-      </div>
+        <li>Toss the berries with the sugar, tapioca, lemon and salt. Rest 15 minutes so the starch hydrates, then tip into the dish and level.</li>
+        <li>Whisk the ${esc(r.diet.glutenFree ? 'flour blend' : 'flour')}${hasOats ? ', oats' : ''}, both sugars, salt${hasXanthan ? ', xanthan' : ''}${hasLeaven ? ', baking powder and soda' : ''} together.</li>
+        <li>Rub or cut in the cold ${esc(r.diet.vegan ? 'vegan block' : 'butter')} until it is the size of small peas. Stop while you can still see distinct pieces, and do not overwork it.</li>
+        ${hasLiquid ? `<li>Add the cold ${esc(r.diet.vegan ? 'soured soy milk' : 'buttermilk')} and stir just until it comes together. Do not knead.</li>` : ''}
+        ${r.diet.glutenFree ? `<li>Rest 20 minutes so the blend finishes absorbing water.</li>` : ''}
+        <li>${esc(m.method)}</li>
+        ${bake.prebake ? `<li>Bake the fruit alone for ${bake.prebakeMinutes} minutes first, until it begins to bubble.</li>` : ''}
+        <li>Bake ${bake.totalMinutes} minutes, until the filling bubbles around the edges and the top is deep golden.</li>
+        <li>Rest ${bake.restMinutes} minutes before serving.</li>
+      </ol>
     </section>
 
     <section class="block">
       <h3>Bake</h3>
       <div class="stages">
-        ${bake.stages
-          .map(
-            (s) => `<div class="stage">
-              <div class="temp">${s.celsius} °C <span style="font-size:12px;color:var(--text-muted)">/ ${s.fahrenheit} °F</span></div>
-              <div class="mins">${s.minutes} min</div>
-            </div>`,
-          )
-          .join('')}
-        ${bake.stages.length > 1 ? `<div class="stage">
+        <div class="stage">
+          <div class="temp">${bake.celsius} °C</div>
+          <div class="mins">${bake.fahrenheit} °F</div>
+        </div>
+        <div class="stage">
           <div class="temp">${bake.totalMinutes} min</div>
-          <div class="mins">total</div>
-        </div>` : ''}
+          <div class="mins">in the oven</div>
+        </div>
         <div class="stage">
           <div class="temp">${bake.restMinutes} min</div>
           <div class="mins">rest before serving</div>
         </div>
       </div>
-      <div class="prose">
-        <p>${esc(bake.rationale)}</p>
-        ${bake.prebake ? `<div class="callout warn">Bake the fruit alone for ${bake.prebakeMinutes} minutes first. At this hydration the topping has poor dry-heat access, and King Arthur pre-bakes for exactly this reason — to avoid "runny filling and gummy biscuits".</div>` : ''}
-        <ul>${r.serving.doneness.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>
-        <p><strong>${esc(r.serving.rest)}</strong></p>
-        <p>${esc(r.serving.overworking)}</p>
-        <p style="color:var(--text-muted);font-size:13px">${esc(bake.descendingOption)}</p>
-      </div>
     </section>
 
-    <section class="block">
-      <h3>Method</h3>
-      <div class="prose">
-        <ol style="padding-left:18px;margin:0">
-          <li>Heat the oven to ${bake.celsius} °C / ${bake.fahrenheit} °F. Butter the dish.</li>
-          ${
-            r.diet.vegan && hasLiquid
-              ? `<li>Stir the lemon juice into the soy milk and leave it 10 minutes to sour and thicken. Keep it cold.</li>`
-              : ''
-          }
-          <li>Toss the berries with the sugar, tapioca, lemon and salt. Let them sit 15 minutes so the starch hydrates, then tip into the dish and level.</li>
-          <li>Whisk the ${esc(r.diet.glutenFree ? 'flour blend' : 'flour')}${hasOats ? ', oats' : ''}, both sugars, salt${hasXanthan ? ', xanthan' : ''}${hasLeaven ? ', baking powder and soda' : ''} together.</li>
-          <li>Rub or cut in the cold ${esc(r.diet.vegan ? 'vegan block' : 'butter')} until it is the size of small peas — stop while you can still see distinct pieces.</li>
-          ${hasLiquid ? `<li>Add the cold ${esc(r.diet.vegan ? 'soured soy milk' : 'buttermilk')} and stir just until it comes together. Do not knead.</li>` : ''}
-          ${r.diet.glutenFree ? `<li>Rest the mixture 20-30 minutes so the blend finishes absorbing water.</li>` : ''}
-          <li>${esc(m.method)}</li>
-          ${bake.prebake ? `<li>Bake the fruit alone for ${bake.prebakeMinutes} minutes, until it begins to bubble.</li>` : ''}
-          <li>Bake ${bake.totalMinutes} min at ${bake.celsius} °C / ${bake.fahrenheit} °F, until the filling bubbles around the edges and the top is deep golden.</li>
-          <li>Rest ${bake.restMinutes} minutes before serving.</li>
-        </ol>
-      </div>
-    </section>
+    <details class="why">
+      <summary>Why these numbers</summary>
 
-    <section class="block">
-      <h3>Why these quantities</h3>
-      <div class="prose">
-        <p>The dish, the fruit and the coverage are held constant; the topping mass
-        is derived. Baked volume is area × coverage × target thickness, divided by
-        oven expansion and multiplied by raw density — so a leavened topping, which
-        nearly doubles in the oven, needs less material to cover the same dish.</p>
-        <p>Raw topping is <strong>${(context.toppingToFruitRatio * 100).toFixed(0)}%</strong> of
-        the fruit weight here, but only <strong>${(context.dryToFruitRatio * 100).toFixed(0)}%</strong>
-        once the buttermilk is discounted. Those two numbers move in opposite directions
-        across the triangle, and the dry one is the honest measure of how much topping
-        you are eating.</p>
+      <div class="why-body">
+        <h4>Predicted quality</h4>
+        <div class="components">${componentBars(score)}</div>
+        <p class="prose">Combined as a weighted geometric mean, so one weak component drags the
+        whole point down — an uncooked underside is not rescuable by a good crust.</p>
+
+        <h4>Shaping — ${esc(m.label)}</h4>
+        <p class="prose">Heat reaches it by ${esc(m.heatPath)}. It covers ${pct(m.coverage)} of the
+        surface, and ${pct(m.effectiveExposure)} of it meets dry oven air rather than sitting against
+        the fruit${m.effectiveSlump > 0.08 ? `, after losing ${pct(m.effectiveSlump)} of that to slump` : ''}.
+        Anything touching wet fruit is held near 100 °C by evaporative cooling and can never
+        crisp, so exposure is the whole game.</p>
+
+        ${
+          m.regime === 'rollable-sheet'
+            ? `<p class="prose">This is the pastry band, and the sonker's trick: cohesive enough to
+               roll, with almost no porosity of its own. The gaps you cut are the only thing keeping
+               the topping off the fruit.</p>`
+            : ''
+        }
+        ${
+          m.regime === 'slack-drop'
+            ? `<p class="prose">The awkward band — too slack to hold a cut edge, too stiff to drop
+               cleanly, and at its greatest tendency to spread flat, which pushes more of its mass
+               into the pinned zone. Chilling is doing real work here.</p>`
+            : ''
+        }
+
+        <h4>Filling</h4>
+        <p class="prose">${esc(context.berry.note)} At pH ${esc(f.pH)}. Thickener comes from King
+        Arthur's per-fruit chart — ${g(f.pieDosageG)} for a double-crust pie — scaled to
+        ${pct(f.openFaceFactor)} because an open topping evaporates water throughout the bake.
+        Tapioca over cornstarch for setting clear and thickening harder per gram.</p>
+
+        ${
+          r.substitutions.length
+            ? `<h4>Substitutions, and what they cost</h4>
+               <ul class="prose">${r.substitutions
+                 .map((s) => `<li><strong>${esc(s.from)} → ${esc(s.to)}.</strong> ${esc(s.why)}</li>`)
+                 .join('')}</ul>`
+            : ''
+        }
+
+        <h4>Quantities</h4>
+        <p class="prose">The dish and its coverage are held constant; topping mass is derived from
+        area × coverage × thickness, divided by oven expansion. That lands on
+        <strong>${(t.totalG / context.dish.areaCm2).toFixed(2)} g/cm²</strong> — the surveyed medians
+        are 1.01 for a crumble, 0.83 for a crisp, 0.85 for a cobbler. Fruit-to-topping ratio spans
+        11× across sources and is not a usable design rule; load per unit area is.</p>
+
+        <p class="prose">${esc(bake.rationale)} ${esc(bake.descendingOption)}</p>
+        <p class="prose">${esc(r.serving.rest)}</p>
       </div>
-    </section>
+    </details>
   `;
 }

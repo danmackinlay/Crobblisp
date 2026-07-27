@@ -47,7 +47,7 @@ const REGIMES = [
     label: 'Loose crumb',
     heatPath: 'open crumb structure — most of its surface meets dry oven air',
     method:
-      'Rub the cold butter into the dry ingredients until it looks like coarse breadcrumbs with a few pea-sized lumps. Scatter loosely — do not press.',
+      'Scatter loosely over the fruit, right to the edges. Do not press it down.',
   },
   {
     maxHydration: 22,
@@ -55,7 +55,7 @@ const REGIMES = [
     label: 'Clumped crumb',
     heatPath: 'open crumb structure — most of its surface meets dry oven air',
     method:
-      'Rub in the butter, add the buttermilk, then squeeze handfuls into hazelnut-sized nuggets and break them over the fruit. The clumps are the point — they brown separately.',
+      'Squeeze handfuls into hazelnut-sized nuggets and break them over the fruit. The clumps are the point — they brown separately.',
   },
   {
     maxHydration: 35,
@@ -63,7 +63,7 @@ const REGIMES = [
     label: 'Rollable sheet — lattice or shards',
     heatPath: 'cut gaps — the sonker move; without them almost none of it stands clear',
     method:
-      'Bring to a short, cohesive dough. Roll to about 6 mm and either cut a lattice or tear into rough shards, laying them with clear gaps. The gaps are structural: this dough is too cohesive to vent on its own.',
+      'Roll to about 6 mm and either cut a lattice or tear into rough shards, laying them with clear gaps. The gaps are structural — this dough has no porosity of its own.',
   },
   {
     maxHydration: 50,
@@ -71,7 +71,7 @@ const REGIMES = [
     label: 'Slack drop',
     heatPath: 'separated mounds, each standing clear of the fruit',
     method:
-      'A sticky, slack dough. Drop in ~30 g mounds with generous space between them — it will spread. Chill the shaped mounds for 15 minutes before baking to limit the slump.',
+      'Chill the dough 15 minutes, then drop in ~30 g mounds with generous space between them. It will spread.',
   },
   {
     maxHydration: Infinity,
@@ -79,7 +79,7 @@ const REGIMES = [
     label: 'Biscuit drop',
     heatPath: 'separated mounds, each standing clear of the fruit',
     method:
-      'Cut the cold butter in until it is the size of small peas, stir in the buttermilk just to combine, and drop in ~45 g mounds leaving clear channels between them. Do not spread it into a sheet.',
+      'Drop in ~45 g mounds leaving clear channels between them. They must not touch, and it must not be spread into a sheet.',
   },
 ];
 
