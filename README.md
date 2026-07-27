@@ -1,23 +1,22 @@
 # Crobble
 
-A ternary interpolation between **crisp**, **crumble** and **cobbler**, with the
-food chemistry made explicit and the quality surface left uncorrected.
+A ternary interpolation between a **crisp**, a **crumble** and a **cobbler**.
 
 Pick a point on the triangle. The model derives a complete recipe from it —
 ingredient quantities, shaping technique, bake schedule, filling thickener — and
-scores the predicted result. It does not steer you away from bad points. It
-computes them honestly and shades the terrain so you can see where they are.
+scores the predicted result.
+
+Honestly though take it with a grain of salt, heh, and if it differs we should record that and update it.
 
 ```bash
 npm test          # 42 model tests, no dependencies
 python3 -m http.server 8765   # then open http://localhost:8765
 ```
 
-No build step, no dependencies. Plain ES modules.
 
 ---
 
-## Why a triangle is the right shape
+## Why triangle
 
 The three toppings are not three arbitrary points. In baker's percentages they
 differ along essentially **two** physical axes:
@@ -28,24 +27,17 @@ differ along essentially **two** physical axes:
   cobbler 0.
 
 Plot those and crumble sits at the origin, crisp on one axis, cobbler on the
-other. Barycentric coordinates map onto that plane **affinely and bijectively**,
-so every point in the triangle is a real, nameable (hydration, oats) pair rather
-than a smoothie of three recipes.
-
-A side effect: the triangle is half of a square, and the missing fourth corner —
-high hydration *and* high oats — is baked oatmeal. A real dish, and an obvious
-extension if you ever want to unfold the simplex.
+other. 
 
 ## What is held constant
 
-The **dish** and its **coverage**, not the mass of topping.
+The **dish** and its **coverage**
 
 Surveyed practice makes this the right invariant, and settles an argument that
 looked irreconcilable. America's Test Kitchen states a filling-to-topping ratio
 of "about 5 to 1"; BBC Good Food's apple crumble works out at roughly 2:1. But
 their **topping loads per unit area are within 6% of each other** — 0.952 vs
-1.008 g/cm². The disagreement was never about topping quantity at all. It is
-about how deep the fruit layer is.
+1.008 g/cm².
 
 Across British crumbles, fruit-to-topping spans 0.67:1 to 7.5:1, an 11× range.
 Load per cm² clusters at 0.95–1.32. So the model scales topping by area:
@@ -55,8 +47,6 @@ baked volume = area × coverage × target thickness
 raw volume   = baked volume / oven expansion
 raw mass     = raw volume × raw density
 ```
-
-Coverage comes from the morphology model, so technique feeds back into quantity.
 
 ## The morphology ladder
 
@@ -76,25 +66,22 @@ lattice-topped **sonker** of Surry County, NC is the existence proof. The
 surveyed Rockford General Store crust runs about 51 parts liquid per 100 flour
 against a cobbler median of 77.
 
-Cobbler coverage of 41% is measured, not guessed: King Arthur's cherry cobbler
+Cobbler coverage of 41% is measured: King Arthur's cherry cobbler
 specifies 9 mounds of 50 g in a 9-inch square (~42%), and ATK's peach cobbler
 drops 6 mounds from 338 g in an 8-inch square (~40%), with an explicit
 instruction that the mounds must not touch.
 
 ## The quality surface
 
-The score measures **how well a point executes what it is trying to be**, not
-how crisp it is. Scoring crispness directly would just tilt the whole triangle
-toward one corner, which is both boring and wrong — a good cobbler is not a
-failed crisp.
+The score measures **how well a point executes what it is trying to be**
 
 Positive axes: **surface crisp**, **structure beneath**, **stratification**.
 Defects: **cooked through**, **holds its height**, **dry underside**,
 **cohesion**. Combined as a weighted geometric mean, so a single near-zero
-component tanks the point — an uncooked gummy underside must not be rescuable by
+component tanks the point — an uncooked gummy underside is not be rescuable by
 an excellent crust.
 
-Two design points worth knowing:
+Two design points worth noting:
 
 - **Stratification's weight scales with hydration.** A two-texture topping is the
   cobbler's stated target, not the crumble's. Weighting it flat would score a
