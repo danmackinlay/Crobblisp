@@ -1,4 +1,5 @@
 import { clamp01 } from './blend-util.js';
+import { brittleness } from './glass.js';
 
 /**
  * The quality surface.
@@ -90,10 +91,22 @@ export function score({
   //      that amorphous glass, below its transition temperature, is what
   //      fractures. Needs sugar, fat and low bulk moisture.
   //
+  //      The moisture term now comes from the Gordon-Taylor equation rather than
+  //      a linear "10 °C per 1% water" rule, which turned out to be the tangent
+  //      at bone-dry and to overstate the depression by ~40% at realistic
+  //      topping moisture. See glass.js.
+  //
   //      CRUST route — doughs. The exposed surface dehydrates and browns while
   //      the interior stays tender. Needs an open leavened crumb that can dry,
   //      not a dry dough.
-  const glassRoute = 0.42 * sugarN + 0.32 * fatN + 0.26 * dryN;
+  // Residual moisture in the baked sugar phase. The Gordon-Taylor curve it feeds
+  // is well grounded; THIS MAPPING IS NOT — no source measured the residual
+  // moisture of a baked topping as a function of its formula hydration, so the
+  // 2%-to-5.5% span is an assumption. It matters less than it looks: the glass
+  // route only decides anything where it beats the crust route, which is the dry
+  // half of the triangle. At the wet end the crust route dominates regardless.
+  const residualWater = 0.02 + 0.035 * (1 - dryN);
+  const glassRoute = 0.42 * sugarN + 0.32 * fatN + 0.26 * brittleness(residualWater);
   const crustRoute = 0.45 + 0.35 * leavenN + 0.2 * fatN;
   const surfaceCrisp = clamp01(
     Math.max(glassRoute, crustRoute) *
@@ -233,4 +246,4 @@ export function score({
 }
 
 /** Fixed display domain — switching berry or diet should visibly move the map. */
-export const SCORE_DOMAIN = [0.50, 0.98];
+export const SCORE_DOMAIN = [0.62, 0.98];

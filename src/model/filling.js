@@ -17,9 +17,26 @@ import { fruitLoad } from './fruit.js';
  *    the patent for acid-stable starch is itself tapioca-based. Blackberries
  *    also turn out to run pH 3.85-4.5, mild enough for the question to be moot.
  *
- *    Tapioca stays because of two things that ARE supported: it sets clear
- *    rather than cloudy, and it is the stronger thickener per gram, dosed
- *    20-40% lower than cornstarch for the same set.
+ *    Tapioca stays for ONE supported reason: it sets clear rather than cloudy.
+ *
+ *    The second reason previously given here — that it is the stronger thickener
+ *    per gram — does NOT survive the peer-reviewed literature, and the STABILITY
+ *    direction was backwards. Head to head at 5% dry basis, native cassava peaks
+ *    at 69 RVU against waxy maize at 85. The strong-thickener reputation attaches
+ *    to WAXY cassava (116-131 RVU), a different material. Worse: native cassava
+ *    has limited resistance to shear, heat and acid, and breaks down MORE than
+ *    maize under sustained processing. Corn holds a paste better. That is
+ *    precisely why modified cassava starches exist.
+ *
+ *    The dosing below still comes from King Arthur's chart, which specifies
+ *    QUICK-COOKING tapioca — a pregelatinised product, not the native starch the
+ *    RVA studies measure. That is the most likely explanation for the conflict,
+ *    and it is why the ingredient line says quick tapioca specifically.
+ *
+ *    One finding worth acting on if this filling ever misbehaves: adding
+ *    low-methoxyl pectin at ~10% of the starch raises peak, hot-paste and
+ *    cold-paste viscosity AND reduces relative breakdown, tested at pH 3.0-3.2
+ *    under baking — i.e. pectin partially repairs tapioca's stability weakness.
  *
  * 2. THE OPEN-FACE ADJUSTMENT. King Arthur's chart is for a double-crust pie.
  *    An open topping loses water by evaporation throughout the bake, so it needs
@@ -57,6 +74,6 @@ export function filling(berry, dish, morph) {
     pH: `${pLo}-${pHi}`,
 
     starchNote:
-      'Tapioca rather than cornstarch, for two reasons that hold up: it sets clear instead of cloudy, and it thickens harder per gram. The usual argument — that acid destroys cornstarch over a long bake — does not survive checking at these pH levels.',
+      'Quick-cooking tapioca, for one reason that holds up: it sets clear rather than cloudy. Two arguments often made for it do not survive checking — acid does not meaningfully destroy cornstarch at berry pH, and native tapioca is actually the LESS shear- and heat-stable of the two. Cornstarch works; it just sets cloudy.',
   };
 }

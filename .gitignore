@@ -1,0 +1,25 @@
+# Secrets — never commit. This file was added after a Kaggle API token was put
+# into .env in a repository that had no .gitignore at all, where `git add .`
+# would have committed it.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+kaggle.json
+.kaggle/
+
+# Large or regenerable data. sources.json is the source of truth and IS tracked;
+# sources.csv is generated from it by scripts/build-dataset.mjs, and the Food.com
+# extracts are hundreds of megabytes.
+data/foodcom_*.csv
+data/*.parquet
+
+# OS and editor noise
+.DS_Store
+**/.DS_Store
+*.swp
+.idea/
+.vscode/
+
+node_modules/

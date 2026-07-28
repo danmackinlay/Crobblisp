@@ -306,14 +306,35 @@ test('a cobbler crust is crisp too — both routes to a crisp surface work', () 
   assert.ok(crisp.tenderCrumb < 0.05, 'which a dry topping does not have');
 });
 
-test('stratification is what the middle fails at, not an either/or', () => {
+test('the middle dips through cooked-through, not through an invented slump', () => {
+  // This test previously asserted that the middle slumps badly, encoding an
+  // "awkward band" invented before any research. Scoring real recipes falsified
+  // it: the surveyed cobbler dough cluster is 41-72% hydration and a 4.8-star,
+  // 146-rating recipe sits at 48%. The slump penalty was demoted accordingly.
+  //
+  // A dip survives, but it now has to come from somewhere defensible.
   const cobbler = buildRecipe(at(0, 0, 1)).score;
   const mid = buildRecipe(at(0.5, 0, 0.5)).score;
-  assert.ok(cobbler.stratification > 0.9, 'crisp above, tender below');
-  assert.ok(mid.stratification < 0.6, 'the middle develops neither properly');
-  // And it fails through real defects, not through an assumed exclusivity.
-  assert.ok(mid.components.cooked.risk > 0.2, 'the middle is undercooked');
-  assert.ok(mid.components.height.risk > 0.2, 'and it slumps');
+
+  assert.ok(cobbler.stratification > 0.9, 'the cobbler corner stratifies');
+  assert.ok(mid.stratification < cobbler.stratification - 0.2, 'the middle does so less well');
+
+  // Cooked-through is now the dominant driver, as it should be: a wet-ish dough
+  // with mediocre dry-heat access is the one failure every source agrees on.
+  assert.ok(mid.components.cooked.risk > 0.15, 'the middle is undercooked');
+  assert.ok(
+    mid.components.cooked.risk > mid.components.height.risk,
+    'and that outweighs any slump term',
+  );
+});
+
+test('no well-rated real recipe is condemned by the surface', () => {
+  // The falsification test, inlined. Sally's peach cobbler carries 4.8 stars
+  // from 146 ratings and sits at ~48% hydration. An earlier version of the model
+  // scored it 0.58 — the model contradicting real reception is a model bug.
+  const sallysPosition = at(0.4, 0, 0.6); // h ~= 48
+  const s = buildRecipe(sallysPosition, 'mixed').score.overall;
+  assert.ok(s > 0.7, `a well-loved cobbler position scores ${s.toFixed(3)}, should clear 0.70`);
 });
 
 test('wetter berries lower the surface everywhere', () => {
@@ -420,9 +441,9 @@ test('the acid budget has two tiers, and each fires on the right path', () => {
   const dairy = blend(at(0, 0, 1), DAIRY);
   const vegan = blend(at(0, 0, 1), VEGAN);
 
-  // Dairy sits above stoichiometry but inside the browning allowance — a
-  // deliberate alkaline surplus, reported rather than corrected.
-  assert.ok(dairy.constraintNotes.some((n) => n.includes('deliberate')));
+  // Dairy sits above stoichiometry but inside the empirical ceiling — an
+  // alkaline surplus that matches real practice, reported rather than corrected.
+  assert.ok(dairy.constraintNotes.some((n) => n.includes('stoichiometric match')));
   assert.ok(!dairy.constraintNotes.some((n) => n.includes('cut back')));
 
   // Soured soy milk carries ~54% of the acid, so the allowance is exceeded.
@@ -431,13 +452,23 @@ test('the acid budget has two tiers, and each fires on the right path', () => {
   assert.ok(vegan.ingredients.bakingPowder > dairy.ingredients.bakingPowder);
 });
 
-test('the cobbler vertex sits inside the browning allowance, not past it', () => {
+test('the cobbler vertex sits between stoichiometry and observed practice', () => {
   const c = blend(at(0, 0, 1), DAIRY).ingredients;
   const ratio = c.bakingSoda / c.buttermilk;
-  const stoichiometric = 1.79 / 240;
-  assert.ok(ratio > stoichiometric, 'a small surplus is wanted, for browning');
-  assert.ok(ratio < stoichiometric * 1.35, 'but not past the allowance');
+  const stoichiometric = 1.79 / 240; // 0.00746 at 0.8% titratable acidity
+  const observed = 0.0100; // five independent arrivals, incl. the folk rule
+
+  assert.ok(ratio > stoichiometric, 'a small alkaline surplus, as practice shows');
+  assert.ok(ratio < observed, 'but below where real recipes top out');
   close(ratio / stoichiometric, 1.17, 0.02, 'surplus multiple');
+
+  // The three sources that exceed the ceiling do so under ANY defensible
+  // threshold, so the finding does not depend on where the line is drawn.
+  for (const ceiling of [0.0089, 0.0100, 0.0117]) {
+    for (const bad of [0.01333, 0.01429, 0.01538]) {
+      assert.ok(bad > ceiling, `${bad} should fail a ${ceiling} ceiling`);
+    }
+  }
 });
 
 test('converting soda to powder preserves total lift', () => {

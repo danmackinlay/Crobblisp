@@ -83,7 +83,7 @@ export const BERRIES = {
     pieThickenerPct: 3.0,
     sugarRate: 0.07,
     lemonRate: 0.012,
-    note: 'Needs less than half the thickener of raspberry. A thick elastic skin and firm flesh mean many berries come through the bake unruptured. The most forgiving berry here, and the most acidic.',
+    note: 'Needs less than half the thickener of raspberry. A thick elastic skin and firm flesh mean many berries come through the bake unruptured. The most forgiving berry here, and the most acidic. Its pectin is ~0.4% of fresh weight — low-to-moderate, alongside raspberry; King Arthur calls it "high pectin" and that is not supported by analytical sources.',
   },
 };
 

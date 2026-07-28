@@ -195,17 +195,36 @@ export const SUGAR_BLEND = { lightBrown: 0.6, white: 0.4 };
 export const SODA_PER_G_BUTTERMILK = 1.79 / 240; // ≈ 0.00746
 
 /**
- * ...but a modest excess is deliberate, not a mistake. Maillard browning
- * accelerates under alkaline conditions, so well-tested recipes routinely run
- * above stoichiometry to get colour: ATK's drop biscuits sit at a soda-to-
- * buttermilk ratio of 0.010, which is 1.34x the stoichiometric ceiling.
+ * The practical ceiling, stated EMPIRICALLY rather than as a multiplier.
  *
- * Past this allowance the surplus stops being a browning lever and becomes a
- * defect. The mechanism is not leftover bicarbonate itself — above 50-80 °C soda
- * decomposes to sodium carbonate, washing soda at pH ~11, which is what actually
- * reads as soapy (unreacted bicarbonate reads bitter and metallic instead).
+ * An earlier version of this file used "1.35x stoichiometric". That number was
+ * reverse-engineered — 0.0100 / 0.00746 = 1.34 — and it is not a constant: at
+ * 0.95% titratable acidity the same practice is only 1.13x stoichiometric. No
+ * source anywhere in the survey quantifies a browning allowance, so dressing an
+ * observed value up as a derived one was false precision.
+ *
+ * What IS real is the observation. FIVE independent arrivals at 0.0100 g soda
+ * per g buttermilk: Sally's, Dorie Greenspan, both ATK drop-biscuit recipes, and
+ * the traditional "half a teaspoon per cup of sour milk" rule (2.4/240 = exactly
+ * 0.0100). A separate practice at 0.0050 — a quarter-teaspoon per cup — matches
+ * the entire Once Upon a Chef family. Those are the two attractors in real use.
+ *
+ * So the ceiling is 0.0100, justified by convergence, with the ~1.13-1.34x
+ * excess over stoichiometry recorded as a derived observation rather than a
+ * rule. The excess plausibly serves browning, since Maillard accelerates under
+ * alkaline conditions — but that explanation is inference, not citation.
+ *
+ * Past the ceiling the surplus becomes a defect. The mechanism is not leftover
+ * bicarbonate itself: above 50-80 °C soda decomposes to sodium carbonate,
+ * washing soda at pH ~11, which is what reads as soapy. Unreacted bicarbonate
+ * reads bitter and metallic instead.
+ *
+ * Three surveyed sources exceed 0.0100 — Tori Avey (0.0133), The Butter Book
+ * (0.0143) and Gisslen's textbook (0.0154). Those three fail every candidate
+ * ceiling between 0.0089 and 0.0117, so the finding does not depend on where
+ * exactly the line is drawn.
  */
-export const SODA_BROWNING_ALLOWANCE = 1.35;
+export const SODA_EMPIRICAL_CEILING = 1.79 / 240 * 1.34; // ≈ 0.0100
 
 /**
  * Lift equivalence, 1 part soda to 3.5 parts baking powder.

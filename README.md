@@ -127,6 +127,10 @@ Two design points worth noting:
 
 ## Provenance
 
+**Full source log: [SOURCES.md](SOURCES.md)** — every recipe surveyed, what was
+said about it, what was converted versus found, what could not be retrieved, and
+a corrections log of everything this model got wrong and how.
+
 Every quantity in `src/model/vertices.js` is the median of surveyed,
 well-reviewed recipes. Sample sizes: **13 British crumbles, 16 American crisps,
 16 sweet cobbler toppings**, plus three textbook formulas from Gisslen's

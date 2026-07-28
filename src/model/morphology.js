@@ -10,13 +10,24 @@ import { clamp01 } from './blend.js';
  * paste. That story is repeated widely in recipe writing but it is not supported
  * by any food-science source, and the mechanism is wrong.
  *
- * The real constraint is thermal. While liquid water is boiling at the
- * fruit/topping interface, evaporative cooling PINS that boundary at about
- * 100 °C, whatever the oven is set to. Crisping a dough needs it driven above
- * 100 °C so it can dehydrate; browning needs 140 °C+. So no part of a topping in
- * contact with wet fruit can ever crisp or brown — at any oven temperature, with
- * any amount of venting. Sogginess at the interface is thermodynamically
- * mandated, not an accident of trapped steam.
+ * The real constraint is thermal, and — unlike the steam story — it is
+ * established in the bread-baking literature rather than assembled here. An
+ * earlier revision of this file flagged the argument as unverified synthesis;
+ * that was too cautious. Purlis & Salvadori's moving-boundary work describes a
+ * three-zone structure directly: a crust that quickly exceeds 100 °C, "a mobile
+ * evaporation front, always kept near 100 °C", and a crumb that approaches
+ * 100 °C asymptotically. Measured profiles show the interior plateauing there.
+ *
+ * The threshold for browning is stronger than the argument this model was
+ * making, and it is DUAL: crust colour needs surface temperature above 120 °C
+ * AND water activity below 0.6. Either condition alone blocks it. A topping
+ * against wet fruit fails both at once — pinned near 100 °C by evaporation, and
+ * saturated. So it cannot brown at any oven temperature or any amount of
+ * venting, and that conclusion is over-determined rather than marginal.
+ *
+ * One honest gap: no study was found measuring a baked good in direct contact
+ * with a high-moisture filling. The transfer from bread crumb/crust to a fruit
+ * interface is physically sound but not directly evidenced.
  *
  * That reframes what a good morphology is doing. It is not relieving pressure;
  * it is maximising the fraction of topping mass exposed to dry radiant oven heat
@@ -27,17 +38,29 @@ import { clamp01 } from './blend.js';
  * good proxy for exposed surface either way — but it is measuring heat access,
  * not pressure relief.
  *
- * The band at 22-35% hydration looks dead on paper and isn't: that is pie
- * pastry, and the lattice-topped sonker of Surry County, NC is the existence
- * proof. The surveyed Rockford General Store sonker crust runs about 51 parts
- * liquid per 100 flour against a cobbler median of 77, and gets its rollability
- * from low fat as much as low water. Cutting a lattice works here — though note
- * that pie vents are primarily top-crust and boil-over control, and do little
- * for a bottom directly. What the gaps buy is exposed surface.
+ * TWO CLAIMS ABOUT HYDRATION BANDS THAT TURNED OUT TO BE WRONG.
  *
- * The genuinely awkward band is 35-50%: too slack to roll and hold a cut edge,
- * too stiff to drop cleanly, and at its maximum tendency to slump flat, which
- * pushes more of its mass into the pinned zone.
+ * 1. "The genuinely awkward band is 35-50%." Falsified — see slump() below. The
+ *    surveyed cobbler dough cluster is 41-72%, so that band is not a dead zone,
+ *    it is the mainstream. A 4.8-star, 146-rating cobbler sits at 48%.
+ *
+ * 2. "Rollable pastry lives at 22-35% hydration." Also wrong, and for an
+ *    instructive reason. The rolled-pastry sonker this model cites as its
+ *    existence proof actually runs about 51 parts liquid per 100 flour —
+ *    squarely in the dough cluster, not below it. What makes it rollable is very
+ *    low FAT (14.5 against a cobbler median of 45), not low water. Combined
+ *    liquid-plus-fat is 65 against a cobbler median around 123.
+ *
+ *    So rollability is a function of liquid AND fat together, and this ladder is
+ *    keyed on hydration alone. The regime labels below are therefore approximate
+ *    at the dry end: a genuinely low-fat dough becomes rollable at a hydration
+ *    where this model still calls it a drop. Recorded as a known limitation
+ *    rather than rebuilt, because fixing it properly means making morphology a
+ *    two-variable surface and there is not enough data to calibrate that.
+ *
+ * On lattices: the gaps buy exposed surface. Note that pie vents are primarily
+ * top-crust and boil-over control and do little for a bottom directly, so the
+ * usual explanation for cutting them is not the operative one here.
  */
 
 const REGIMES = [
@@ -116,14 +139,36 @@ function piecewise(h, ys) {
 }
 
 /**
- * Slump: the tendency to flow after shaping and close its own vents. Peaks
- * where the dough is cohesive but weak — hydrated enough to move, not yet
- * developed or leavened enough to set fast. A proper biscuit dough holds its
- * shape again because gluten and oven spring set the structure early.
+ * Slump: the tendency to flow after shaping.
+ *
+ * FALSIFIED AND RECALIBRATED. This curve originally peaked at 0.55 around h=42,
+ * encoding an "awkward band" at 35-50% hydration — a topping too slack to hold a
+ * cut edge and too stiff to drop cleanly. That idea was invented in this
+ * project's first design conversation, before any research, and carried
+ * untested for a long time. It is wrong.
+ *
+ * The surveyed cobbler DOUGH cluster is 41-72% hydration. The invented penalty
+ * band sat directly on top of it. Scoring real published recipes exposed this:
+ * Sally's Baking Addiction's peach cobbler sits at h=48 — near the old peak —
+ * and carries 4.8 stars from 146 ratings. The model was condemning a region that
+ * contains a demonstrably well-loved recipe.
+ *
+ * What the corpus actually says about spread is that it is a TECHNIQUE variable
+ * authors manage, not a defect that ruins the dish. The Butter Book chills its
+ * shaped mounds 30-60 minutes; Sally pats hers into flat patties on purpose;
+ * Savory Nothings warns against flattening because it "will destroy the air
+ * bubbles"; Getty Stewart says to flatten slightly to avoid mounds that
+ * underbake. Four authors, four different deliberate handling choices, none
+ * treating spread as a failure.
+ *
+ * So slump is demoted on the same grounds as toughness, which this model already
+ * excludes: real, mentioned, and handled by technique rather than predicted by
+ * composition. Amplitude drops 0.55 -> 0.18. It still bends the surface where a
+ * dough is genuinely slack, but it no longer manufactures a trough.
  */
 function slump(h) {
   if (h < 18) return 0;
-  return 0.55 * Math.exp(-((h - 42) ** 2) / (2 * 12 ** 2));
+  return 0.18 * Math.exp(-((h - 42) ** 2) / (2 * 12 ** 2));
 }
 
 export function morphology(hydration) {

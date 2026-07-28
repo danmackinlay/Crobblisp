@@ -3,7 +3,7 @@ import {
   VERTEX_KEYS,
   INGREDIENT_FIELDS,
   SODA_PER_G_BUTTERMILK,
-  SODA_BROWNING_ALLOWANCE,
+  SODA_EMPIRICAL_CEILING,
   SODA_TO_POWDER_EQUIV,
 } from './vertices.js';
 import { applyDiet, DEFAULT_DIET } from './diet.js';
@@ -60,9 +60,9 @@ function applyConstraints(ing, acidCapacity, liquidName) {
   const notes = [];
   const out = { ...ing };
 
-  // 1. Acid budget, in two tiers — see SODA_BROWNING_ALLOWANCE.
+  // 1. Acid budget, in two tiers — see SODA_EMPIRICAL_CEILING.
   const stoichiometric = out.buttermilk * SODA_PER_G_BUTTERMILK * acidCapacity;
-  const ceiling = stoichiometric * SODA_BROWNING_ALLOWANCE;
+  const ceiling = out.buttermilk * SODA_EMPIRICAL_CEILING * acidCapacity;
 
   if (out.bakingSoda > ceiling + 1e-9) {
     const surplus = out.bakingSoda - ceiling;
@@ -74,7 +74,7 @@ function applyConstraints(ing, acidCapacity, liquidName) {
   } else if (out.bakingSoda > stoichiometric + 1e-9) {
     const excess = out.bakingSoda / stoichiometric;
     notes.push(
-      `Soda runs ${excess.toFixed(2)}x the stoichiometric match for the ${liquidName}. That is deliberate: the small alkaline surplus is there to drive browning, and it sits inside the margin where it helps rather than turning soapy.`,
+      `Soda runs ${excess.toFixed(2)}x the stoichiometric match for the ${liquidName}, which is normal: five independent sources converge on this level, including the traditional half-teaspoon-per-cup rule. The small alkaline surplus plausibly aids browning.`,
     );
   }
 
