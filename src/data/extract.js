@@ -92,8 +92,17 @@ export function extract(record) {
   const { totals, trace, inferred } = sumLines(record.topping, record.sourceId);
   const fruit = sumLines(record.fruit, record.sourceId);
 
+  // If ANY line that belongs to the basis failed to convert, the basis is
+  // incomplete and every ratio computed against it is wrong — not missing, but
+  // confidently wrong, which is worse. A record like "1/4 cup plus 2 tablespoons
+  // flour" once collapsed to oats alone and reported fat at 189 per 100 and
+  // sugar at 289. The extractor correctly declined to invent grams; the
+  // normalisation divided by the wreckage anyway.
+  const basisBroken = trace.some(
+    (t) => !t.excluded && (t.role === 'flour' || t.role === 'oats') && t.grams == null,
+  );
   const basis = totals.flour + totals.oats;
-  const per100 = (v) => (basis > 0 ? round((v / basis) * 100) : null);
+  const per100 = (v) => (basis > 0 && !basisBroken ? round((v / basis) * 100) : null);
 
   const sugarTotal = totals.sugarWhite + totals.sugarBrown;
   const toppingG = Object.values(totals).reduce((a, b) => a + b, 0);
@@ -136,8 +145,9 @@ export function extract(record) {
     fruitG: round(fruitG, 1),
 
     // Normalised to flour + oats = 100
-    basisG: round(basis, 1),
-    oatFractionPct: basis > 0 ? round((totals.oats / basis) * 100) : null,
+    basisG: basisBroken ? null : round(basis, 1),
+    basisBroken,
+    oatFractionPct: basis > 0 && !basisBroken ? round((totals.oats / basis) * 100) : null,
     fatPct: per100(totals.fat),
     sugarPct: per100(sugarTotal),
     sugarBrownPct: per100(totals.sugarBrown),

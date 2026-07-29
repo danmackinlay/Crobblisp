@@ -91,14 +91,24 @@ just the composition but the **shape** the topping has to take:
 |---|---|---|---|
 | 0–12% | loose crumb | rub to breadcrumbs, scatter | 95% |
 | 12–22% | clumped nuggets | squeeze into hazelnut clumps | 93% |
-| 22–35% | **rollable — pastry** | roll to 6 mm, cut a lattice | 78% |
+| 22–35% | rollable sheet — *see caveat* | roll to 6 mm, cut a lattice | 78% |
 | 35–50% | slack paste | drop in ~30 g mounds, chill first | 58% |
 | 50%+ | biscuit dough | drop in ~45 g mounds, well separated | 41% |
 
-The 22–35% band looks dead on paper and isn't: that is pie pastry, and the
-lattice-topped **sonker** of Surry County, NC is the existence proof. The
-surveyed Rockford General Store crust runs about 51 parts liquid per 100 flour
-against a cobbler median of 77.
+**Caveat on that third row.** This project long claimed rollable pastry lives at
+22–35% hydration, citing the lattice-topped **sonker** of Surry County, NC as the
+existence proof. Checking the sonker killed the claim: the Rockford General Store
+crust runs about **51** parts liquid per 100 flour — squarely inside the cobbler
+dough cluster, not below it. What makes it rollable is very low **fat** (14.5
+against a cobbler median of 45); combined liquid-plus-fat is 65 against a cobbler
+median around 123.
+
+So rollability depends on liquid *and* fat together, and this ladder is keyed on
+hydration alone. The dry-end labels are therefore approximate: a genuinely
+low-fat dough becomes rollable at a hydration where the model still calls it a
+drop. Left as a documented limitation rather than rebuilt, because fixing it
+properly means a two-variable morphology surface and there is not enough data to
+calibrate one.
 
 Cobbler coverage of 41% is measured: King Arthur's cherry cobbler
 specifies 9 mounds of 50 g in a 9-inch square (~42%), and ATK's peach cobbler
@@ -120,10 +130,36 @@ Two design points worth noting:
 - **Stratification's weight scales with hydration.** A two-texture topping is the
   cobbler's stated target, not the crumble's. Weighting it flat would score a
   crumble as deficient for being the single-texture thing it is meant to be.
-- **The trough is real and it is emergent.** Around 55% cobbler the topping is
-  too slack to hold a cut edge and too stiff to drop cleanly; it slumps flat,
-  loses its dry exposed surface, and fails to cook through. That falls out of the
-  defect terms rather than being asserted.
+- **The dip is emergent, and shallower than this project long claimed.** An
+  "awkward band" at 35-50% hydration was invented in the first design
+  conversation and carried untested for a long time. It is false: the surveyed
+  cobbler dough cluster is 41-72%, and a 4.8-star, 146-rating recipe sits at 48%.
+  Scoring real recipes caught it. A dip survives around the crumble-cobbler
+  midpoint, but it now comes from **cooked-through** — a doughy topping with poor
+  dry-heat access — rather than from a slump penalty with nothing behind it.
+
+## Does it agree with reality?
+
+`node scripts/validate-corners.mjs` scores real published recipes with the model,
+using their own measured composition, and checks the one property that matters:
+**no recipe rated 4.5 stars or better should score badly.**
+
+Ratings are too positivity-biased to correlate against — Food.com's median is
+5.0, the curated sites cluster at 4.7-4.9 — so this is a one-sided test, not a
+fit. It has already earned its keep: it caught the invented awkward band by
+scoring a 4.8-star cobbler at 0.58.
+
+| Corner | Vertex score | Best real recipe there |
+|---|---|---|
+| Crumble | 0.867 | Kitchen Sanctuary 0.898 (4.38 stars, n=8) |
+| Crisp | 0.942 | ATK Pear 0.938 · King Arthur 0.934 (4.8 stars, n=214) |
+| Cobbler | 0.979 | Dorie 0.918 · ATK Peach 0.845 |
+
+**Known gap:** the crumble corner has no anchor above 4.5 stars, because ratings
+for Delia, Jamie Oliver and BBC Good Food were never recovered. The two largest
+crumble samples that were — ATK at 4.0/415 and GoodTo at 3.0/6,276 — are the
+lowest ratings in the survey. Whether British crumbles genuinely rate lower or
+that is a site effect, this data cannot say.
 
 ## Provenance
 
@@ -132,9 +168,14 @@ said about it, what was converted versus found, what could not be retrieved, and
 a corrections log of everything this model got wrong and how.
 
 Every quantity in `src/model/vertices.js` is the median of surveyed,
-well-reviewed recipes. Sample sizes: **13 British crumbles, 16 American crisps,
-16 sweet cobbler toppings**, plus three textbook formulas from Gisslen's
-*Professional Baking*.
+well-reviewed recipes, and the corpus behind them is machine-readable:
+**59 records** in `data/sources.json`, holding verbatim ingredient lines, with
+`data/sources.csv` regenerated from them by `scripts/build-dataset.mjs`.
+
+Included in the medians: 13 British crumbles, 15 American crisps, 14 sweet
+biscuit cobblers. Recorded but deliberately excluded from any vertex: batter
+cobblers, sonkers, five oat-free "crisps", and everything flagged as an SEO farm
+or a content mill.
 
 Where the surveyed spread is tight, the median is used directly. Where it is
 wide, the chosen figure and the reason for departing from the median are stated
@@ -191,6 +232,72 @@ src/ui/        canvas ternary chart + recipe view
 test/          42 tests
 ```
 
+## The second triangle — poured batters
+
+Crumble, crisp and cobbler are one *technique family*: cold fat rubbed or cut
+into flour, and the result placed on the fruit. **Batter cobblers, sonkers and
+pudding cakes are not reachable from it**, and the survey — not a design
+preference — is what says so:
+
+1. **There is a hole in the data.** Surveyed cobbler liquid splits into a dough
+   cluster at 41–72 parts per 100 flour and a batter cluster at 94–176, with
+   nothing in between. That gap is not sampling noise. A mixture at 80–90 is too
+   slack to drop as a mound and too stiff to pour level, so it cannot be
+   assembled by either method. A single continuous simplex spanning both would
+   emit recipes no cook can execute.
+2. **Fat state is discrete.** Fifteen of fifteen sweet biscuit cobbler toppings
+   that contain butter use it cold. Every poured dish melts it. There is no
+   halfway house between rubbing cold butter into flour and pouring melted butter
+   into a pan.
+3. **The assembly inverts.** Two of the three poured dishes put the *batter down
+   first* and the fruit on top, and rely on the batter rising through during the
+   bake. The rubbed family's morphology model is entirely about how much topping
+   stands clear of the fruit; it has no way to express "underneath it".
+
+So the **Technique** switch loads a second, self-contained triangle:
+
+| | fat | sugar | liquid | egg | load g/cm² | assembly |
+|---|---|---|---|---|---|---|
+| **Batter cobbler** | 88 | 158 | 139 | 0 | 1.12 | butter, batter, fruit — inverts |
+| **Sonker** | 90 | 80 | 96 | 0 | **1.38** | fruit baked first, batter poured over |
+| **Pudding cake** | 23 | 165 | 23 | 83 | 0.91 | batter, fruit on top — rises part-way |
+
+Its own vertices, ingredient fields (egg is added), morphology model, quality
+model and colour scale. What it shares is everything downstream of the topping:
+the fruit, the dishes, the filling, the diet switches, the bake schedule.
+
+### Inversion
+
+The poured family's central quantity is not exposure but **inversion** — does the
+batter rise through the fruit and finish on top? It is modelled as buoyancy:
+fluid enough to flow past the fruit *and* generating enough gas to drop below its
+density, both necessary. The batter cobbler scores 1.00 and genuinely inverts;
+the pudding cake manages a partial rise; the sonker has ample capacity and
+**deliberately declines to use it**, because its fruit is pre-baked and the
+batter goes on top.
+
+The effect is real and described by three of four sources. **The mechanism is
+not sourced** — every online account traces to content farms citing nothing — so
+the buoyancy story is labelled a model, is used only to pick an assembly and
+weight one score term, and is load-bearing nowhere else.
+
+### These scores are not comparable to the rubbed ones
+
+The rubbed surface is calibrated: eight surveyed recipes at ≥4.5★ were scored
+against it and none falls below 0.70. **Not one poured or sonker record in the
+corpus carries a rating at all**, so no equivalent test exists. The two families
+therefore get separate colour domains. The ordering of the terms and the shape of
+the surface are grounded; the absolute level is not, and the vertices land at
+0.84 / 0.68 / 0.70 without being massaged upward.
+
+### What is still out of reach: the rolled sonker
+
+Sonker is genuinely bimodal — poured batter *and* rolled pastry. The poured half
+is now covered. The rolled half is out of reach **on both sides**: Rockford
+General Store's runs 14.5 parts fat per 100 flour against a rubbed-family floor
+of 45. It is rollable because of very low fat, not low water, and no point in
+either triangle can produce it. Recorded as a gap rather than faked.
+
 ## A fourth vertex
 
 The obvious candidate is **baked oatmeal**, which would sit at the missing
@@ -218,6 +325,9 @@ Three ways forward, none of them free:
    survey found partial cases already, such as King Arthur's fresh fruit cobbler
    where the cake "rises up and over the fruit as it bakes". Costs a genuine
    model branch: interface defects stop applying and matrix defects start.
+   **Partly done** — the poured family above took the King Arthur case and built
+   the branch, but as a separate triangle rather than a fourth corner, because
+   the data says the region between is empty.
 3. **Leave it at three.**
 
 ## Caveats
@@ -229,3 +339,6 @@ Three ways forward, none of them free:
   rewards it moderately, matching two of three sources.
 - The "moist underside" defect is weighted low on purpose. Two sources want it,
   and the sonker wants it emphatically.
+- The poured family rests on two, one and one source per vertex, against 13–18
+  for each rubbed vertex. It is a sketch of a real region, not the same grade of
+  evidence, and nothing in it is rating-validated.

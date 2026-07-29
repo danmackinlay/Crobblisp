@@ -86,17 +86,25 @@ console.log(`Wrote data/sources.csv — ${rows.length} records, ${COLUMNS.length
 const included = rows.filter((r) => !r.excluded);
 console.log(`\n${included.length} included, ${rows.length - included.length} excluded\n`);
 
+// Only three corpora feed the model. Batter cobblers and sonkers are carried as
+// SPECIAL CASES: they are recorded, normalised and summarised, but no vertex is
+// drawn from them, because they are different foods rather than extreme cobblers.
+// The cleanest evidence for that is fruit-to-topping ratio, which separates them
+// with no overlap at all — biscuit cobblers 0.94-3.94, batter cobblers 0.33-0.94.
+// A batter cobbler puts down roughly the same topping mass per unit area and then
+// puts a third to a seventh as much fruit under it. It is a cake with fruit in it.
 const HAND = {
   crumble: { fatPct: 66.7, sugarPct: 57 },
   crisp: { oatFractionPct: 41, fatPct: 70, sugarPct: 75 },
   'cobbler-a': { fatPct: 45, sugarPct: 30, liquidPct: 80 },
 };
 
-for (const corpus of ['crumble', 'crisp', 'cobbler-a']) {
+for (const corpus of ['crumble', 'crisp', 'cobbler-a', 'cobbler-c', 'sonker']) {
   const sub = included.filter((r) => r.corpus === corpus);
   if (!sub.length) continue;
   console.log(`${corpus}  (n=${sub.length})`);
-  for (const field of ['oatFractionPct', 'fatPct', 'sugarPct', 'liquidPct', 'saltPct', 'loadGPerCm2']) {
+  for (const field of ['oatFractionPct', 'fatPct', 'sugarPct', 'liquidPct', 'saltPct',
+                       'loadGPerCm2', 'fruitToToppingRatio']) {
     const s = summarise(sub, field);
     if (!s.n) continue;
     const vertex = HAND[corpus]?.[field];

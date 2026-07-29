@@ -22,12 +22,17 @@
 
 /** Default factors, in grams. Used when a source publishes none of its own. */
 export const DEFAULT_FACTORS = {
-  flour: { cup: 125 },
-  'self-raising flour': { cup: 125 },
-  'gluten-free flour': { cup: 125 },
-  cornmeal: { cup: 140 },
-  oats: { cup: 90 },
-  'quick oats': { cup: 90 },
+  // Tablespoon and teaspoon entries are derived from the cup figure, not
+  // independently sourced. They exist because a recipe writing "1/4 cup plus 2
+  // tablespoons flour" was silently collapsing the flour+oats basis to oats
+  // alone and inflating every normalised ratio threefold.
+  flour: { cup: 125, tbsp: 125 / 16, tsp: 125 / 48 },
+  'self-raising flour': { cup: 125, tbsp: 125 / 16 },
+  'gluten-free flour': { cup: 125, tbsp: 125 / 16 },
+  'almond flour': { cup: 96, tbsp: 6 },
+  cornmeal: { cup: 140, tbsp: 140 / 16 },
+  oats: { cup: 90, tbsp: 90 / 16 },
+  'quick oats': { cup: 90, tbsp: 90 / 16 },
   sugar: { cup: 200, tbsp: 12.5, tsp: 4.17 },
   'brown sugar': { cup: 213, tbsp: 13.3125 },
   demerara: { cup: 200, tbsp: 12.5 },

@@ -563,3 +563,31 @@ test('substitutions are described wherever they are applied', () => {
 test('gluten-free labels the oats as certified', () => {
   assert.match(buildRecipe(at(0, 1, 0), 'mixed', 'square20', GF).labels.oats, /[Cc]ertified/);
 });
+
+test('REGRESSION: a dry vegan topping does not list liquid it never pours', () => {
+  // The vegan swap makes the mixture wetter, because a leaner block carries more
+  // water than butter does. That water is REAL and must count toward hydration —
+  // but it arrives inside the fat, so it is not an ingredient. An earlier version
+  // folded it into the buttermilk field, and a bone-dry vegan crisp came out with
+  // "Soy milk, cold 4.1 g", "Lemon juice, to sour it 0.3 g", and a method step
+  // telling you to sour four grams of soy milk.
+  const r = buildRecipe(at(0, 1, 0), 'mixed', 'square20', VEGAN);
+
+  assert.equal(r.topping.buttermilkG, 0, 'nothing is poured in');
+  assert.ok(r.axes.hydration > 3 && r.axes.hydration < 4, 'but the mixture is wetter');
+  assert.ok(!r.dietNotes.some((n) => /sour the soy milk/i.test(n)),
+    'and you are not told to sour a liquid that is not there');
+
+  // The dairy crisp is bone dry, and the vegan one is only slightly wetter.
+  const dairy = buildRecipe(at(0, 1, 0), 'mixed', 'square20', DAIRY);
+  assert.equal(dairy.axes.hydration, 0);
+});
+
+test('fat-borne water still counts where water matters', () => {
+  // It is not cosmetic bookkeeping: hydration drives morphology and the score,
+  // and the leavening guard. A vegan topping IS wetter and should read as such.
+  const dairy = buildRecipe(at(0, 1, 0), 'mixed', 'square20', DAIRY);
+  const vegan = buildRecipe(at(0, 1, 0), 'mixed', 'square20', VEGAN);
+  assert.ok(vegan.axes.hydration > dairy.axes.hydration, 'vegan is the wetter mixture');
+  assert.ok(vegan.score.overall < dairy.score.overall, 'and pays for it, slightly');
+});

@@ -26,8 +26,11 @@ function row(name, qty, alt = '') {
 const head = (label) => `<tr class="subhead"><td colspan="3">${esc(label)}</td></tr>`;
 
 const COMPONENT_ORDER = [
+  // rubbed
   'surfaceCrisp', 'depth', 'stratification',
   'cooked', 'height', 'underside', 'cohesion',
+  // poured
+  'lid', 'set', 'lift', 'inversion', 'dilution',
 ];
 
 /**
@@ -42,7 +45,7 @@ const COMPONENT_ORDER = [
 function verdict(score) {
   const ranked = COMPONENT_ORDER
     .map((k) => score.components[k])
-    .filter(Boolean)
+    .filter((c) => c && c.weight > 0.01)
     .sort((a, b) => a.value - b.value);
   const [lowest, second] = ranked;
 
@@ -54,7 +57,10 @@ function verdict(score) {
 function componentBars(score) {
   return COMPONENT_ORDER.map((key) => {
     const c = score.components[key];
-    if (!c) return '';
+    // A zero-weight component is switched off for this point, not merely low —
+    // inversion where the fruit is pre-baked, for instance. Showing an empty bar
+    // would read as a failure rather than as an inapplicable criterion.
+    if (!c || c.weight <= 0.01) return '';
     return `
       <div class="comp" title="${esc(c.detail)}">
         <span class="name">${esc(c.label)}</span>
@@ -67,8 +73,12 @@ function componentBars(score) {
 export function renderRecipe(el, r) {
   const { topping: t, filling: f, morphology: m, bake, score, context, naming, axes, basis } = r;
   const L = r.labels;
+  const poured = r.family.key === 'poured';
   const hasOats = t.oatsG > 0.5;
   const hasLiquid = t.buttermilkG > 0.5;
+  const hasEgg = t.eggG > 0.5;
+  const hasFlax = t.groundFlaxG > 0.05;
+  const needsSouring = (t.liquidSplit?.lemonG ?? 0) > 0.05;
   const hasLeaven = t.bakingPowderG > 0.05 || t.bakingSodaG > 0.05;
   const hasXanthan = t.xanthanG > 0.02;
   const dietTag = [r.diet.vegan && 'vegan', r.diet.glutenFree && 'gluten-free']
@@ -96,13 +106,21 @@ export function renderRecipe(el, r) {
         by the corner values. Showing them makes that visible rather than implied.
       -->
       <div class="carried">
-        <span><b>${axes.hydration.toFixed(0)}</b> liquid</span>
-        <span><b>${(axes.oatFraction * 100).toFixed(0)}</b> oats</span>
+        <span${
+          axes.fatBorneWater > 0.5 && t.buttermilkG < 0.5
+            ? ' title="This water comes in inside the vegan block rather than being poured in, so it counts here but is not a separate ingredient."'
+            : ''
+        }><b>${axes.hydration.toFixed(0)}</b> water${
+          axes.fatBorneWater > 0.5 && t.buttermilkG < 0.5 ? '<sup>*</sup>' : ''
+        }</span>
+        ${poured
+          ? `<span><b>${basis.egg.toFixed(0)}</b> egg</span>`
+          : `<span><b>${(axes.oatFraction * 100).toFixed(0)}</b> oats</span>`}
         <span><b>${basis.butter.toFixed(0)}</b> fat</span>
         <span><b>${basis.sugar.toFixed(0)}</b> sugar</span>
         <span><b>${axes.leaveningPower < 0.05 ? 'no' : axes.leaveningPower.toFixed(1)}</b> lift</span>
         <span><b>${basis.salt.toFixed(1)}</b> salt</span>
-        <em>per 100 flour + oats</em>
+        <em>per 100 ${poured ? 'flour' : 'flour + oats'}</em>
       </div>
     </div>
 
@@ -123,11 +141,13 @@ export function renderRecipe(el, r) {
         ${row('Fine sea salt', g(t.saltG), tsp(t.saltTsp))}
         ${hasXanthan ? row('Xanthan gum', g(t.xanthanG)) : ''}
         ${t.soyMilkPowderG > 0.02 ? row('Soy milk powder', g(t.soyMilkPowderG)) : ''}
+        ${hasEgg ? row(L.egg, g(t.eggG), `${t.eggCount.toFixed(1)} large`) : ''}
+        ${hasFlax ? row('Ground flaxseed', g(t.groundFlaxG), 'stands in for the egg') : ''}
         ${
           hasLiquid
             ? t.liquidSplit
-              ? row('Soy milk, cold', g(t.liquidSplit.soyG)) +
-                row('Lemon juice, to sour it', g(t.liquidSplit.lemonG))
+              ? row(L.buttermilk, g(t.liquidSplit.soyG)) +
+                (needsSouring ? row('Lemon juice, to sour it', g(t.liquidSplit.lemonG)) : '')
               : row(L.buttermilk, g(t.buttermilkG))
             : ''
         }
@@ -152,19 +172,26 @@ export function renderRecipe(el, r) {
     <section class="block">
       <h3>Method</h3>
       <ol class="method">
-        <li>Heat the oven to ${bake.celsius} °C / ${bake.fahrenheit} °F. Butter the dish.</li>
+        <li>Heat the oven to ${bake.celsius} °C / ${bake.fahrenheit} °F.${poured ? '' : ' Butter the dish.'}</li>
         ${
-          r.diet.vegan && hasLiquid
+          r.diet.vegan && hasLiquid && needsSouring
             ? `<li>Stir the lemon juice into the soy milk and leave it 10 minutes to sour. Keep it cold.</li>`
             : ''
         }
-        <li>Toss the berries with the sugar, tapioca, lemon and salt. Rest 15 minutes so the starch hydrates, then tip into the dish and level.</li>
+        ${hasFlax ? `<li>Stir the ground flaxseed into ${g(t.groundFlaxG * 3)} of the milk and leave it 10 minutes to gel — this is the egg replacement.</li>` : ''}
+        <li>Toss the berries with the sugar, tapioca, lemon and salt. Rest 15 minutes so the starch hydrates${poured ? '.' : ', then tip into the dish and level.'}</li>
+        ${poured ? `
+        <li>Whisk the ${esc(r.diet.glutenFree ? 'flour blend' : 'flour')}, sugar, salt${hasXanthan ? ', xanthan' : ''}${hasLeaven ? ' and baking powder' : ''} together, then whisk in the ${esc(L.buttermilk.toLowerCase())}${hasEgg ? ' and eggs' : ''}${hasFlax ? ' and the flax gel' : ''} until just smooth. It should pour.</li>
+        ${bake.prebake ? `<li>Bake the fruit alone for ${bake.prebakeMinutes} minutes, until it is hot and bubbling.</li>` : ''}
+        ${m.assembly.steps.map((x) => `<li>${esc(x)}</li>`).join('')}
+        ` : `
         <li>Whisk the ${esc(r.diet.glutenFree ? 'flour blend' : 'flour')}${hasOats ? ', oats' : ''}, both sugars, salt${hasXanthan ? ', xanthan' : ''}${hasLeaven ? ', baking powder and soda' : ''} together.</li>
         <li>Rub or cut in the cold ${esc(r.diet.vegan ? 'vegan block' : 'butter')} until it is the size of small peas. Stop while you can still see distinct pieces, and do not overwork it.</li>
         ${hasLiquid ? `<li>Add the cold ${esc(r.diet.vegan ? 'soured soy milk' : 'buttermilk')} and stir just until it comes together. Do not knead.</li>` : ''}
         ${r.diet.glutenFree ? `<li>Rest 20 minutes so the blend finishes absorbing water.</li>` : ''}
         <li>${esc(m.method)}</li>
         ${bake.prebake ? `<li>Bake the fruit alone for ${bake.prebakeMinutes} minutes first, until it begins to bubble.</li>` : ''}
+        `}
         <li>Bake ${bake.totalMinutes} minutes, until the filling bubbles around the edges and the top is deep golden.</li>
         <li>Rest ${bake.restMinutes} minutes before serving.</li>
       </ol>
@@ -196,14 +223,41 @@ export function renderRecipe(el, r) {
         <div class="components">${componentBars(score)}</div>
         <p class="prose">Combined as a weighted geometric mean, so one weak component drags the
         whole point down — an uncooked underside is not rescuable by a good crust.</p>
+        ${poured ? `<p class="prose callout warn"><strong>This number is not comparable to a rubbed
+        score.</strong> The rubbed surface is calibrated: eight surveyed recipes at 4.5★ or better
+        were scored against it, and none falls below 0.70. Not one poured or sonker source in the
+        corpus carries a rating at all, so there is no equivalent test here. The ordering of the
+        terms and the shape of the surface are grounded; the absolute level is not.</p>` : ''}
 
+        ${poured ? `
+        <h4>What it does in the oven — ${esc(m.label)}</h4>
+        <p class="prose">This batter ${esc(m.behaviour)}. Fluidity reads ${m.fluidity.toFixed(2)}
+        and inversion capacity ${m.inversionCapacity.toFixed(2)}${
+          m.prebake
+            ? `, but the fruit is pre-baked here, so the batter goes on top and none of that capacity is used`
+            : `, so ${pct(m.lidFraction)} of the finished top is batter rather than exposed fruit`
+        }. The mechanism — buoyancy, once the leavening drops the batter below the density of the
+        fruit — is a model, not a measurement: the effect is described by three of the four sources
+        but no source explains it, and every account online traces back to content farms citing
+        nothing.</p>
+        ` : `
         <h4>Shaping — ${esc(m.label)}</h4>
         <p class="prose">Heat reaches it by ${esc(m.heatPath)}. It covers ${pct(m.coverage)} of the
         surface, and ${pct(m.effectiveExposure)} of it meets dry oven air rather than sitting against
         the fruit${m.effectiveSlump > 0.08 ? `, after losing ${pct(m.effectiveSlump)} of that to slump` : ''}.
         Anything touching wet fruit is held near 100 °C by evaporative cooling and can never
         crisp, so exposure is the whole game.</p>
+        `}
 
+        ${
+          poured && r.coords.sonker > 0.5
+            ? `<p class="prose">Traditionally served with a <strong>dip</strong> — warm sweetened milk
+               thickened slightly, poured over each portion at the table. One surveyed sonker pours
+               about half a cup over the dish at the 40-minute mark instead, which is a deliberate
+               late re-wetting and the exact inverse of everything the rubbed family does to keep a
+               topping dry.</p>`
+            : ''
+        }
         ${
           m.regime === 'rollable-sheet'
             ? `<p class="prose">This is the pastry band, and the sonker's trick: cohesive enough to
@@ -235,11 +289,20 @@ export function renderRecipe(el, r) {
         }
 
         <h4>Quantities</h4>
+        ${poured ? `
+        <p class="prose">A poured batter covers the whole dish, so load per unit area is taken
+        <strong>directly from the sources</strong> rather than reconstructed from thickness and
+        density — one fewer inferential step than the rubbed side manages. This point sits at
+        <strong>${(t.totalG / context.dish.areaCm2).toFixed(2)} g/cm²</strong>, against measured
+        values of 1.12 for the batter cobbler, 1.38 for the sonker (the heaviest load in the whole
+        survey, rubbed family included) and 0.91 for the pudding cake.</p>
+        ` : `
         <p class="prose">The dish and its coverage are held constant; topping mass is derived from
         area × coverage × thickness, divided by oven expansion. That lands on
         <strong>${(t.totalG / context.dish.areaCm2).toFixed(2)} g/cm²</strong> — the surveyed medians
         are 1.01 for a crumble, 0.83 for a crisp, 0.85 for a cobbler. Fruit-to-topping ratio spans
         11× across sources and is not a usable design rule; load per unit area is.</p>
+        `}
 
         <p class="prose">${esc(bake.rationale)} ${esc(bake.descendingOption)}</p>
         <p class="prose">${esc(r.serving.rest)}</p>

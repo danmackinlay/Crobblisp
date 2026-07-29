@@ -1345,6 +1345,2887 @@
         "entered the corpus under a FALSE 'Southern Living' association"
       ],
       "notes": "Reached while searching for Southern Living. It is a different publisher entirely. Recorded so the log does not inherit the false attribution."
+    },
+    {
+      "id": "crumble-delia-ccc",
+      "corpus": "crumble",
+      "source": "Delia Smith",
+      "title": "Complete Cookery Course basic crumble",
+      "url": "https://hopeeternalcookbook.wordpress.com/2010/02/01/basic-recipe-sweet-crumble-mixtures/",
+      "tier": "T4",
+      "retrieval": "blog-transcription",
+      "butterState": "cold",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "225",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "225 g/8 oz plain flour"
+        },
+        {
+          "qty": "75",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "75 g/3 oz butter"
+        },
+        {
+          "qty": "150",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "150 g/5 oz soft brown sugar"
+        },
+        {
+          "qty": "1",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 level tsp baking powder"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "CONTAINS BAKING POWDER — compared directly against unleavened toppings",
+        "lowest butter figure in the whole crumble survey (33.3)"
+      ],
+      "notes": "Single-source blog transcription of a book. The same page carried five further crumble formulas that were collected and silently dropped from the survey — a curation decision that moved the numbers."
+    },
+    {
+      "id": "crumble-nigel-slater",
+      "corpus": "crumble",
+      "source": "Nigel Slater",
+      "title": "Real Fast Puddings crumble, as tested by Felicity Cloake",
+      "url": "https://gulfnews.com/going-out/how-to-make-the-perfect-crumble-1.718479",
+      "tier": "T4",
+      "retrieval": "quoted-in-article",
+      "butterState": "unstated",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "175",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "175g plain flour"
+        },
+        {
+          "qty": "175",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "175g butter"
+        },
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "100g caster sugar"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": 200,
+        "minutes": 30,
+        "restMin": null,
+        "prebake": true
+      },
+      "flags": [
+        "highest butter in the British core set (100 per 100 flour)"
+      ],
+      "notes": "Food-processor method, butter temperature never stated. Quoted verbatim inside Cloake's article, which is the only source in the crumble survey captured as complete page text.",
+      "quotes": [
+        "golden and crisp",
+        "the juices of the fruit have bubbled through the topping and caramelised promisingly"
+      ]
+    },
+    {
+      "id": "crumble-nigella-hte",
+      "corpus": "crumble",
+      "source": "Nigella Lawson",
+      "title": "How to Eat crumble, as tested by Felicity Cloake",
+      "url": "https://gulfnews.com/going-out/how-to-make-the-perfect-crumble-1.718479",
+      "tier": "T4",
+      "retrieval": "quoted-in-article",
+      "butterState": "cold",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "120",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "120g flour"
+        },
+        {
+          "qty": "90",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "90g butter"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "6 tbs sugar",
+          "inferredNote": "converted at 12.5 g/tbsp"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": null
+      },
+      "notes": "Cloake endorses Nigella's freezer trick — chilling the rubbed mixture produced a topping 'studded with a few more lumps and bumps'.",
+      "quotes": [
+        "resembles 'porridge oats'",
+        "more gratifyingly nubbly crumble"
+      ]
+    },
+    {
+      "id": "crumble-nigella-jumbleberry",
+      "corpus": "crumble",
+      "source": "Nigella Lawson",
+      "title": "Jumbleberry Crumble",
+      "url": "https://www.nigella.com/recipes/jumbleberry-crumble",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "300 ml ramekin",
+        "areaCm2": 56.7,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "100 g plain flour"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "50 g cold butter, cut into small cubes"
+        },
+        {
+          "qty": "3",
+          "unit": "tbsp",
+          "ingredient": "demerara",
+          "verbatim": "3 tablespoons demerara sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1/2 teaspoon baking powder"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "100 g frozen summer fruits per serving"
+        }
+      ],
+      "bake": {
+        "ovenC": 220,
+        "minutes": 20,
+        "restMin": null,
+        "prebake": false
+      },
+      "excluded": true,
+      "exclusionReason": "The recipe does not add up: as written the topping makes 187.5 g but the method directs 75 g across each of 4 ramekins = 300 g, a 60% shortfall. Every derived figure inherits that ambiguity, and the ramekin area is the weakest geometric inference in the survey.",
+      "flags": [
+        "CONTAINS BAKING POWDER",
+        "individual ramekin — a different form factor from a dish"
+      ],
+      "quotes": [
+        "a mixture like coarse sand"
+      ]
+    },
+    {
+      "id": "crumble-nigella-apple-walnut",
+      "corpus": "crumble",
+      "source": "Nigella Lawson",
+      "title": "Apple and Walnut Crumble",
+      "url": "https://www.nigella.com/recipes/apple-and-walnut-crumble",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "just under 1 litre oval pie dish",
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "100 g plain flour"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "50 g unsalted butter, cold, cut into little squares"
+        },
+        {
+          "qty": "60",
+          "unit": "g",
+          "ingredient": "nuts",
+          "verbatim": "60 g walnut pieces"
+        },
+        {
+          "qty": "58",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "45 g light brown sugar plus 1 heaped tablespoon"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "500",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "~500 g cooking apples"
+        },
+        {
+          "qty": "25",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "25 g raisins/sultanas"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 25,
+        "restMin": null,
+        "prebake": true
+      },
+      "flags": [
+        "sugar recorded as 45 g in the ratio pass and 58 g in the scale pass — reconciled here to 58 g including the heaped tablespoon"
+      ],
+      "notes": "Two Nigella recipes on the same official site share identical flour and butter (100/50) but differ in leavening — Jumbleberry has baking powder, this has none. Same author, incompatible base formula.",
+      "quotes": [
+        "rubbly meal or porridge oats",
+        "the fruit will be soft and the crumble topping golden on top"
+      ]
+    },
+    {
+      "id": "crumble-mary-norwak",
+      "corpus": "crumble",
+      "source": "Mary Norwak",
+      "title": "English Puddings crumble, as tested by Felicity Cloake",
+      "url": "https://gulfnews.com/going-out/how-to-make-the-perfect-crumble-1.718479",
+      "tier": "T4",
+      "retrieval": "quoted-in-article",
+      "butterState": "unstated",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "75",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "75g plain flour"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "50g butter"
+        },
+        {
+          "qty": "25",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "25g light, soft brown sugar"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": null
+      },
+      "flags": [
+        "Cloake ALTERED this recipe before testing — she dropped Norwak's 6 tbsp water, 75 g sugar and ground ginger"
+      ],
+      "notes": "The source of the survey's 'sandy is a defect' finding: Cloake rejected Norwak's fine soft brown sugar because 'the fine texture makes the finished crumble topping a little sandy'. BBC Good Food uses sandy as a POSITIVE target, so the term is contested.",
+      "quotes": [
+        "a crisp butter, brown sugar and spice topping"
+      ]
+    },
+    {
+      "id": "crumble-bbc-food-parker",
+      "corpus": "crumble",
+      "source": "BBC Food (Merrilees Parker)",
+      "title": "Apple crumble",
+      "url": "https://git.macropus.org/bbc-food/www.bbc.co.uk/food/recipes/applecrumble_2971.html",
+      "tier": "T2",
+      "retrieval": "dead-page-archive",
+      "butterState": "room temperature",
+      "dish": {
+        "label": "24 cm round ovenproof dish",
+        "areaCm2": 452.4,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "300",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "300 g/10 1/2 oz plain flour, sieved"
+        },
+        {
+          "qty": "200",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "200 g/7 oz unsalted butter, cubed at room temperature"
+        },
+        {
+          "qty": "175",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "175 g/6 oz unrefined brown sugar"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "450",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "450 g/1 lb apples, peeled/cored/1 cm pieces"
+        }
+      ],
+      "bake": {
+        "ovenC": 180,
+        "minutes": 42.5,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "ONLY room-temperature-butter British recipe in the survey",
+        "heaviest topping load (1.49 g/cm2) AND lowest fruit:topping (0.67) AND coolest bake — three unusual traits in ONE recipe, counted as three independent signals across three tables",
+        "primary page almost certainly dead; BBC Food retired most recipes around 2016"
+      ],
+      "notes": "675 g of topping for 450 g of fruit in a 4-portion dish is 169 g of raw topping per person. Reported straight for want of grounds to correct it, but flagged as suspicious."
+    },
+    {
+      "id": "crumble-goodtoknow",
+      "corpus": "crumble",
+      "source": "GoodtoKnow",
+      "title": "Crumble topping",
+      "url": "https://www.goodto.com/recipes/crumble-topping",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 3.0,
+        "count": 6276
+      },
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "150",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "150 g plain flour"
+        },
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "100 g butter, cold, cut into 1-2 cm cubes"
+        },
+        {
+          "qty": "85",
+          "unit": "g",
+          "ingredient": "demerara",
+          "verbatim": "85 g demerara sugar"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "500",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "Approximately 500g of fruit ... is a good guide for a filling"
+        }
+      ],
+      "bake": {
+        "ovenC": 200,
+        "minutes": 37.5,
+        "restMin": null,
+        "prebake": null
+      },
+      "flags": [
+        "LARGEST SAMPLE IN THE ENTIRE SURVEY (6,276 ratings) and the LOWEST RATING IN IT (3.0)",
+        "internally contradictory oven spec: states '200C (180C fan, Gas 4)' — Gas 4 is 180C, not 200C"
+      ],
+      "notes": "High popularity, low specification: no dish size, no salt, a self-contradicting temperature. Its 3.0 rating across 6,276 votes is the single most-sampled quality signal available and it is mediocre.",
+      "quotes": [
+        "crisp and golden"
+      ]
+    },
+    {
+      "id": "crumble-ottolenghi-cheesecake",
+      "corpus": "crumble",
+      "source": "Ottolenghi",
+      "title": "Sweet and salty cheesecake crumble element",
+      "url": "https://ottolenghi.co.uk/pages/recipes/sweet-salty-cheesecake-cherries-crumble",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "50 g wholemeal flour"
+        },
+        {
+          "qty": "25",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "25 g plain flour"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "50 g cold unsalted butter, diced"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "50 g brown sugar"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/4 tsp salt"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": null
+      },
+      "excluded": true,
+      "exclusionReason": "NOT A FRUIT CRUMBLE — a cheesecake garnish, baked separately. It nevertheless supplied the single quantified salt figure used for the British core subset, giving a cheesecake topping disproportionate weight in the salt analysis.",
+      "quotes": [
+        "a crumb-like consistency"
+      ]
+    },
+    {
+      "id": "crumble-atk-crumb-pie",
+      "corpus": "crumble",
+      "source": "America's Test Kitchen",
+      "title": "Apple Crumb Pie",
+      "url": "https://www.americastestkitchen.com/recipes/16654-apple-crumb-pie",
+      "sourceId": "atk",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 3.5,
+        "count": 13
+      },
+      "dish": {
+        "label": "9-inch pie",
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "1 1/3",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/3 cups unbleached all-purpose flour"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1 cup sugar"
+        },
+        {
+          "qty": "3/4",
+          "unit": "tsp",
+          "ingredient": "kosher salt",
+          "verbatim": "3/4 tsp kosher salt"
+        },
+        {
+          "qty": "2",
+          "unit": "stick",
+          "ingredient": "butter",
+          "verbatim": "2 sticks (1 cup) unsalted butter, chilled and cut into pieces"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": null
+      },
+      "excluded": true,
+      "exclusionReason": "US crumb pie, not a British crumble. At butter 135.5 it is the extreme outlier that forced two separate medians, and it is simultaneously the LOWEST-RATED source in the survey (3.5 stars, 13 reviews) with no published gram weights.",
+      "flags": [
+        "kosher salt converted at a table-salt factor — true figure likely 1.2-1.7, not 2.55, so the survey salt median is biased high",
+        "the fetch attributed its rationale to Martha Stewart on an ATK URL — unresolved, treat attribution as unreliable"
+      ]
+    },
+    {
+      "id": "crumble-king-arthur-streusel",
+      "corpus": "crumble",
+      "source": "King Arthur Baking",
+      "title": "Streusel Topping",
+      "url": "https://www.kingarthurbaking.com/recipes/streusel-topping-recipe",
+      "sourceId": "kingarthur",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "room temperature",
+      "rating": {
+        "stars": 4.5,
+        "count": 6
+      },
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "60",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "1/2 cup (60g) all-purpose flour"
+        },
+        {
+          "qty": "53",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "1/4 cup (53g) brown sugar, packed"
+        },
+        {
+          "qty": "23",
+          "unit": "g",
+          "ingredient": "oats",
+          "verbatim": "1/4 cup (23g) rolled oats"
+        },
+        {
+          "qty": "1/8",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/8 tsp table salt"
+        },
+        {
+          "qty": "57",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "4 tablespoons (57g) butter, at firm room temperature"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": null,
+        "restMin": null,
+        "prebake": null
+      },
+      "flags": [
+        "a companion King Arthur page returned CORRUPTED ARITHMETIC — '1,824g butter (4 sticks x 456g)', wrong twice over. Discarded; logged as direct evidence of the retrieval layer's error rate."
+      ],
+      "quotes": [
+        "coarse crumbs"
+      ]
+    },
+    {
+      "id": "crumble-great-british-chefs",
+      "corpus": "crumble",
+      "source": "Great British Chefs (Adam Gray)",
+      "title": "Apple and blackberry crumble",
+      "url": "https://www.greatbritishchefs.com/recipes/apple-and-blackberry-crumble-recipe",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "unstated",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "250",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "250 g plain flour"
+        },
+        {
+          "qty": "170",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "170 g butter"
+        },
+        {
+          "qty": "110",
+          "unit": "g",
+          "ingredient": "nuts",
+          "verbatim": "110 g macadamia nuts"
+        },
+        {
+          "qty": "110",
+          "unit": "g",
+          "ingredient": "nuts",
+          "verbatim": "110 g nibbed almonds"
+        },
+        {
+          "qty": "110",
+          "unit": "g",
+          "ingredient": "demerara",
+          "verbatim": "110 g demerara sugar"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "500",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "4 Granny Smith apples"
+        },
+        {
+          "qty": "200",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "200 g blackberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 160,
+        "minutes": 35,
+        "restMin": null,
+        "prebake": true
+      },
+      "excluded": true,
+      "exclusionReason": "The topping is baked ALONE for 30-40 minutes as a granola, stirred every 10, then assembled for a 10-12 minute finish. Its 750 g is a batch yield, not an applied quantity, so its fruit:topping ratio is not comparable — yet it was included in that median anyway.",
+      "quotes": [
+        "resemble breadcrumbs",
+        "golden-brown"
+      ]
+    },
+    {
+      "id": "crumble-delicious-magazine",
+      "corpus": "crumble",
+      "source": "delicious. magazine",
+      "title": "Master crumble",
+      "url": "https://www.deliciousmagazine.co.uk/10-of-the-best-crumbles/",
+      "tier": "T3",
+      "retrieval": "search-summary",
+      "butterState": "cold",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "150",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "150g plain flour"
+        },
+        {
+          "qty": "75",
+          "unit": "g",
+          "ingredient": "ground almonds",
+          "verbatim": "75g ground almonds"
+        },
+        {
+          "qty": "150",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "150g cold, cubed butter"
+        },
+        {
+          "qty": "150",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "150g caster sugar"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": null,
+        "minutes": 15,
+        "restMin": null,
+        "prebake": true
+      },
+      "excluded": true,
+      "exclusionReason": "TIER-3: the page returned 403 and was never fetched. It entered the published ratio table on search-summary evidence alone, unflagged, where it anchored the TOP of both the butter and sugar ranges (100/100). It is also a separately pre-baked crumble, not a conventional one."
+    },
+    {
+      "id": "crisp-ci-skillet",
+      "corpus": "crisp",
+      "source": "Cook's Illustrated",
+      "title": "Skillet Apple Crisp",
+      "url": "https://www.americastestkitchen.com/recipes/6146-skillet-apple-crisp",
+      "sourceId": "cooksillustrated",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "dish": {
+        "label": "12-inch ovensafe skillet",
+        "areaCm2": 729.7,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "106",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup (3 3/4 ounces/106 grams) unbleached all-purpose flour"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "nuts",
+          "verbatim": "3/4 cup pecans, chopped fine"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "3/4 cup old-fashioned rolled oats"
+        },
+        {
+          "qty": "99",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "1/2 cup (3 1/2 ounces/99 grams) packed light brown sugar"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup (1 3/4 ounces/50 grams) granulated"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 teaspoon table salt"
+        },
+        {
+          "qty": "8",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "8 tablespoons (1 stick) unsalted butter, melted"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1361",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "3 pounds (1361 grams) Golden Delicious apples"
+        }
+      ],
+      "bake": {
+        "ovenC": 232,
+        "minutes": 17.5,
+        "restMin": 15,
+        "prebake": true
+      },
+      "flags": [
+        "pan is 12-inch, not the 10-inch assumed in an earlier pass — a 12-in skillet tapers, so the floor is ~507 cm2 and the load would rise from 0.704 to 1.014"
+      ],
+      "notes": "Apples cooked on the STOVETOP first, 12-14 min. The only source in the corpus explaining why oats are there: Cook's Illustrated replaced some flour with 'chewy rolled oats' — for CHEW, not crunch.",
+      "quotes": [
+        "chewy rolled oats",
+        "the 'crisp' was just that",
+        "deep golden brown"
+      ]
+    },
+    {
+      "id": "crisp-cc-cranberry-apple",
+      "corpus": "crisp",
+      "source": "Cook's Country",
+      "title": "Cranberry-Apple Crisp",
+      "url": "https://www.americastestkitchen.com/recipes/3180-cranberry-apple-crisp",
+      "sourceId": "cookscountry",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "13 by 9-inch",
+        "areaCm2": 759
+      },
+      "topping": [
+        {
+          "qty": "106",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup (3 3/4 ounces/106 grams) all-purpose flour"
+        },
+        {
+          "qty": "99",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "1/2 cup packed (3 1/2 ounces/99 grams) light brown sugar"
+        },
+        {
+          "qty": "99",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/2 cup (3 1/2 ounces/99 grams) granulated sugar"
+        },
+        {
+          "qty": "12",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "12 tablespoons unsalted butter, cut into 1/2-inch pieces and chilled"
+        },
+        {
+          "qty": "64",
+          "unit": "g",
+          "ingredient": "oats",
+          "verbatim": "3/4 cup (2 1/4 ounces/64 grams) old-fashioned oats"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1134",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 1/2 pounds (1,134 grams) Granny Smith apples"
+        },
+        {
+          "qty": "1134",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 1/2 pounds (1,134 grams) Braeburn apples"
+        },
+        {
+          "qty": "454",
+          "unit": "g",
+          "ingredient": "cranberries",
+          "verbatim": "1 pound (454 grams) cranberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 204,
+        "minutes": 30,
+        "restMin": null,
+        "prebake": true
+      },
+      "flags": [
+        "NO SALT AT ALL, paired with the HIGHEST butter in the crisp corpus (100.2) — an unusual combination for ATK that was reported numerically but never flagged as odd",
+        "the only scorch mitigation in 16 crisp sources: 'If topping is browning too quickly, loosely cover with foil'"
+      ],
+      "notes": "Oats are stirred in AFTER the butter is cut in, then pinched into 'peanut-sized clumps' — one of only two sources where mixing order was captured.",
+      "quotes": [
+        "coarse crumbs",
+        "peanut-sized clumps",
+        "pea-sized pieces of butter"
+      ]
+    },
+    {
+      "id": "crisp-atk-kids",
+      "corpus": "crisp",
+      "source": "America's Test Kitchen",
+      "title": "Kids Apple Crisp",
+      "url": "https://www.americastestkitchen.com/recipes/15381-kids-apple-crisp",
+      "sourceId": "atk",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "dish": {
+        "label": "8-inch square",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "94",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "2/3 cup (3 1/3 ounces/94 grams) all-purpose flour"
+        },
+        {
+          "qty": "43",
+          "unit": "g",
+          "ingredient": "oats",
+          "verbatim": "1/2 cup (1 1/2 ounces/43 grams) old-fashioned rolled oats"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "brown sugar",
+          "verbatim": "1/4 cup packed (1 3/4 ounces/50 grams) light brown sugar"
+        },
+        {
+          "qty": "5",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "5 tablespoons unsalted butter, melted and cooled"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "907",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 pounds (907 grams) Golden Delicious apples"
+        }
+      ],
+      "bake": {
+        "ovenC": 191,
+        "minutes": 40,
+        "restMin": 30,
+        "prebake": false
+      },
+      "flags": [
+        "NO SALT in an ATK recipe — surprising; asked twice across two fetches and got the same answer, but verify before trusting",
+        "explicitly forbids quick oats while ATK's own Master recipe calls for them — the publisher contradicts itself"
+      ],
+      "quotes": [
+        "hearty but not too tough or chewy",
+        "pea-size clumps"
+      ]
+    },
+    {
+      "id": "crisp-once-upon-a-chef",
+      "corpus": "crisp",
+      "source": "Once Upon a Chef",
+      "title": "The Best Apple Crisp with Oat-Pecan Topping",
+      "url": "https://www.onceuponachef.com/recipes/apple-crisp.html",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 4.82,
+        "count": 90
+      },
+      "dish": {
+        "label": "shallow 2-quart",
+        "areaCm2": 452
+      },
+      "topping": [
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "flour",
+          "verbatim": "1/4 cup plus 2 tablespoons all-purpose flour"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "brown sugar",
+          "verbatim": "1/4 cup plus 2 tablespoons (packed) light brown sugar"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup (50 g) granulated sugar, from a divided 1/2 cup plus 2 tbsp"
+        },
+        {
+          "qty": "1/8",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "Pinch salt"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "6 tablespoons very cold unsalted butter, cut into 1/2-inch dice"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "nuts",
+          "verbatim": "1 cup chopped pecans"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "1/2 cup old-fashioned rolled oats"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1134",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 1/2 pounds tart baking apples (about 5 large)"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 45,
+        "restMin": 15,
+        "prebake": false
+      },
+      "flags": [
+        "POSSIBLY NOT INDEPENDENT of Martha Stewart — both carry the distinctive line '1/2 cup plus 2 tablespoons granulated sugar, divided', the same structure, cold cubed butter and old-fashioned oats. They split the divided sugar differently, which is exactly why they land at the two EXTREMES of the sugar range (141.4 and 42.6). If they share a lineage they are one data point, not two."
+      ],
+      "quotes": [
+        "crispy, buttery oat-pecan streusel",
+        "buttery crunch"
+      ]
+    },
+    {
+      "id": "crisp-ina-garten",
+      "corpus": "crisp",
+      "source": "Ina Garten",
+      "title": "Old-Fashioned Apple Crisp",
+      "url": "https://barefootcontessa.com/recipes/old-fashioned-apple-crisp",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "9 x 14 x 2-inch oval",
+        "areaCm2": 638.5,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups all-purpose flour"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "3/4 cup granulated sugar"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "3/4 cup light brown sugar, packed"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "kosher salt",
+          "verbatim": "1/2 teaspoon kosher salt"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "1 cup oatmeal"
+        },
+        {
+          "qty": "8",
+          "unit": "oz",
+          "ingredient": "butter",
+          "verbatim": "1/2 pound cold unsalted butter, diced"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "5",
+          "unit": "lb",
+          "ingredient": "apples",
+          "verbatim": "5 pounds McIntosh or Macoun apples"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 60,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "OVAL dish — the only non-rectangular pan in the survey; treated as an ellipse (638.5 cm2). As a rectangle it is 813 cm2 and the load falls from 1.279 to 1.005",
+        "kosher salt converted at a table-salt factor; if Diamond Crystal her salt halves",
+        "SHE REUSES THIS TOPPING across at least three published recipes — 'Ina Garten' is one formula, not evidence of convergence"
+      ]
+    },
+    {
+      "id": "crisp-betty-crocker",
+      "corpus": "crisp",
+      "source": "Betty Crocker",
+      "title": "Apple Crisp with Oats",
+      "url": "https://www.bettycrocker.com/recipes/apple-crisp-with-oats/434c1c4e-613b-4b0b-9453-3f3ed5c479a8",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 4.6,
+        "count": 854
+      },
+      "dish": {
+        "label": "8-inch square (2-quart) glass",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup Gold Medal all-purpose flour"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "3/4 cup old-fashioned oats"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "1/2 cup packed brown sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "butter",
+          "verbatim": "1/2 cup cold butter, cut in pieces"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "6",
+          "unit": "cup",
+          "ingredient": "apples",
+          "verbatim": "6 cups chopped peeled tart apples (6 medium)"
+        }
+      ],
+      "bake": {
+        "ovenC": 191,
+        "minutes": 32.5,
+        "restMin": 20,
+        "prebake": false
+      },
+      "flags": [
+        "LARGEST review count of any crisp (854) — and simultaneously the LOWEST fruit:topping in the corpus (1.73), i.e. the most topping-heavy formula surveyed",
+        "rating confirmed by computing from the page's own embedded value: AverageRating 0.912412 on a 0-1 scale x5 = 4.562 -> displays 4.6"
+      ],
+      "notes": "The most publicly validated crisp formula in the survey sits at the OPPOSITE end from ATK's 5:1 filling-to-topping doctrine.",
+      "quotes": [
+        "cold butter is the key to a firm yet tender and perfectly chewy oat topping",
+        "flaky, crisp texture",
+        "ooey-gooey"
+      ]
+    },
+    {
+      "id": "crisp-inspired-taste",
+      "corpus": "crisp",
+      "source": "Inspired Taste",
+      "title": "Easy Apple Crisp",
+      "url": "https://www.inspiredtaste.net/18686/apple-crisp-with-oats-recipe/",
+      "sourceId": "inspiredtaste",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "rating": {
+        "stars": 5.0,
+        "count": 74
+      },
+      "dish": {
+        "label": "9-inch square (or 2-quart)",
+        "areaCm2": 523
+      },
+      "topping": [
+        {
+          "qty": "65",
+          "unit": "g",
+          "ingredient": "oats",
+          "verbatim": "3/4 cup (65g) old-fashioned rolled oats"
+        },
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup (100g) all-purpose flour"
+        },
+        {
+          "qty": "100",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/2 cup (100g) sugar"
+        },
+        {
+          "qty": "115",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "1/2 cup (115g) butter, melted"
+        },
+        {
+          "qty": "1/8",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/8 teaspoon fine sea salt"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1247",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "6 medium baking apples (2 1/2 to 3 pounds)",
+          "inferredNote": "midpoint of a stated range"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 75,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "LONGEST bake in the crisp corpus by a wide margin — 60 to 90 minutes at only 350F, a 50% window, unusually loose for a 5.0-rated recipe"
+      ],
+      "notes": "Argues for melted butter directly against Betty Crocker and Sally's, who argue for cold. The corpus does not agree with itself on this.",
+      "quotes": [
+        "a more tender topping with a bit of crunch",
+        "stayed really crispy"
+      ]
+    },
+    {
+      "id": "crisp-bon-appetit",
+      "corpus": "crisp",
+      "source": "Bon Appetit",
+      "title": "Apple-Raspberry Crisp",
+      "url": "https://www.foodlibrarian.com/2015/11/apple-raspberry-crisp-from-bon-appetit.html",
+      "tier": "T2",
+      "retrieval": "blog-mirror",
+      "butterState": "cold",
+      "dish": {
+        "label": "8 x 8-inch",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "1/2 cup (100 grams) light brown sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1/2 cup flour"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "1/2 cup old-fashioned oats"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/4 teaspoon salt"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "6 tablespoons (3/4 stick) chilled unsalted butter, diced"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1134",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 1/2 pounds Granny Smith apples"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "berries",
+          "verbatim": "1 cup frozen unsweetened raspberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 60,
+        "restMin": 20,
+        "prebake": false
+      },
+      "flags": [
+        "ENTIRELY SECONDARY — epicurious.com blocked; no figure confirmed against Bon Appetit or Epicurious themselves",
+        "the mirror states brown sugar as 100 g; the project factor gives 106.5, a 6.5 g discrepancy left unreconciled",
+        "the blogger notes her dish 'was a bit bigger' than 8x8, so her executed load differs from the published one"
+      ]
+    },
+    {
+      "id": "crisp-smitten-apricot",
+      "corpus": "crisp",
+      "source": "Smitten Kitchen",
+      "title": "Breakfast Apricot Crisp",
+      "url": "https://smittenkitchen.com/2008/06/breakfast-apricot-crisp/",
+      "sourceId": "smittenkitchen",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "dish": {
+        "label": "holds 2-3 cups",
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "4",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "1/2 stick (4 tablespoons, 2 ounces) butter, melted"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "6 tablespoons turbinado or regular sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "1/2 cup oats"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1/2 cup all-purpose flour"
+        },
+        {
+          "qty": "1/8",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "Pinch of salt"
+        },
+        {
+          "qty": "2",
+          "unit": "tbsp",
+          "ingredient": "sliced almonds",
+          "verbatim": "2 tablespoons sliced almonds"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1",
+          "unit": "lb",
+          "ingredient": "peaches",
+          "verbatim": "1 pound apricots"
+        }
+      ],
+      "bake": {
+        "ovenC": 204,
+        "minutes": 35,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "the ONLY source in the crisp corpus giving no pan dimensions at all — capacity only, so excluded from the load median",
+        "the only source where sugar is 100% white (turbinado)",
+        "framed as a BREAKFAST dish, not a dessert, which may explain the low sugar and the smallest topping in the set"
+      ],
+      "notes": "A distinct mixing order found nowhere else: butter, then sugar, then oats, then flour.",
+      "quotes": [
+        "large clumps form",
+        "excellent crunch"
+      ]
+    },
+    {
+      "id": "crisp-martha-stewart",
+      "corpus": "crisp",
+      "source": "Martha Stewart",
+      "title": "Apple Crisp",
+      "url": "https://zest4foodblog.wordpress.com/2019/10/08/martha-stewarts-apple-crisp/",
+      "tier": "T2",
+      "retrieval": "two-independent-reprints",
+      "butterState": "cold",
+      "dish": {
+        "label": "shallow 8x8 inch (one reprint says 2 quart)",
+        "areaCm2": 400,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup flour"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "1/4 cup packed light-brown sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 teaspoon salt"
+        },
+        {
+          "qty": "2",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "2 tablespoons granulated sugar"
+        },
+        {
+          "qty": "8",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "8 tablespoons (1 stick) unsalted butter, cold, cut into small cubes"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "oats",
+          "verbatim": "1 cup old-fashioned rolled oats"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "3",
+          "unit": "lb",
+          "ingredient": "apples",
+          "verbatim": "3 pounds apples, peeled, cored, and cut into 1/2-inch chunks"
+        }
+      ],
+      "bake": {
+        "ovenC": 191,
+        "minutes": 60,
+        "restMin": 10,
+        "prebake": false
+      },
+      "flags": [
+        "marthastewart.com blocked — entirely reprint-sourced, and the two reprints DISAGREE on pan and bake time",
+        "the method text is a paraphrase of a paraphrase",
+        "see the Once Upon a Chef lineage flag: these two may be one recipe, not two"
+      ]
+    },
+    {
+      "id": "crisp-atk-905-oatfree",
+      "corpus": "crisp",
+      "source": "America's Test Kitchen",
+      "title": "Fruit Crisp (905)",
+      "url": "https://www.americastestkitchen.com/recipes/905-fruit-crisp",
+      "sourceId": "atk",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "8-inch square (2 quart)",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "flour",
+          "verbatim": "6 tablespoons flour"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "1/4 cup light brown sugar"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup granulated sugar"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/4 teaspoon salt"
+        },
+        {
+          "qty": "5",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "5 tablespoons chilled butter"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "nuts",
+          "verbatim": "3/4 cup chopped nuts"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1247",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 1/2-3 pounds (1134-1361 grams) apples, nectarines, peaches, pears or plums"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 45,
+        "restMin": null,
+        "prebake": false
+      },
+      "excluded": true,
+      "exclusionReason": "NO OATS — excluded from the oat-bearing medians, but it is ATK's own crisp and it states outright that the ideal crisp topping is nuts and flour. One of five canonical oat-free 'crisps'.",
+      "flags": [
+        "reverses ATK's own stage direction: bakes at 350F for 40 min then INCREASES to 400F for 5"
+      ],
+      "quotes": [
+        "the ideal topping mixture to be chopped nuts and flour",
+        "Cutting the butter into the flour is crucial in creating a crisp topping"
+      ]
+    },
+    {
+      "id": "crisp-chez-panisse-pear",
+      "corpus": "crisp",
+      "source": "Chez Panisse / Alice Waters",
+      "title": "Warren Pear and Huckleberry Crisp",
+      "url": "https://www.froghollow.com/blogs/recipes/6791238-chez-panisses-warren-pear-and-huckleberry-crisp",
+      "tier": "T2",
+      "retrieval": "licensee-reproduction",
+      "butterState": "cold",
+      "dish": {
+        "label": "10 x 8 in gratin dish",
+        "areaCm2": 516,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1 1/3",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/3 c All-purpose flour"
+        },
+        {
+          "qty": "2",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "2T plus 1 1/2 tsp granulated sugar"
+        },
+        {
+          "qty": "5/6",
+          "unit": "cup",
+          "ingredient": "ground almonds",
+          "verbatim": "1/2 + 1/3 cup ground untoasted almonds or pecans"
+        },
+        {
+          "qty": "3.05",
+          "unit": "oz",
+          "ingredient": "butter",
+          "verbatim": "2.8 oz unsalted butter + 1/4 oz salted butter"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "7",
+          "unit": "cup",
+          "ingredient": "peaches",
+          "verbatim": "7 cups of Warren pears, 1/2 in cubes"
+        },
+        {
+          "qty": "1 3/4",
+          "unit": "cup",
+          "ingredient": "berries",
+          "verbatim": "1 3/4 c huckleberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 204,
+        "minutes": null,
+        "restMin": null,
+        "prebake": false
+      },
+      "excluded": true,
+      "exclusionReason": "NO OATS. Sugar at 17.5 per 100 flour is less than half the lowest oat-bearing crisp (Dorie, 36.4) — a strikingly lean, nut-driven topping from the restaurant most associated with the American fruit-dessert revival."
+    },
+    {
+      "id": "cobbler-ouac-peach",
+      "corpus": "cobbler-a",
+      "source": "Once Upon a Chef",
+      "title": "Best Peach Cobbler",
+      "url": "https://www.onceuponachef.com/recipes/peach-cobbler.html",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 4.91,
+        "count": 101,
+        "comments": 240
+      },
+      "dish": {
+        "label": "9-in square / 2.5 qt",
+        "areaCm2": 529,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 cup all-purpose flour, spooned and leveled-off"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "6 of 7 tablespoons sugar, divided (1 tbsp sprinkled)"
+        },
+        {
+          "qty": "1 1/4",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 1/4 teaspoons baking powder"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "baking soda",
+          "verbatim": "1/4 teaspoon baking soda"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 teaspoon salt"
+        },
+        {
+          "qty": "5",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "5 tablespoons cold unsalted butter, cut into small chunks"
+        },
+        {
+          "qty": "2/3",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "2/3 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "3",
+          "unit": "lb",
+          "ingredient": "peaches",
+          "verbatim": "3 lb yellow peaches (7 medium), peeled and sliced"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 42.5,
+        "restMin": 60,
+        "prebake": false
+      },
+      "flags": [
+        "HIGHEST-RATED cobbler in the survey (4.91 from 101 ratings)",
+        "at 128 liquid per 100 flour this is a DROP BATTER, not a dough — the headnote calls it a biscuit topping while the method calls it 'the batter'",
+        "only 1 of 240 comments ships in the HTML, behind a Load More — that thread is effectively unreadable"
+      ],
+      "quotes": [
+        "rich, tender, and flavorful with a hint of tang",
+        "leaving space between the dollops lets peach juices bubble up around the topping for that classic 'cobbled' look"
+      ]
+    },
+    {
+      "id": "cobbler-ouac-blueberry",
+      "corpus": "cobbler-a",
+      "source": "Once Upon a Chef",
+      "title": "Easy Blueberry Cobbler",
+      "url": "https://www.onceuponachef.com/recipes/blueberry-cobbler.html",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 4.84,
+        "count": 54,
+        "comments": 102
+      },
+      "dish": {
+        "label": "8-in square / 2 qt",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups all-purpose flour"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "6 of 7 tablespoons sugar (1 sprinkled on top)"
+        },
+        {
+          "qty": "1 3/4",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 3/4 teaspoons baking powder"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "baking soda",
+          "verbatim": "1/4 teaspoon baking soda"
+        },
+        {
+          "qty": "3/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "3/4 teaspoon salt"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "butter",
+          "verbatim": "1/2 cup (1 stick) cold unsalted butter, cut into small chunks"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "1 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "4",
+          "unit": "cup",
+          "ingredient": "blueberries",
+          "verbatim": "4 cups fresh blueberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 40,
+        "restMin": 17.5,
+        "prebake": false
+      },
+      "flags": [
+        "numerically identical to the same author's apple cobbler — one formula, not two"
+      ],
+      "quotes": [
+        "leaving gaps lets the bubbling filling caramelize a bit around the biscuits"
+      ]
+    },
+    {
+      "id": "cobbler-smitten-cornmeal",
+      "corpus": "cobbler-a",
+      "source": "Smitten Kitchen",
+      "title": "Cornmeal Drop Biscuit Peach Blueberry Cobbler",
+      "url": "https://smittenkitchen.com/2010/07/cornmeal-drop-biscuit-peach-blueberry-cobbler/",
+      "sourceId": "smittenkitchen",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": null,
+        "count": null,
+        "comments": 310
+      },
+      "dish": {
+        "label": "2-qt ovenproof",
+        "areaCm2": 452
+      },
+      "topping": [
+        {
+          "qty": "3 1/4",
+          "unit": "oz",
+          "ingredient": "flour",
+          "verbatim": "3/4 cup (3 1/4 ounces) all-purpose flour"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "cornmeal",
+          "verbatim": "1/4 cup fine stone-ground cornmeal"
+        },
+        {
+          "qty": "3",
+          "unit": "tbsp",
+          "ingredient": "brown sugar",
+          "verbatim": "3 tablespoons dark brown sugar"
+        },
+        {
+          "qty": "1 1/2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 1/2 teaspoons baking powder"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/4 teaspoon salt"
+        },
+        {
+          "qty": "3",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "3 tablespoons cold unsalted butter, cut into pieces"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "1/2 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1.5",
+          "unit": "lb",
+          "ingredient": "peaches",
+          "verbatim": "1 1/2 pounds peaches, pitted and sliced"
+        },
+        {
+          "qty": "2",
+          "unit": "cup",
+          "ingredient": "blueberries",
+          "verbatim": "1 pint (about 2 cups) blueberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 218,
+        "minutes": 22.5,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "the author INVITES doubling the topping — 'there can never be enough biscuit topping, go ahead and double what is suggested below'. Its light load (0.747 g/cm2) is therefore an acknowledged choice, not a neutral data point.",
+        "all 310 comments ship in the HTML — the most readable thread in the survey"
+      ],
+      "notes": "Source of the strongest evidence that 'more topping' is preference rather than defect: 16 of 310 commenters doubled it, none called the published amount an error, and two reported the doubled version was worse.",
+      "quotes": [
+        "the undersides will be wet where they touch the fruit",
+        "wet, tacky dough comes together"
+      ]
+    },
+    {
+      "id": "cobbler-ka-individual-berry",
+      "corpus": "cobbler-a",
+      "source": "King Arthur Baking",
+      "title": "Individual Berry Cobblers",
+      "url": "https://www.kingarthurbaking.com/recipes/individual-berry-cobblers-recipe",
+      "sourceId": "kingarthur",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "four 2/3-cup ramekins",
+        "areaCm2": 201,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "180",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups (180g) King Arthur Unbleached All-Purpose Flour"
+        },
+        {
+          "qty": "67",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/3 cup (67g) granulated sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "baking soda",
+          "verbatim": "1/2 teaspoon baking soda"
+        },
+        {
+          "qty": "1 1/2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 1/2 teaspoons Bakewell Cream",
+          "imputedNote": "Bakewell Cream is an acid-phosphate leavener, the acid half of a powder. Recorded as baking powder for modelling; it is not one."
+        },
+        {
+          "qty": "3/8",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "3/8 teaspoon table salt"
+        },
+        {
+          "qty": "74",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "5 1/3 tablespoons (74g) butter, cold"
+        },
+        {
+          "qty": "74",
+          "unit": "g",
+          "ingredient": "milk",
+          "verbatim": "1/3 cup (74g) milk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "283",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "Raspberries: 2 cups (283g)"
+        },
+        {
+          "qty": "149",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "Strawberries: 1 cup (149g)"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 27.5,
+        "restMin": 15,
+        "prebake": false
+      },
+      "excluded": true,
+      "exclusionReason": "Ramekin area (201 cm2) is the single most unreliable geometric inference in the survey and produces the 2.018 g/cm2 outlier that topped the load range. Excluding it moves the cobbler load median only from 0.846 to 0.845 but shrinks the range from 0.626-2.018 to 0.626-1.574.",
+      "flags": [
+        "HIGHEST soda load in the corpus (1.33 per 100 flour) with NO dairy acid at all — balanced by Bakewell Cream, so the soda:buttermilk test is inapplicable rather than failed",
+        "the ONLY category-(a) source instructing mounds 'close together' — directly contradicting the steam-venting rationale every other source invokes, and nobody addresses the conflict"
+      ]
+    },
+    {
+      "id": "cobbler-butter-book",
+      "corpus": "cobbler-a",
+      "source": "The Butter Book",
+      "title": "Fruit Cobbler with Cornmeal Biscuit Topping",
+      "url": "https://www.thebutterbook.com/post/fruit-cobbler-with-cornmeal-biscuit-topping",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "2.5-qt",
+        "areaCm2": 565,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "60",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "Whole Wheat Pastry Flour 60 g"
+        },
+        {
+          "qty": "55",
+          "unit": "g",
+          "ingredient": "almond flour",
+          "verbatim": "Almond Flour 55 g"
+        },
+        {
+          "qty": "55",
+          "unit": "g",
+          "ingredient": "cornmeal",
+          "verbatim": "Corn Flour (cornmeal), finely ground 55 g"
+        },
+        {
+          "qty": "8",
+          "unit": "g",
+          "ingredient": "baking powder",
+          "verbatim": "Baking Powder 8 g"
+        },
+        {
+          "qty": "2",
+          "unit": "g",
+          "ingredient": "baking soda",
+          "verbatim": "Baking Soda 2 g"
+        },
+        {
+          "qty": "1.5",
+          "unit": "g",
+          "ingredient": "salt",
+          "verbatim": "Fine Sea Salt 1.5 g"
+        },
+        {
+          "qty": "85",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "Butter, cold 85 g"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "Organic Sugar 50 g"
+        },
+        {
+          "qty": "140",
+          "unit": "g",
+          "ingredient": "buttermilk",
+          "verbatim": "Buttermilk or Plain Yogurt 140 g"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1800",
+          "unit": "g",
+          "ingredient": "peaches",
+          "verbatim": "1800 g (4 pounds / 9 cups) stone fruit"
+        }
+      ],
+      "bake": {
+        "ovenC": 180,
+        "minutes": 52.5,
+        "restMin": 30,
+        "prebake": false
+      },
+      "flags": [
+        "EXCEEDS the soda ceiling at 0.01429 — one of only three sources in the survey to do so, and they fail every candidate ceiling between 0.0089 and 0.0117",
+        "ALMOND FLOUR is 32% of the flour basis and contributes no gluten, so its per-100-flour figures are not commensurable with the wheat recipes",
+        "offers 'buttermilk OR plain yogurt' interchangeably at 140 g — these differ materially in titratable acidity, so the flagged ratio is only defined on the buttermilk reading"
+      ],
+      "notes": "The ONLY source in the entire survey that chills the shaped mounds before baking — 30 minutes to an hour — which is a direct mitigation for the spread this model used to penalise heavily.",
+      "quotes": [
+        "juices bubbling between the nicely browned biscuit cobblestones"
+      ]
+    },
+    {
+      "id": "cobbler-tori-avey",
+      "corpus": "cobbler-a",
+      "source": "Tori Avey",
+      "title": "Drop Biscuit Cobbler",
+      "url": "https://toriavey.com/drop-biscuit-cobbler/",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 4.72,
+        "count": 7,
+        "comments": 24
+      },
+      "dish": {
+        "label": "9x9",
+        "areaCm2": 529,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups all-purpose flour"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup sugar divided",
+          "inferredNote": "dough/sprinkle split not stated; recorded as total"
+        },
+        {
+          "qty": "2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "2 teaspoons baking powder"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "baking soda",
+          "verbatim": "1/2 teaspoon baking soda"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "kosher salt",
+          "verbatim": "1/2 teaspoon kosher salt"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "6 tablespoons unsalted butter, cubed and chilled"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "3/4 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "775",
+          "unit": "g",
+          "ingredient": "peaches",
+          "verbatim": "10 medium peaches (approximately 5 cups)"
+        },
+        {
+          "qty": "296",
+          "unit": "g",
+          "ingredient": "blueberries",
+          "verbatim": "1 pint fresh blueberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 37.5,
+        "restMin": 60,
+        "prebake": false
+      },
+      "flags": [
+        "EXCEEDS the soda ceiling at 0.01333 — one of three in the survey"
+      ],
+      "notes": "Mixes 'until the dry ingredients are just moistened, about 8-10 strokes' — a stroke-count tenderness control found nowhere else."
+    },
+    {
+      "id": "cobbler-bon-appetit-blueberry",
+      "corpus": "cobbler-a",
+      "source": "Bon Appetit",
+      "title": "Blueberry-Drop Biscuit Cobbler",
+      "url": "https://www.justapinch.com/recipes/blueberry-drop-biscuit-cobbler.html",
+      "tier": "T2",
+      "retrieval": "two-independent-reprints",
+      "butterState": "cold",
+      "dish": {
+        "label": "8x8x2 glass",
+        "areaCm2": 400
+      },
+      "topping": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups all-purpose flour"
+        },
+        {
+          "qty": "3",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "3 tablespoons sugar"
+        },
+        {
+          "qty": "1 1/2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 1/2 teaspoons baking powder"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "kosher salt",
+          "verbatim": "1/2 teaspoon kosher salt"
+        },
+        {
+          "qty": "6",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "6 tablespoons (3/4 stick) chilled unsalted butter, cut into 1/2 inch pieces"
+        },
+        {
+          "qty": "9",
+          "unit": "tbsp",
+          "ingredient": "creme fraiche",
+          "verbatim": "1/2 cup plus 1 Tbsp creme fraiche or sour cream"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "2",
+          "unit": "lb",
+          "ingredient": "blueberries",
+          "verbatim": "6 cups fresh blueberries (about 2 lb.)"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 47.5,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "bonappetit.com blocked — reconstructed entirely from reprints plus one search-returned directions excerpt",
+        "the topping is TORN INTO 'quarter-size crumbles' and scattered, not dropped in mounds — closer to a crumble geometry despite the recipe title"
+      ]
+    },
+    {
+      "id": "cobbler-savory-nothings",
+      "corpus": "cobbler-a",
+      "source": "Savory Nothings",
+      "title": "Strawberry Cobbler",
+      "url": "https://www.savorynothings.com/strawberry-cobbler/",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 5.0,
+        "count": 5,
+        "comments": 3
+      },
+      "dish": {
+        "label": "2-qt casserole",
+        "areaCm2": 452
+      },
+      "topping": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 1/2 cups all-purpose flour (spooned and levelled)"
+        },
+        {
+          "qty": "1/4",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup sugar"
+        },
+        {
+          "qty": "2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "2 teaspoons baking powder"
+        },
+        {
+          "qty": "1/4",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/4 teaspoon salt"
+        },
+        {
+          "qty": "1/3",
+          "unit": "cup",
+          "ingredient": "butter",
+          "verbatim": "1/3 cup unsalted butter (cold from fridge)"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "1/2 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "2",
+          "unit": "lb",
+          "ingredient": "berries",
+          "verbatim": "2 pounds strawberries, cut into 1-inch chunks"
+        }
+      ],
+      "bake": {
+        "ovenC": 204,
+        "minutes": 50,
+        "restMin": 30,
+        "prebake": false
+      },
+      "flags": [
+        "THE ONLY TWO-TEMPERATURE SCHEDULE in the entire 30-source cobbler corpus, and it DESCENDS: 400F for 15 min, then 350F for 30-40. Everything else that looks multi-stage is a constant-temperature fruit pre-bake. This is the sole precedent for a descending finish."
+      ],
+      "quotes": [
+        "do not flatten the biscuit dough after dropping it, as this will destroy the air bubbles in the dough"
+      ]
+    },
+    {
+      "id": "cobbler-getty-stewart",
+      "corpus": "cobbler-a",
+      "source": "Getty Stewart",
+      "title": "Berry Cobbler with Sweet Biscuit Topping",
+      "url": "https://www.gettystewart.com/berry-cobbler-with-sweet-biscuit-topping/",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 5.0,
+        "count": 4,
+        "comments": 0
+      },
+      "dish": {
+        "label": "9x9, sides at least 2 in",
+        "areaCm2": 529,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 cup flour"
+        },
+        {
+          "qty": "1",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 tsp baking powder"
+        },
+        {
+          "qty": "2",
+          "unit": "tbsp",
+          "ingredient": "sugar",
+          "verbatim": "2 Tbsp sugar"
+        },
+        {
+          "qty": "4",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "4 Tbsp cold butter, diced"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "buttermilk",
+          "verbatim": "1/2 cup buttermilk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "6",
+          "unit": "cup",
+          "ingredient": "berries",
+          "verbatim": "6 cups mixed berries"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 47.5,
+        "restMin": 30,
+        "prebake": false
+      },
+      "flags": [
+        "LIGHTEST topping in the cobbler corpus (331 g)",
+        "no salt and no soda at all"
+      ],
+      "notes": "The only source that says to FLATTEN the mounds slightly — and for the opposite reason to everyone else's spacing advice: to prevent underbaking, not to vent steam. Also gives the clearest etymology in the corpus.",
+      "quotes": [
+        "Individual dollops of biscuit batter create the look of 'cobbles', you know, like a cobbled street - hence Cobbler!",
+        "Spread out slightly to avoid overly thick mounds that will underbake"
+      ]
+    },
+    {
+      "id": "cobbler-beyond-kimchee",
+      "corpus": "cobbler-a",
+      "source": "Beyond Kimchee",
+      "title": "Old-Fashioned Peach Cobbler",
+      "url": "https://www.beyondkimchee.com/old-fashioned-peach-cobbler/",
+      "sourceId": "beyondkimchee",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "rating": {
+        "stars": 5.0,
+        "count": 9,
+        "comments": 11
+      },
+      "dish": {
+        "label": "10-in cast iron / 2.5 qt",
+        "areaCm2": 507
+      },
+      "topping": [
+        {
+          "qty": "120",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "1 cup (120 g) all-purpose flour"
+        },
+        {
+          "qty": "65",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup + 2 tbsp (65 g) sugar"
+        },
+        {
+          "qty": "1",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 tsp baking powder"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 tsp salt"
+        },
+        {
+          "qty": "85",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "6 tbsp (85 g) cold butter, cut into small pieces"
+        },
+        {
+          "qty": "1",
+          "unit": "each",
+          "ingredient": "egg",
+          "verbatim": "1 egg"
+        },
+        {
+          "qty": "80",
+          "unit": "g",
+          "ingredient": "milk",
+          "verbatim": "1/3 cup (80 ml) milk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "790",
+          "unit": "g",
+          "ingredient": "peaches",
+          "verbatim": "1 1/2 - 2 lb (680-900 g) peaches, peeled and sliced"
+        }
+      ],
+      "bake": {
+        "ovenC": 204,
+        "minutes": 35,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "HIGHEST butter in the cobbler corpus (70.8 per 100 flour)",
+        "one of very few cobbler toppings containing egg"
+      ]
+    },
+    {
+      "id": "batter-atk-easy-blueberry",
+      "corpus": "cobbler-c",
+      "source": "America's Test Kitchen",
+      "title": "Easy Blueberry Cobbler",
+      "url": "https://www.americastestkitchen.com/recipes/9659-easy-blueberry-cobbler",
+      "sourceId": "atk",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "dish": {
+        "label": "13x9",
+        "areaCm2": 759
+      },
+      "topping": [
+        {
+          "qty": "170",
+          "unit": "g",
+          "ingredient": "self-raising flour",
+          "verbatim": "1 1/4 cups (6 ounces/170 grams) self-rising flour"
+        },
+        {
+          "qty": "50",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1/4 cup (1 3/4 ounce/50 grams) sugar"
+        },
+        {
+          "qty": "8",
+          "unit": "tbsp",
+          "ingredient": "butter",
+          "verbatim": "8 tablespoons unsalted butter, melted"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "milk",
+          "verbatim": "1/2 cup whole milk"
+        },
+        {
+          "qty": "397",
+          "unit": "g",
+          "ingredient": "milk",
+          "verbatim": "1 14-ounce can sweetened condensed milk",
+          "inferredNote": "counted as liquid; its ~218 g of sugar is NOT counted, so this record understates sugar"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "283",
+          "unit": "g",
+          "ingredient": "blueberries",
+          "verbatim": "10 ounces (283 grams/2 cups) blueberries"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 35,
+        "restMin": 10,
+        "prebake": false
+      },
+      "flags": [
+        "BATTER COBBLER — poured, fruit sprinkled on top. Excluded from the biscuit medians.",
+        "SUSPICIOUS FRUIT QUANTITY: 283 g of blueberries in a 13x9 gives fruit:topping of 0.33, the lowest in the whole survey. Verify before use.",
+        "sugar is understated here: the condensed milk carries roughly 218 g more"
+      ],
+      "notes": "Effectively a cake with fruit on it. The texture description reported in an earlier pass was the retrieval layer's PARAPHRASE, not a quotation, and is not repeated here."
+    },
+    {
+      "id": "batter-ka-fresh-fruit",
+      "corpus": "cobbler-c",
+      "source": "King Arthur Baking",
+      "title": "Fresh Fruit Cobbler",
+      "url": "https://www.kingarthurbaking.com/recipes/fresh-fruit-cobbler-recipe",
+      "sourceId": "kingarthur",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "softened",
+      "dish": {
+        "label": "9-in square / 2.5 qt",
+        "areaCm2": 529,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "120",
+          "unit": "g",
+          "ingredient": "flour",
+          "verbatim": "1 cup (120g) King Arthur Unbleached All-Purpose Flour"
+        },
+        {
+          "qty": "1",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 teaspoon baking powder"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 teaspoon table salt"
+        },
+        {
+          "qty": "2",
+          "unit": "each",
+          "ingredient": "egg",
+          "verbatim": "2 large eggs"
+        },
+        {
+          "qty": "198",
+          "unit": "g",
+          "ingredient": "sugar",
+          "verbatim": "1 cup (198g) granulated sugar"
+        },
+        {
+          "qty": "28",
+          "unit": "g",
+          "ingredient": "butter",
+          "verbatim": "2 tablespoons (28g) butter, softened"
+        },
+        {
+          "qty": "28",
+          "unit": "g",
+          "ingredient": "milk",
+          "verbatim": "2 tablespoons (28g) milk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "454",
+          "unit": "g",
+          "ingredient": "berries",
+          "verbatim": "About 4 cups (454g) fresh fruit, diced or sliced; or berries"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 30,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "BATTER poured into the pan with the FRUIT PLACED ON TOP — a self-inverting cake, not a cobbler in the drop-biscuit sense",
+        "sugar at 165 per 100 flour is 5x the biscuit-cobbler median of 30"
+      ],
+      "notes": "The batter is meant to 'rise up and over the fruit as it bakes' — partial dispersion achieved by buoyancy rather than by mixing. This is the closest thing in the corpus to a fruit-dispersion mechanism.",
+      "quotes": [
+        "tender biscuits, or soft dumplings",
+        "cake topping is a light golden brown"
+      ]
+    },
+    {
+      "id": "batter-magic-cobbler",
+      "corpus": "cobbler-c",
+      "source": "folk canon",
+      "title": "Magic Cobbler",
+      "url": "https://www.cooks.com/recipe/qy8qx5j7/magic-cobbler.html",
+      "tier": "T3",
+      "retrieval": "search-summary",
+      "butterState": "melted",
+      "dish": {
+        "label": null,
+        "areaCm2": null
+      },
+      "topping": [
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "self-raising flour",
+          "verbatim": "1 cup self-rising flour"
+        },
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1 cup sugar"
+        },
+        {
+          "qty": "3/4",
+          "unit": "cup",
+          "ingredient": "milk",
+          "verbatim": "3/4 cup milk"
+        },
+        {
+          "qty": "1",
+          "unit": "stick",
+          "ingredient": "butter",
+          "verbatim": "1 stick butter melted in the pan"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1 1/2",
+          "unit": "cup",
+          "ingredient": "berries",
+          "verbatim": "1 1/2 cups fruit, type unspecified"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 35,
+        "restMin": null,
+        "prebake": false
+      },
+      "excluded": true,
+      "exclusionReason": "Weakest source in the survey: folk canon, no named author, reconstructed from a search summary, no pan size. Recorded only to bound the batter-cobbler range.",
+      "flags": [
+        "THE INVERSION IS REAL BUT ITS EXPLANATION IS NOT SOURCED. Butter goes in the pan, batter poured over unstirred, fruit on top unstirred; the layers change places during the bake. Every online account of the physics traces to content farms agreeing with each other and citing nothing."
+      ],
+      "notes": "The inversion has a place-name-level trace: one etymology for 'sonker' is a dialect form of 'sinker', because the fruit sinks through the batter. That predates the internet by two centuries. The competing Scots etymology (sonker = grassy knoll) is at least as well supported — do not treat 'sinker' as settled."
+    },
+    {
+      "id": "sonker-rockford",
+      "corpus": "sonker",
+      "source": "Rockford General Store / Garden & Gun",
+      "title": "Sonker, rolled pastry",
+      "url": "https://gardenandgun.com/recipe/following-the-sonker-trail/",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "shortening",
+      "dish": {
+        "label": "10x12x2.5 in (per pan, of two)",
+        "areaCm2": 774
+      },
+      "topping": [
+        {
+          "qty": "4.25",
+          "unit": "cup",
+          "ingredient": "self-raising flour",
+          "verbatim": "8 1/2 cups self-rising flour, for two pans",
+          "inferredNote": "halved to one pan; SR flour at a generic 125 g/cup — KA's own is ~113, an 11% error bar"
+        },
+        {
+          "qty": "3/8",
+          "unit": "cup",
+          "ingredient": "shortening",
+          "verbatim": "3/4 cup shortening, for two pans"
+        },
+        {
+          "qty": "1 1/8",
+          "unit": "cup",
+          "ingredient": "milk",
+          "verbatim": "2 1/4 cups milk, for two pans"
+        }
+      ],
+      "fruit": [],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 40,
+        "restMin": null,
+        "prebake": false
+      },
+      "flags": [
+        "THE DRIEST TOPPING IN THE ENTIRE SURVEY at ~51 parts liquid per 100 flour — and it gets its rollability from VERY LOW FAT (14.5 vs a cobbler median of 45), not from low water. Combined liquid+fat is 65 against a cobbler median around 123.",
+        "This record is why the model's claim that rollable pastry lives at 22-35% hydration is wrong: the rolled-pastry sonker sits INSIDE the dough cluster.",
+        "fruit quantity NOT STATED — 'fruit filling of choice'"
+      ],
+      "quotes": [
+        "a close cousin to a cobbler, but juicier, more soupy"
+      ]
+    },
+    {
+      "id": "sonker-pastry-chef-online",
+      "corpus": "sonker",
+      "source": "Pastry Chef Online",
+      "title": "Sweet Potato Sonker with milk dip",
+      "url": "https://pastrychefonline.com/sweet-potato-sonker-recipe/",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "cold",
+      "dish": {
+        "label": "1.5-qt oval",
+        "areaCm2": 339,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "2",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "2 cups all-purpose flour"
+        },
+        {
+          "qty": "1/3",
+          "unit": "cup",
+          "ingredient": "brown sugar",
+          "verbatim": "1/3 cup brown sugar (packed)"
+        },
+        {
+          "qty": "1",
+          "unit": "tbsp",
+          "ingredient": "baking powder",
+          "verbatim": "1 tablespoon baking powder"
+        },
+        {
+          "qty": "1",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1 teaspoon fine sea salt"
+        },
+        {
+          "qty": "1",
+          "unit": "stick",
+          "ingredient": "butter",
+          "verbatim": "1 stick cold butter, cubed"
+        },
+        {
+          "qty": "170",
+          "unit": "g",
+          "ingredient": "half-and-half",
+          "verbatim": "6 oz cold half-and-half (3/4 cup)",
+          "inferredNote": "6 oz by weight = 170 g; 3/4 cup by volume is ~181 g — a 6% ambiguity the source leaves open"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "1000",
+          "unit": "g",
+          "ingredient": "apples",
+          "verbatim": "2 large sweet potatoes (~2 pounds, peeled)",
+          "inferredNote": "sweet potato recorded under a fruit key for extraction purposes"
+        }
+      ],
+      "bake": {
+        "ovenC": 190,
+        "minutes": 57.5,
+        "restMin": null,
+        "prebake": true
+      },
+      "flags": [
+        "THE MILK DIP IS A DELIBERATE LATE-STAGE RE-WETTING — about 1/2 cup poured over at the 40-minute mark, then 15-20 minutes more. It is the exact inverse of steam venting, and any sog-resistance term inherited from the cobbler axis penalises this source for doing the thing it is trying to do."
+      ],
+      "notes": "Rolled to 1/4 inch and VENTED for steam escape, with strips lining the dish sides. Calls its own dough a 'Sweet Biscuit Dough', not a pastry.",
+      "quotes": [
+        "a juicy cobbler by any other name",
+        "soft and yielding",
+        "Sonker features a biscuit crust rolled thin like pie dough, whereas cobblers typically use thicker drop-biscuit toppings"
+      ]
+    },
+    {
+      "id": "sonker-spiral-bound",
+      "corpus": "sonker",
+      "source": "Spiral Bound Foodie",
+      "title": "Vintage Appalachian Sonker, poured batter",
+      "url": "https://www.spiralboundfoodie.com/blogs/recipes/vintage-sonker-cobbler-recipe",
+      "tier": "T1",
+      "retrieval": "direct",
+      "butterState": "melted",
+      "dish": {
+        "label": "1.5-qt",
+        "areaCm2": 339,
+        "areaInferred": true
+      },
+      "topping": [
+        {
+          "qty": "1",
+          "unit": "cup",
+          "ingredient": "flour",
+          "verbatim": "1 c. flour"
+        },
+        {
+          "qty": "1 1/2",
+          "unit": "tsp",
+          "ingredient": "baking powder",
+          "verbatim": "1-1/2 t. baking powder"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "sugar",
+          "verbatim": "1/2 c. sugar"
+        },
+        {
+          "qty": "1/2",
+          "unit": "tsp",
+          "ingredient": "salt",
+          "verbatim": "1/2 t. salt"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "butter",
+          "verbatim": "1/2 c. butter, melted"
+        },
+        {
+          "qty": "1/2",
+          "unit": "cup",
+          "ingredient": "milk",
+          "verbatim": "1/2 c. milk"
+        }
+      ],
+      "fruit": [
+        {
+          "qty": "4",
+          "unit": "cup",
+          "ingredient": "berries",
+          "verbatim": "4 c. fruit, type unspecified"
+        }
+      ],
+      "bake": {
+        "ovenC": 177,
+        "minutes": 37.5,
+        "restMin": null,
+        "prebake": true
+      },
+      "flags": [
+        "BATTER poured over HOT pre-baked fruit — the fruit is cooked 30 minutes first"
+      ],
+      "notes": "The richest sonker texture language in the corpus, and it explicitly rejects the crisp/crumble/biscuit target rather than approximating it.",
+      "quotes": [
+        "Rather than a crunchy, crumbly top, or even a biscuity top, the batter is more like a pancake",
+        "it doesn't rise much, it's designed to stay flat",
+        "The fruit really steamed it like a dumpling, while the top baked to golden, buttery perfection"
+      ]
     }
   ]
 }

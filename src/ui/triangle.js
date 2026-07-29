@@ -1,5 +1,5 @@
 import { scoreAt } from '../model/recipe.js';
-import { SCORE_DOMAIN } from '../model/score.js';
+import { DEFAULT_FAMILY } from '../model/families.js';
 
 /**
  * Ternary quality surface.
@@ -51,22 +51,18 @@ export class TriangleChart {
    * @param {(coords) => void} onPick   fired on click/drag/keyboard
    * @param {(coords|null) => void} onHover
    */
-  constructor(canvas, onPick, onHover) {
+  constructor(canvas, onPick, onHover, family = DEFAULT_FAMILY) {
     this.canvas = canvas;
     this.onPick = onPick;
     this.onHover = onHover;
-    this.selected = { crumble: 1 / 3, crisp: 1 / 3, cobbler: 1 / 3 };
     this.berry = null;
     this.dish = null;
     this.surface = null; // offscreen heat field
     this.geom = null;
+    this.setFamily(family, false);
 
     canvas.tabIndex = 0;
     canvas.setAttribute('role', 'application');
-    canvas.setAttribute(
-      'aria-label',
-      'Ternary quality surface. Crumble at the lower left, crisp at the top, cobbler at the lower right. Arrow keys move the selected blend; a table of the same data is below the chart.',
-    );
 
     const pick = (ev) => {
       const c = this.fromEvent(ev);
@@ -88,11 +84,12 @@ export class TriangleChart {
     canvas.addEventListener('keydown', (ev) => {
       const step = ev.shiftKey ? 0.05 : 0.015;
       const s = { ...this.selected };
+      const [L, T, R] = this.keys;
       switch (ev.key) {
-        case 'ArrowUp': s.crisp += step; s.crumble -= step / 2; s.cobbler -= step / 2; break;
-        case 'ArrowDown': s.crisp -= step; s.crumble += step / 2; s.cobbler += step / 2; break;
-        case 'ArrowLeft': s.crumble += step; s.cobbler -= step; break;
-        case 'ArrowRight': s.cobbler += step; s.crumble -= step; break;
+        case 'ArrowUp': s[T] += step; s[L] -= step / 2; s[R] -= step / 2; break;
+        case 'ArrowDown': s[T] -= step; s[L] += step / 2; s[R] += step / 2; break;
+        case 'ArrowLeft': s[L] += step; s[R] -= step; break;
+        case 'ArrowRight': s[R] += step; s[L] -= step; break;
         default: return;
       }
       ev.preventDefault();
@@ -104,6 +101,30 @@ export class TriangleChart {
 
     this.themeQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this.themeQuery.addEventListener('change', () => { this.surface = null; this.render(); });
+  }
+
+  /**
+   * Point the chart at a family. The corner KEYS, the labels, the axis caption
+   * and the colour domain all come from it — nothing about the triangle is
+   * specific to crumble/crisp/cobbler any more.
+   */
+  setFamily(family, rerender = true) {
+    this.family = family;
+    this.keys = family.keys; // [left, top, right]
+    const even = {};
+    for (const k of this.keys) even[k] = 1 / 3;
+    this.selected = even;
+    this.surface = null;
+
+    const [L, T, R] = this.keys;
+    const name = (k) => family.vertices[k].label;
+    this.canvas.setAttribute(
+      'aria-label',
+      `Ternary quality surface for the ${family.label.toLowerCase()} family. ` +
+        `${name(L)} at the lower left, ${name(T)} at the top, ${name(R)} at the lower right. ` +
+        'Arrow keys move the selected blend; a table of the same data is below the chart.',
+    );
+    if (rerender) this.render();
   }
 
   isDark() {
@@ -122,13 +143,12 @@ export class TriangleChart {
   }
 
   select(coords) {
-    const total = Math.max(0, coords.crumble) + Math.max(0, coords.crisp) + Math.max(0, coords.cobbler);
+    let total = 0;
+    for (const k of this.keys) total += Math.max(0, coords[k] ?? 0);
     if (total <= 0) return;
-    this.selected = {
-      crumble: Math.max(0, coords.crumble) / total,
-      crisp: Math.max(0, coords.crisp) / total,
-      cobbler: Math.max(0, coords.cobbler) / total,
-    };
+    const out = {};
+    for (const k of this.keys) out[k] = Math.max(0, coords[k] ?? 0) / total;
+    this.selected = out;
     this.onPick(this.selected);
     this.render();
   }
@@ -142,29 +162,34 @@ export class TriangleChart {
     const height = side * SQRT3_2;
     const cx = w / 2;
     const top = padTop + (h - padTop - padBottom - height) / 2;
+    // L / T / R rather than dish names: the geometry is the same triangle
+    // whichever family is loaded into it.
     return {
       side,
-      crisp: [cx, top],
-      crumble: [cx - side / 2, top + height],
-      cobbler: [cx + side / 2, top + height],
+      T: [cx, top],
+      L: [cx - side / 2, top + height],
+      R: [cx + side / 2, top + height],
     };
   }
 
   toXY(coords, g) {
+    const [L, T, R] = this.keys;
+    const a = coords[L] ?? 0, b = coords[T] ?? 0, c = coords[R] ?? 0;
     return [
-      coords.crumble * g.crumble[0] + coords.crisp * g.crisp[0] + coords.cobbler * g.cobbler[0],
-      coords.crumble * g.crumble[1] + coords.crisp * g.crisp[1] + coords.cobbler * g.cobbler[1],
+      a * g.L[0] + b * g.T[0] + c * g.R[0],
+      a * g.L[1] + b * g.T[1] + c * g.R[1],
     ];
   }
 
   toBary(x, y, g) {
-    const [x1, y1] = g.crumble;
-    const [x2, y2] = g.crisp;
-    const [x3, y3] = g.cobbler;
+    const [x1, y1] = g.L;
+    const [x2, y2] = g.T;
+    const [x3, y3] = g.R;
     const d = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
     const a = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / d;
     const b = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / d;
-    return { crumble: a, crisp: b, cobbler: 1 - a - b };
+    const [KL, KT, KR] = this.keys;
+    return { [KL]: a, [KT]: b, [KR]: 1 - a - b };
   }
 
   fromEvent(ev) {
@@ -172,12 +197,10 @@ export class TriangleChart {
     const r = this.canvas.getBoundingClientRect();
     const c = this.toBary(ev.clientX - r.left, ev.clientY - r.top, this.geom);
     const tol = -0.02;
-    if (c.crumble < tol || c.crisp < tol || c.cobbler < tol) return null;
-    return {
-      crumble: Math.max(0, c.crumble),
-      crisp: Math.max(0, c.crisp),
-      cobbler: Math.max(0, c.cobbler),
-    };
+    if (this.keys.some((k) => c[k] < tol)) return null;
+    const out = {};
+    for (const k of this.keys) out[k] = Math.max(0, c[k]);
+    return out;
   }
 
   /**
@@ -195,19 +218,19 @@ export class TriangleChart {
     const img = ctx.createImageData(N, H);
     const data = img.data;
     const ramp = rampSampler(dark);
-    const [lo, hi] = SCORE_DOMAIN;
+    const [lo, hi] = this.family.scoreDomain;
 
-    const g = { crumble: [0, H], crisp: [N / 2, 0], cobbler: [N, H] };
+    const g = { L: [0, H], T: [N / 2, 0], R: [N, H] };
 
     for (let py = 0; py < H; py++) {
       for (let px = 0; px < N; px++) {
         const c = this.toBary(px + 0.5, py + 0.5, g);
         const i = (py * N + px) * 4;
-        if (c.crumble < 0 || c.crisp < 0 || c.cobbler < 0) {
+        if (this.keys.some((k) => c[k] < 0)) {
           data[i + 3] = 0;
           continue;
         }
-        const s = scoreAt(c, this.berry, this.dish, this.diet);
+        const s = scoreAt(c, this.berry, this.dish, this.diet, this.family);
         const [r, gg, b] = ramp((s - lo) / (hi - lo));
         data[i] = r;
         data[i + 1] = gg;
@@ -247,16 +270,16 @@ export class TriangleChart {
     // Heat field, clipped to the triangle so the upscaled edges stay crisp.
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(...g.crisp);
-    ctx.lineTo(...g.cobbler);
-    ctx.lineTo(...g.crumble);
+    ctx.moveTo(...g.T);
+    ctx.lineTo(...g.R);
+    ctx.lineTo(...g.L);
     ctx.closePath();
     ctx.clip();
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(
       this.surface,
-      g.crumble[0], g.crisp[1], g.side, g.side * SQRT3_2,
+      g.L[0], g.T[1], g.side, g.side * SQRT3_2,
     );
     ctx.restore();
 
@@ -266,14 +289,15 @@ export class TriangleChart {
     ctx.lineWidth = 1;
     for (let k = 1; k <= 4; k++) {
       const t = k / 5;
+      const [KL, KT, KR] = this.keys;
       const lines = [
-        [{ crumble: t, crisp: 1 - t, cobbler: 0 }, { crumble: t, crisp: 0, cobbler: 1 - t }],
-        [{ crisp: t, crumble: 1 - t, cobbler: 0 }, { crisp: t, crumble: 0, cobbler: 1 - t }],
-        [{ cobbler: t, crumble: 1 - t, crisp: 0 }, { cobbler: t, crumble: 0, crisp: 1 - t }],
+        [{ [KL]: t, [KT]: 1 - t, [KR]: 0 }, { [KL]: t, [KT]: 0, [KR]: 1 - t }],
+        [{ [KT]: t, [KL]: 1 - t, [KR]: 0 }, { [KT]: t, [KL]: 0, [KR]: 1 - t }],
+        [{ [KR]: t, [KL]: 1 - t, [KT]: 0 }, { [KR]: t, [KL]: 0, [KT]: 1 - t }],
       ];
       for (const [p, q] of lines) {
-        const A = this.toXY({ crumble: 0, crisp: 0, cobbler: 0, ...p }, g);
-        const B = this.toXY({ crumble: 0, crisp: 0, cobbler: 0, ...q }, g);
+        const A = this.toXY(p, g);
+        const B = this.toXY(q, g);
         ctx.beginPath();
         ctx.moveTo(A[0], A[1]);
         ctx.lineTo(B[0], B[1]);
@@ -287,9 +311,9 @@ export class TriangleChart {
     ctx.strokeStyle = dark ? 'rgba(255,255,255,0.35)' : 'rgba(11,11,11,0.28)';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(...g.crisp);
-    ctx.lineTo(...g.cobbler);
-    ctx.lineTo(...g.crumble);
+    ctx.moveTo(...g.T);
+    ctx.lineTo(...g.R);
+    ctx.lineTo(...g.L);
     ctx.closePath();
     ctx.stroke();
     ctx.restore();
@@ -299,16 +323,18 @@ export class TriangleChart {
     ctx.fillStyle = ink;
     ctx.font = '600 13px ' + style.getPropertyValue('--font').trim();
     ctx.textAlign = 'center';
-    ctx.fillText('CRISP', g.crisp[0], g.crisp[1] - 9);
+    const [KL, KT, KR] = this.keys;
+    const label = (k) => (this.family.vertices[k].short ?? this.family.vertices[k].label).toUpperCase();
+    ctx.fillText(label(KT), g.T[0], g.T[1] - 9);
     ctx.textAlign = 'left';
-    ctx.fillText('CRUMBLE', g.crumble[0] - 4, g.crumble[1] + 20);
+    ctx.fillText(label(KL), g.L[0] - 4, g.L[1] + 20);
     ctx.textAlign = 'right';
-    ctx.fillText('COBBLER', g.cobbler[0] + 4, g.cobbler[1] + 20);
+    ctx.fillText(label(KR), g.R[0] + 4, g.R[1] + 20);
 
     ctx.fillStyle = muted;
     ctx.font = '11px ' + style.getPropertyValue('--font').trim();
     ctx.textAlign = 'center';
-    ctx.fillText('hydration →', (g.crumble[0] + g.cobbler[0]) / 2, g.cobbler[1] + 21);
+    ctx.fillText(this.family.axisLabel, (g.L[0] + g.R[0]) / 2, g.R[1] + 21);
     ctx.restore();
 
     // Selected point: 2px surface ring so it reads against both ends of the ramp.
@@ -336,8 +362,9 @@ export class TriangleChart {
     let best = { v: -1, c: null };
     for (let i = 0; i <= steps; i++) {
       for (let j = 0; i + j <= steps; j++) {
-        const c = { crumble: i / steps, crisp: j / steps, cobbler: (steps - i - j) / steps };
-        const v = scoreAt(c, this.berry, this.dish, this.diet);
+        const [KL, KT, KR] = this.keys;
+        const c = { [KL]: i / steps, [KT]: j / steps, [KR]: (steps - i - j) / steps };
+        const v = scoreAt(c, this.berry, this.dish, this.diet, this.family);
         if (v > best.v) best = { v, c };
       }
     }

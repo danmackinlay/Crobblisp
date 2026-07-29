@@ -1,4 +1,4 @@
-import { clamp01 } from './blend.js';
+import { clamp01 } from './blend-util.js';
 
 /**
  * Morphology: how the topping is physically shaped, derived from hydration.

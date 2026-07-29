@@ -1,38 +1,44 @@
 import {
-  VERTICES,
   VERTEX_KEYS,
-  INGREDIENT_FIELDS,
   SODA_PER_G_BUTTERMILK,
   SODA_EMPIRICAL_CEILING,
   SODA_TO_POWDER_EQUIV,
 } from './vertices.js';
 import { applyDiet, DEFAULT_DIET } from './diet.js';
+import { DEFAULT_FAMILY } from './families.js';
 
 export { clamp01, clamp } from './blend-util.js';
-import { clamp01 } from './blend-util.js';
 
-/** Normalise a barycentric triple so the components are non-negative and sum to 1. */
-export function normaliseCoords(coords) {
-  const c = {
-    crumble: Math.max(0, coords.crumble ?? 0),
-    crisp: Math.max(0, coords.crisp ?? 0),
-    cobbler: Math.max(0, coords.cobbler ?? 0),
-  };
-  const total = c.crumble + c.crisp + c.cobbler;
-  if (total <= 0) return { crumble: 1 / 3, crisp: 1 / 3, cobbler: 1 / 3 };
-  return {
-    crumble: c.crumble / total,
-    crisp: c.crisp / total,
-    cobbler: c.cobbler / total,
-  };
+/**
+ * Normalise a barycentric triple so the components are non-negative and sum to 1.
+ *
+ * Takes the key set explicitly so the same function serves both families. It
+ * defaults to the rubbed keys, because most callers have one family in hand and
+ * threading the key list through every call site would be noise.
+ */
+export function normaliseCoords(coords, keys = VERTEX_KEYS) {
+  const c = {};
+  let total = 0;
+  for (const k of keys) {
+    const v = Math.max(0, coords[k] ?? 0);
+    c[k] = v;
+    total += v;
+  }
+  if (total <= 0) {
+    const even = {};
+    for (const k of keys) even[k] = 1 / keys.length;
+    return even;
+  }
+  for (const k of keys) c[k] /= total;
+  return c;
 }
 
 /** Affine blend of any per-vertex numeric field set. */
-function blendFields(coords, pick, fields) {
+function blendFields(coords, vertices, keys, pick, fields) {
   const out = {};
   for (const f of fields) {
     let v = 0;
-    for (const k of VERTEX_KEYS) v += coords[k] * pick(VERTICES[k])[f];
+    for (const k of keys) v += coords[k] * pick(vertices[k])[f];
     out[f] = v;
   }
   return out;
@@ -54,9 +60,10 @@ function blendFields(coords, pick, fields) {
  *
  * On the dairy path the blend sits inside the browning band. On the VEGAN path
  * soured soy milk carries only ~55% of the acid, the allowance is exceeded, and
- * the conversion fires.
+ * the conversion fires. On the POURED family no vertex uses soda at all, so
+ * neither branch can fire — correctly, rather than by being skipped.
  */
-function applyConstraints(ing, acidCapacity, liquidName) {
+function applyConstraints(ing, acidCapacity, liquidName, hydration) {
   const notes = [];
   const out = { ...ing };
 
@@ -80,8 +87,8 @@ function applyConstraints(ing, acidCapacity, liquidName) {
 
   // 2. Leavening needs water. Below roughly 8% hydration there is neither
   //    enough water to trigger the reaction nor enough structure to trap gas —
-  //    the leavening just leaves dry alkaline pockets.
-  const hydration = out.buttermilk;
+  //    the leavening just leaves dry alkaline pockets. Fat-borne water counts
+  //    here: it is real water, it just arrived inside the block.
   if (hydration < 8 && (out.bakingPowder > 0.05 || out.bakingSoda > 0.02)) {
     out.bakingPowder = 0;
     out.bakingSoda = 0;
@@ -92,36 +99,33 @@ function applyConstraints(ing, acidCapacity, liquidName) {
 }
 
 /**
- * Blend the three vertices at a barycentric position and apply the constraint
- * pass. Returns per-100-dry-structure quantities plus the two physical axes the
- * rest of the model reads.
+ * Blend the vertices of a family at a barycentric position and apply the
+ * constraint pass. Returns per-100-dry-structure quantities plus the physical
+ * axes the rest of the model reads.
  */
-export function blend(rawCoords, diet = DEFAULT_DIET) {
-  const coords = normaliseCoords(rawCoords);
+export function blend(rawCoords, diet = DEFAULT_DIET, family = DEFAULT_FAMILY) {
+  const coords = normaliseCoords(rawCoords, family.keys);
 
-  const blended = blendFields(coords, (v) => v.ingredients, INGREDIENT_FIELDS);
-  const physical = blendFields(coords, (v) => v.physical, [
-    'bakedThicknessMm',
-    'rawDensity',
-    'ovenExpansion',
-    'ovenC',
-    'minutes',
-    'restMinutes',
-  ]);
+  const blended = blendFields(coords, family.vertices, family.keys, (v) => v.ingredients, family.fields);
+  const physical = blendFields(coords, family.vertices, family.keys, (v) => v.physical, family.physicalFields);
 
   // Substitutions run before the constraint pass, because the vegan swap
   // changes the acid ceiling that pass enforces.
-  const swapped = applyDiet(blended, diet);
+  const swapped = applyDiet(blended, diet, family);
+
+  // HYDRATION counts every source of water — poured liquid, the water inside a
+  // vegan block, and (in the poured family) egg. The INGREDIENT field counts
+  // only what you pour in. Conflating the two once produced a soy-milk line on a
+  // bone-dry crisp.
+  const hydration = family.hydration(swapped.ingredients, swapped.fatBorneWater);
+
   const { ingredients, notes } = applyConstraints(
     swapped.ingredients,
     swapped.acidCapacity,
-    diet.vegan ? 'soured soy milk' : 'buttermilk',
+    diet.vegan ? 'soured soy milk' : family.liquidLabel,
+    hydration,
   );
 
-  // The two physical axes the triangle maps onto. Barycentric position is an
-  // affine bijection with this pair — which is what makes the interpolation
-  // principled rather than a smoothie of three recipes.
-  const hydration = ingredients.buttermilk; // liquid per 100 dry structure
   const oatFraction = ingredients.oats / 100;
 
   // Combined lift, in soda-equivalents, for the morphology and score models.
@@ -130,12 +134,14 @@ export function blend(rawCoords, diet = DEFAULT_DIET) {
 
   return {
     coords,
+    family,
     diet,
     ingredients,
     additions: swapped.additions,
     substitutions: swapped.subs,
     physical,
     hydration,
+    fatBorneWater: swapped.fatBorneWater,
     oatFraction,
     leaveningPower,
     constraintNotes: notes,

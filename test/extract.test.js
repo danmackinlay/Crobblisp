@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { parseQuantity, toGrams, conventionDelta, DEFAULT_FACTORS } from '../src/data/units.js';
 import { extract, extractAll, median, summarise } from '../src/data/extract.js';
 import { glassTransitionC, brittleness, BROWNING_THRESHOLD } from '../src/model/glass.js';
+import { GRAMS_PER_TSP } from '../src/model/vertices.js';
 
 const records = JSON.parse(readFileSync(new URL('../data/sources.json', import.meta.url), 'utf8')).records;
 
@@ -210,4 +211,45 @@ test('the browning threshold is dual, and a wet interface fails both halves', ()
   assert.equal(BROWNING_THRESHOLD.maxWaterActivity, 0.6);
   assert.ok(100 < BROWNING_THRESHOLD.minSurfaceC, 'pinned at 100 C: too cool');
   assert.ok(1.0 > BROWNING_THRESHOLD.maxWaterActivity, 'and saturated: too wet');
+});
+
+// --- Cross-layer constants ---------------------------------------------------
+
+test('the extraction layer and the model agree on teaspoon weights', () => {
+  // These constants live in two modules by design — units.js is the data layer,
+  // vertices.js is the model layer, and the data layer must not depend on the
+  // model. But this project has already been bitten by exactly this: a
+  // researcher used 12.5 g/tbsp for demerara in one pass and 15 in another and
+  // never reconciled them. Duplication is tolerable; silent divergence is not.
+  assert.equal(DEFAULT_FACTORS.salt.tsp, GRAMS_PER_TSP.salt);
+  assert.equal(DEFAULT_FACTORS['baking powder'].tsp, GRAMS_PER_TSP.bakingPowder);
+  assert.equal(DEFAULT_FACTORS['baking soda'].tsp, GRAMS_PER_TSP.bakingSoda);
+});
+
+test('every structural ingredient can be converted from volume', () => {
+  // The bug this guards: flour had a cup factor and no tbsp, so "1/4 cup plus 2
+  // tablespoons flour" silently collapsed the basis to oats alone and inflated
+  // every ratio threefold.
+  for (const key of ['flour', 'oats', 'cornmeal', 'self-raising flour']) {
+    for (const unit of ['cup', 'tbsp']) {
+      const g = toGrams({ quantity: '1', unit, ingredient: key });
+      assert.ok(g.grams > 0, `${key} has no ${unit} factor`);
+    }
+  }
+});
+
+test('a broken basis nulls the ratios instead of computing them', () => {
+  const broken = extract({
+    id: 'synthetic', corpus: 'crisp', source: 'x', title: 'x', tier: 'T1', retrieval: 'direct',
+    topping: [
+      { qty: '1', unit: 'furlong', ingredient: 'flour', verbatim: '1 furlong flour' },
+      { qty: '90', unit: 'g', ingredient: 'oats', verbatim: '90 g oats' },
+      { qty: '100', unit: 'g', ingredient: 'butter', verbatim: '100 g butter' },
+    ],
+    fruit: [],
+  });
+  assert.equal(broken.basisBroken, true);
+  assert.equal(broken.fatPct, null, 'must not report fat against a partial basis');
+  assert.equal(broken.basisG, null);
+  assert.equal(broken.fatG, 100, 'absolute grams are still reported — only ratios are void');
 });

@@ -429,3 +429,12 @@ table.data th {
 table.data td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--gridline); color: var(--text-secondary); }
 table.data td:first-child { color: var(--text-primary); }
 table.data th.n, table.data td.n { text-align: right; }
+
+/* Family blurb — one line under the chart heading saying what this triangle is. */
+.family-blurb {
+  margin: -2px 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 62ch;
+}

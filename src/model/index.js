@@ -6,3 +6,7 @@ export { score, SCORE_DOMAIN } from './score.js';
 export { filling } from './filling.js';
 export { bakeSchedule, servingNotes } from './bake.js';
 export { buildRecipe, scoreAt } from './recipe.js';
+export { FAMILIES, FAMILY_KEYS, getFamily, familyOf, DEFAULT_FAMILY } from './families.js';
+export { POURED_VERTICES, POURED_KEYS, hydrationOf } from './poured/vertices.js';
+export { pourMorphology, fluidity, inversionCapacity } from './poured/morphology.js';
+export { pouredScore, POURED_SCORE_DOMAIN } from './poured/score.js';

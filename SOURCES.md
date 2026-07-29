@@ -91,6 +91,8 @@ wrong.
 | 15 | Per-fruit "release factor" | Not a documented concept, and not well posed: it conflates cell rupture (a fruit property) with evaporation (a dish property). Replaced with measured thickener demand | `fruit.js` |
 | 16 | Greasy / bland / burnt as defect terms | Zero attestation across ~50 recipes, despite butter ranging 33 to 136 per 100 flour. Removed rather than left as dormant inventions | `score.js` |
 | 17 | Raw topping mass rises toward the cobbler corner | Both raw and dry mass fall. Measured practice puts less topping on a cobbler (0.85 g/cm²) than a crumble (1.01), which outweighs the liquid | `recipe.js` |
+| 18a | An "awkward band" at 35-50% hydration where a topping is too slack to roll and too stiff to drop | **Falsified by scoring real recipes.** The surveyed cobbler dough cluster is 41-72%; the invented penalty sat on top of it. Sally's peach cobbler is at 48% with 4.8 stars from 146 ratings and scored 0.58. Spread is a technique variable four authors manage deliberately, not a defect. Slump amplitude 0.55 -> 0.18 | `morphology.js` |
+| 18b | Rollable pastry lives at 22-35% hydration | Also wrong. The rolled sonker crust cited as the existence proof runs ~51 parts liquid — inside the dough cluster. What makes it rollable is very low FAT (14.5 vs a cobbler median of 45). Rollability is liquid AND fat; the ladder is keyed on hydration alone | `morphology.js` |
 | 18 | The three doughs "differ along essentially two physical axes" | True of the *coordinates*, misleading about the recipes. Fat, sugar, leavening and salt all move too, along lines fixed by corner values. It is a 2D slice through ~6D space | `README.md` |
 
 ### Corrections that arrived from the user, not from research
@@ -1031,3 +1033,240 @@ both, review text not.
 comments** in the HTML behind a "Load More" — that thread is effectively
 unreadable. Sally's site paginates cleanly, so 539 apple crisp and 498 peach
 cobbler comments were reconstructed in full; Smitten ships all 310.
+
+---
+
+## 10. The corpus, expanded — 59 records
+
+`data/sources.json` grew from 18 records to 59, transcribed from the subagents'
+full raw dumps rather than their curated summaries. `data/sources.csv` is
+regenerated from it; nothing in the CSV is hand-entered.
+
+### 10.1 A bug the expansion exposed, and the structural fix
+
+Adding Once Upon a Chef's crisp — "1/4 cup plus 2 tablespoons all-purpose flour"
+— produced fat at **189 per 100 flour** and sugar at **289**. Neither is a real
+recipe.
+
+`DEFAULT_FACTORS.flour` had a `cup` entry and no `tbsp`. The line converted to
+null, the flour+oats basis collapsed to **oats alone**, and every normalised
+ratio inflated roughly threefold.
+
+The missing factor is the trivial half. The important half is what happened next:
+**the extractor correctly refused to invent a gram figure, and the normalisation
+divided by the wreckage anyway.** A null in one line became confident, wrong
+numbers in eleven columns. That is worse than a missing value, because it looks
+like data.
+
+Both are fixed. Volume factors now exist for every structural ingredient, and
+`extract()` carries a `basisBroken` flag: if any line belonging to the basis
+fails to convert, every ratio for that record returns **null** rather than being
+computed against a partial denominator.
+
+### 10.2 The full corpus reproduces the vertices independently
+
+The vertices were set from the subagents' reported medians. These figures come
+from summing verbatim ingredient lines through the extractor — a separate route.
+
+| | corpus median | vertex | n |
+|---|---|---|---|
+| crumble fat | **66.67** | 66.7 | 13 |
+| crisp oat fraction | **39.39** | 41 | 15 |
+| crisp fat | **70.45** | 70 | 15 |
+| cobbler fat | **45.44** | 45 | 14 |
+| cobbler sugar | **28.04** | 30 | 14 |
+| cobbler liquid | **74.51** | 80 | 14 |
+| cobbler load | **0.84 g/cm²** | 0.846 calibrated | 14 |
+
+Cobbler liquid is worth noting: at n=5 it read 51.4 and was flagged as diverging
+from the vertex. At n=14 it converges to 74.5. **The divergence was a small-sample
+artefact**, and the flag was doing its job.
+
+The two remaining gaps are the documented deliberate ones — crumble sugar 62.5
+against a vertex of 57, crisp sugar 85.88 against 75. Both sit below the median
+on purpose, and §9.2 records the limits of the evidence for that.
+
+### 10.3 Batter cobblers — promoted from special case to their own family
+
+**Superseded in part.** These records now anchor a second triangle rather than
+sitting outside the model; see §11. The separation argument below is what
+justified giving them their own family rather than folding them in.
+
+Recorded, normalised and summarised — and **no vertex of the RUBBED triangle is
+drawn from them**. They are a different food, and the corpus separates them
+cleanly:
+
+| | biscuit cobbler (a) | batter cobbler (c) |
+|---|---|---|
+| fruit : topping | 0.94 – 3.94, median **2.5** | 0.33 – 0.94, median **0.64** |
+| sugar per 100 flour | median **28** | median **97** |
+| liquid per 100 flour | median 74.5 | median 164 |
+| load g/cm² | 0.84 | 1.02 |
+
+**The two ranges meet at exactly 0.94 and do not overlap.** A batter cobbler puts
+down roughly the same topping mass per unit area, then puts a third to a seventh
+as much fruit under it. It is a cake with fruit in it, and 3.5× the sugar.
+
+Sonkers sit between the two — fruit:topping 1.2–1.6, liquid 68 — and carry the
+**heaviest load in the whole survey at 1.38 g/cm²**, consistent with their
+deep-dish framing.
+
+One batter-cobbler finding is worth carrying to any future dispersion work: King
+Arthur's Fresh Fruit Cobbler pours batter into the pan and places fruit **on
+top**, expecting the cake to "rise up and over the fruit as it bakes". That is
+partial dispersion achieved by buoyancy rather than by mixing — the closest thing
+in the corpus to a real fruit-dispersion mechanism.
+
+### 10.4 Corner anchoring, at n=59
+
+`node scripts/validate-corners.mjs`
+
+**8 recipes rated ≥4.5 stars with ≥20 ratings. All 8 score above 0.70.**
+
+| Corner | Anchors ≥4.5★ | Best model score |
+|---|---|---|
+| Crisp | 6 | 0.942 (Once Upon a Chef, 4.82★/90) |
+| Cobbler | 7 | **0.991** (Once Upon a Chef peach, 4.91★/101) |
+| Crumble | **0** | 0.902 (Kitchen Sanctuary, 4.38★/8) |
+
+**The crumble corner still has no ≥4.5-star anchor, and expanding the corpus made
+that worse rather than better.** The three crumble ratings now in hand are
+4.38★/8, 4.0★/415 and **3.0★/6,276**. Every rating above 4.5 in the entire
+survey belongs to an American crisp or cobbler.
+
+That may be a site effect — British recipe sites and US food blogs have different
+rating cultures and different audiences — or it may be signal. This data cannot
+separate them, and the model should not be tuned on it either way.
+
+
+## 11. The poured family — a second triangle
+
+The batter cobblers and sonkers of §10.3 now anchor their own simplex. Three
+independent facts in the corpus say they cannot be reached by extending the
+rubbed one, and each is checked by a test in `test/poured.test.js`.
+
+### 11.1 The gap is real
+
+Surveyed cobbler liquid is **bimodal**: a dough cluster at 41–72 parts per 100
+flour, a batter cluster at 94–176, nothing between. `vertices.js` already stopped
+the cobbler corner at 80 for this reason — "pushing past ~95 would turn the
+cobbler corner into a batter cobbler and change what the whole triangle
+interpolates between."
+
+The gap is mechanical, not statistical. A mixture at 80–90 is too slack to hold a
+dropped mound and too stiff to pour level: neither technique can assemble it. A
+continuous simplex spanning both clusters would emit recipes at hydrations where
+no assembly method exists.
+
+`test('THE GAP IS REAL')` asserts the rubbed triangle tops out at 80 and the
+poured one bottoms out at 85, with no overlap.
+
+### 11.2 Fat state is discrete
+
+15 of 15 sweet biscuit cobbler toppings containing butter use it **cold**. All
+four poured sources use it **melted or softened**. There is no continuum between
+rubbing cold fat into flour and pouring melted fat into a pan, so interpolating
+across it would invent a technique nobody uses.
+
+### 11.3 The vertices, and their sample sizes
+
+| | n | fat | sugar | liquid | egg | BP | load g/cm² | oven | min |
+|---|---|---|---|---|---|---|---|---|---|
+| Batter cobbler | **2** | 88 | 158 | 139 | 0 | 4.8 | 1.12 | 177 | 35 |
+| Sonker | **1** | 90 | 80 | 96 | 0 | 4.8 | 1.38 | 177 | 38 |
+| Pudding cake | **1** | 23 | 165 | 23 | 83 | 3.3 | 0.91 | 190 | 30 |
+
+Against 13–18 sources per rubbed vertex. Stated rather than smoothed.
+
+**A data correction the family required.** ATK's Easy Blueberry Cobbler reads 304
+parts liquid and 29 parts sugar in `sources.csv` — both wildly out of line — because
+the extractor counts a 14 oz can of sweetened condensed milk entirely as liquid
+and none of it as sugar. The record's own flag says so. Decomposing it at
+54% sugar / 27% water / 8% fat gives fat 85, sugar 155, liquid 134, which brings
+a tier-1 test kitchen and the uncredited folk "Magic Cobbler" (90 / 160 / 144)
+within 6% of each other on all three. That agreement is the strongest
+corroboration available anywhere in this corpus.
+
+### 11.4 Inversion: real effect, unsourced mechanism
+
+Three of four poured sources describe the layers changing places; King Arthur
+states the intent outright ("rise up and over the fruit as it bakes"). The
+corpus record for the Magic Cobbler carries the caveat in capitals: **"THE
+INVERSION IS REAL BUT ITS EXPLANATION IS NOT SOURCED... Every online account of
+the physics traces to content farms agreeing with each other and citing
+nothing."**
+
+The model treats it as buoyancy — fluidity × gas, both necessary — and labels it
+a model. It picks the assembly and weights one score term. Nothing else depends
+on it.
+
+The sonker is the interesting case: it has capacity 0.80 and uses **none** of it,
+because its fruit is pre-baked and the batter goes on top. Pre-baking is carried
+as a **recipe property** blended like oven temperature, not inferred from
+composition — there is one data point for it and inferring a rule from that would
+be false precision.
+
+### 11.5 No calibration is possible here
+
+**Not one of the six poured or sonker records carries a rating.** The rubbed
+family's central claim — no recipe at ≥4.5★ scores below 0.70, tested against
+eight of them, and it killed two invented penalty bands — has no analogue here.
+
+Consequences, all deliberate:
+
+- separate display domain (`[0.55, 0.90]` vs `[0.62, 0.98]`) so the two maps are
+  not read against each other;
+- an explicit warning in the UI on every poured score;
+- the vertices left at 0.84 / 0.68 / 0.70 rather than tuned upward. The sonker
+  sits lowest because it is the deepest layer in the survey, forgoes the
+  inversion, and its own source calls the underside steamed "like a dumpling".
+  Flattering it to 0.9 would be fitting five terms to three unrated points.
+
+### 11.6 A step at the pre-bake boundary, and an argument with a source
+
+The poured surface has a **~0.10 discontinuity** where the blend crosses 50%
+sonker and the assembly flips from self-inverting to poured-over. Pre-baking is a
+genuine either/or, so a step there is honest — but its original size, 0.15, was
+mostly a **scoring bug**.
+
+The inversion term was given zero weight where the fruit is pre-baked, so that a
+sonker would not be marked down for declining a technique it never attempts. That
+backfired. In a weighted geometric mean, deleting a term is not neutral: the
+term's value at an inverting point is ~0.89, well above the overall score, so
+removing it pulls the mean *down*. The sonker was being penalised by the very
+device meant to excuse it. The term now asks whether the **chosen** assembly
+worked, of both assemblies, and pouring batter onto hot bubbling fruit scores
+well on its own terms.
+
+**What remains is a real disagreement.** The model still says a sonker would
+score better as a batter cobbler. Two readings, and this corpus cannot separate
+them because there are no ratings:
+
+1. The model is right and the tradition is suboptimal.
+2. The model is importing a preference the sonker rejects. Its source is
+   approving: *"The fruit really steamed it like a dumpling, while the top baked
+   to golden, buttery perfection."* A steamed underside is the goal. The `set` and
+   `drowned` terms cannot distinguish that from a gummy one — the same conflation
+   §7 already found on the rubbed side, where the soggy-underside term was
+   weighted down to 0.5 explicitly because "the sonker goes further and wants the
+   underside steamed on purpose".
+
+Reading 2 is more likely. Fixing it means splitting "cooked" from "dry
+underneath", which needs evidence this corpus does not have. Recorded, not tuned
+away — a test bounds the step at 0.12 so it cannot silently grow back.
+
+### 11.7 Sweetness is still not scored
+
+At 80–165 parts sugar this family is 3–5× a biscuit cobbler, and a cloying
+penalty would be easy to add. Nothing supports one: §8.3 found 43.5% of "too
+sweet" review matches were *"not too sweet"* — praise — and no source in this
+family warns about sweetness. The rubbed model already deleted `greaseOut` and
+`blandness` for zero attestation; inventing a third would repeat the mistake.
+
+### 11.8 Still out of reach: the rolled sonker
+
+Sonker is bimodal. The poured half is now modelled. The rolled half is
+unreachable **in both families**: Rockford's runs 14.5 parts fat per 100 flour
+against a rubbed floor of 45, and §6 already established that its rollability
+comes from very low fat rather than low water. Neither triangle has a low-fat
+direction. Recorded as a gap.

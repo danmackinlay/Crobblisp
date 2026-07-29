@@ -24,7 +24,7 @@ import { clamp01 } from './blend-util.js';
  *    A descending finish is now offered as an option, attributed to its single
  *    precedent, rather than imposed.
  */
-export function bakeSchedule({ physical, hydration, waterLoadNorm, exposureNorm }) {
+export function bakeSchedule({ physical, hydration, waterLoadNorm, exposureNorm, prebakeOverride = null }) {
   // Celsius to the nearest 5; Fahrenheit to the nearest 25, because that is how
   // an American oven dial is actually marked.
   const celsius = Math.round(physical.ovenC / 5) * 5;
@@ -41,8 +41,14 @@ export function bakeSchedule({ physical, hydration, waterLoadNorm, exposureNorm 
   // batter "poured over the hot, bubbling fruit... begins to cook even before you
   // return it to the oven". Note it is NOT ATK's stated rationale; ATK gives the
   // instruction with no reason attached.
+  //
+  // In the POURED family this is not inferred at all. Pre-baking there is a
+  // property of the source recipe — the sonker gives its fruit a 30-minute head
+  // start, the batter cobbler and pudding cake do not — so it is blended like
+  // oven temperature and passed in. Inferring it from hydration would be
+  // deriving a rule from a single data point.
   const prebakeValue = clamp01((hydration - 30) / 30) * (1 - clamp01(exposureNorm));
-  const prebake = prebakeValue > 0.12;
+  const prebake = prebakeOverride === null ? prebakeValue > 0.12 : prebakeOverride;
 
   return {
     twoStage: false,
@@ -52,7 +58,7 @@ export function bakeSchedule({ physical, hydration, waterLoadNorm, exposureNorm 
     totalMinutes,
     restMinutes: Math.round(physical.restMinutes),
     prebake,
-    prebakeMinutes: prebake ? 10 : 0,
+    prebakeMinutes: prebake ? (prebakeOverride === null ? 10 : 30) : 0,
     rationale:
       'A single steady oven. Only one recipe in roughly thirty surveyed changes temperature mid-bake, so the two-stage schedule an earlier version prescribed has been dropped.',
     descendingOption:
