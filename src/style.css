@@ -438,3 +438,99 @@ table.data th.n, table.data td.n { text-align: right; }
   line-height: 1.45;
   max-width: 62ch;
 }
+
+/* ---------------------------------------------------------------------------
+   "Made it?" — rating a point, and the surveyed-recipe overlay.
+   --------------------------------------------------------------------------- */
+
+.anchors-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 4px;
+  font-size: 13px;
+}
+.anchors-toggle .muted { font-size: 12px; }
+
+.rate { margin-top: 14px; }
+.rate > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface-2, transparent);
+}
+.rate[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.rate-body {
+  border: 1px solid var(--rule);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  padding: 14px 12px;
+  display: grid;
+  gap: 14px;
+}
+
+.rate-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rate-row > label { font-size: 13px; color: var(--text-muted); }
+.rate-row > label.inline { color: var(--text-primary); display: flex; align-items: center; gap: 7px; }
+.rate-row input[type="text"], .rate-row textarea, .rate-row select, .rate-row input[type="date"] {
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface-1);
+  color: var(--text-primary);
+}
+.rate-row input[type="text"], .rate-row textarea { flex: 1 1 260px; }
+.rate-row textarea { resize: vertical; }
+
+/* Numerals rather than glyphs: five identical star shapes are hard to count,
+   and the number is what gets stored. */
+.stars { display: flex; gap: 4px; }
+.star {
+  width: 34px; height: 34px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface-1);
+  color: var(--text-muted);
+  font: inherit; font-weight: 600;
+  cursor: pointer;
+}
+.star:hover { border-color: var(--text-muted); }
+.star.on { background: var(--accent, #2a78d6); border-color: var(--accent, #2a78d6); color: #fff; }
+.stars-note { font-size: 12px; color: var(--text-muted); }
+
+.rate-obs { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+.rate-obs legend { font-size: 13px; padding: 0 6px; }
+.obs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 14px; }
+.obs { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.35; }
+.obs input { margin-top: 2px; }
+/* A hairline cue only. Ticking a "bad" box is not a worse answer than a "good"
+   one — an accurate record is the point — so this stays nearly silent. */
+.obs.good > span { border-left: 2px solid color-mix(in srgb, var(--text-primary) 22%, transparent); padding-left: 7px; }
+.obs.bad  > span { border-left: 2px solid color-mix(in srgb, var(--text-primary) 10%, transparent); padding-left: 7px; }
+.obs.contested > span { font-style: italic; }
+
+.rate-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rate-status { font-size: 13px; margin: 0; min-height: 1.2em; }
+.rate-status.good { color: var(--text-primary); }
+.rate-status.bad { color: var(--warn, #b4551d); }
+.prose.tiny { font-size: 12px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+
+.my-bakes h4 { margin: 4px 0 6px; font-size: 13px; }
+.my-bakes ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.my-bakes li { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+button.link {
+  background: none; border: 0; padding: 0;
+  font: inherit; color: var(--text-primary);
+  cursor: pointer; text-align: left;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+button.link.danger { color: var(--text-muted); font-size: 12px; margin-left: auto; }
+
+/* Citation for a plotted recipe — persists while its point stays selected. */
+.cite { display: inline-flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.cite a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.cite a:hover { color: var(--accent, #2a78d6); }

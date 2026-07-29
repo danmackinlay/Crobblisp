@@ -30,14 +30,27 @@
  *   pH              — FDA approximate-pH tables; per fruit, not a constant
  *   pieThickenerPct — quick tapioca as % of fruit weight, for a DOUBLE-CRUST
  *                     pie (King Arthur). Scaled down for open toppings.
+ *   charted         — FALSE where the thickener figure is placed by analogy with
+ *                     the charted berries rather than read off the chart. Apple
+ *                     and peach are both flagged, and the flag is not decoration:
+ *                     the whole argument for using thickener demand as the
+ *                     free-liquid measure is that it is MEASURED, so a figure
+ *                     that is not measured does not get to borrow that claim.
  *   sugarRate       — g sugar per g fruit, set by tartness
  *   lemonRate       — g lemon juice per g fruit; the low-acid berries taste flat
  *                     without it, the high-acid ones need none
+ *   prep            — the step the stone and pome fruits need and berries do not
+ *
+ * A NOTE ON WHAT WAS MISSING. This file offered berries only, while the corpus
+ * it is calibrated against is mostly APPLE crisps and PEACH cobblers — the two
+ * best-rated recipes in the whole survey are an apple crisp and a peach cobbler.
+ * Every plotted anchor was therefore a recipe you could not actually select.
  */
 export const BERRIES = {
   mixed: {
     key: 'mixed',
     label: 'Mixed berries',
+    charted: true,
     waterPct: 87,
     pH: [3.2, 4.0],
     pieThickenerPct: 5.5,
@@ -47,6 +60,7 @@ export const BERRIES = {
   },
   strawberry: {
     key: 'strawberry',
+    charted: true,
     label: 'Strawberry',
     waterPct: 90.95,
     pH: [3.0, 3.9],
@@ -57,6 +71,7 @@ export const BERRIES = {
   },
   raspberry: {
     key: 'raspberry',
+    charted: true,
     label: 'Raspberry',
     waterPct: 85.75,
     pH: [3.22, 3.95],
@@ -67,6 +82,7 @@ export const BERRIES = {
   },
   blackberry: {
     key: 'blackberry',
+    charted: true,
     label: 'Blackberry',
     waterPct: 88.15,
     pH: [3.85, 4.5],
@@ -75,8 +91,46 @@ export const BERRIES = {
     lemonRate: 0.004,
     note: 'The highest-pectin berry here (0.7-1.2%) and, contrary to reputation, the LEAST acidic — pH 3.85-4.5, mild enough that starch breakdown is a non-issue.',
   },
+  apple: {
+    key: 'apple',
+    label: 'Apple',
+    waterPct: 85.56,
+    pH: [3.3, 4.0],
+    // NOT from the King Arthur chart — see `charted`. Placed at the blueberry
+    // end because apples behave the same way for the same reasons: firm flesh
+    // that survives the bake largely intact, and the highest pectin of anything
+    // here (0.5-1.6% fresh weight). A great many British crumbles thicken their
+    // apples with nothing at all, which is the strongest available evidence that
+    // the demand is low.
+    pieThickenerPct: 3.0,
+    charted: false,
+    // Cooking apples are sharply tart — Bramleys run near pH 3.0 — and the
+    // surveyed apple recipes sweeten the fruit more than any berry recipe does.
+    sugarRate: 0.09,
+    lemonRate: 0.008,
+    prep: 'Peel, core and slice about 8 mm thick — thinner and they collapse, thicker and the centres stay raw.',
+    note: 'The fruit most of this corpus is actually about: 16 of the 18 surveyed crisps are apple. Holds its shape better than any berry and needs the least thickening, but releases its liquid late, so an apple crumble that looked dry at 30 minutes can still flood at 45.',
+  },
+
+  peach: {
+    key: 'peach',
+    label: 'Peach',
+    waterPct: 88.87,
+    pH: [3.3, 4.05],
+    // Also not charted. Placed between strawberry and raspberry: peaches are
+    // wetter than either and low in pectin, but the flesh holds together through
+    // the bake in a way raspberry drupelets do not.
+    pieThickenerPct: 5.5,
+    charted: false,
+    sugarRate: 0.07,
+    lemonRate: 0.008,
+    prep: 'Blanch 30 seconds and slip the skins, then stone and slice. Skins left on go leathery and roll off in sheets.',
+    note: 'The cobbler fruit — the two highest-rated cobblers in the survey are both peach, including the 4.91-star recipe that scores highest of anything the model has been tested against. Very wet and low in pectin, so it wants real thickening despite tasting less juicy than a berry.',
+  },
+
   blueberry: {
     key: 'blueberry',
+    charted: true,
     label: 'Blueberry',
     waterPct: 84.21,
     pH: [3.11, 3.33],
@@ -88,6 +142,14 @@ export const BERRIES = {
 };
 
 export const BERRY_KEYS = Object.keys(BERRIES);
+
+/**
+ * The honest name for what this now is. `BERRIES` stays as an alias because it
+ * is threaded through the model, the tests and the record schema, and renaming a
+ * key that appears in stored bake records would silently orphan them.
+ */
+export const FRUITS = BERRIES;
+export const FRUIT_KEYS = BERRY_KEYS;
 
 /**
  * Dishes. Area drives topping quantity; berry mass gives roughly a 25-30 mm bed.

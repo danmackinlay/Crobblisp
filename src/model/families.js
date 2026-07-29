@@ -4,6 +4,7 @@ import { score, SCORE_DOMAIN } from './score.js';
 import { POURED_VERTICES, POURED_KEYS, POURED_FIELDS, hydrationOf } from './poured/vertices.js';
 import { pourMorphology } from './poured/morphology.js';
 import { pouredScore, POURED_SCORE_DOMAIN } from './poured/score.js';
+import { referenceScales, setReferenceScales } from './project.js';
 
 /**
  * The two technique families.
@@ -123,6 +124,12 @@ const POURED = {
 };
 
 export const FAMILIES = { rubbed: RUBBED, poured: POURED };
+
+// Projection scales are taken over EVERY family's vertices, so that residuals
+// from different triangles are in the same units and can be compared to decide
+// which one a recipe belongs to. Installed here because this is the only module
+// that knows the full set. See project.js.
+setReferenceScales(referenceScales(Object.values(FAMILIES)));
 export const FAMILY_KEYS = ['rubbed', 'poured'];
 export const DEFAULT_FAMILY = RUBBED;
 

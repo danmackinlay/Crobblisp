@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { VERTICES, VERTEX_KEYS } from '../src/model/vertices.js';
-import { BERRIES, DISHES } from '../src/model/fruit.js';
+import { BERRIES, DISHES, fruitLoad } from '../src/model/fruit.js';
 import { blend } from '../src/model/blend.js';
 import { morphology } from '../src/model/morphology.js';
 import { weightedGeometricMean, SCORE_DOMAIN } from '../src/model/score.js';
@@ -590,4 +590,41 @@ test('fat-borne water still counts where water matters', () => {
   const vegan = buildRecipe(at(0, 1, 0), 'mixed', 'square20', VEGAN);
   assert.ok(vegan.axes.hydration > dairy.axes.hydration, 'vegan is the wetter mixture');
   assert.ok(vegan.score.overall < dairy.score.overall, 'and pays for it, slightly');
+});
+
+// --- Fruit -------------------------------------------------------------------
+
+test('apple and peach are selectable, and carry the fields the model reads', () => {
+  // The corpus is mostly apple crisps and peach cobblers — the two best-rated
+  // recipes in the whole survey are one of each — so a berries-only fruit list
+  // meant every plotted anchor was a recipe you could not actually select.
+  for (const key of ['apple', 'peach']) {
+    const f = BERRIES[key];
+    assert.ok(f, `${key} is missing`);
+    for (const field of ['waterPct', 'pH', 'pieThickenerPct', 'sugarRate', 'lemonRate', 'note']) {
+      assert.ok(f[field] != null, `${key}.${field}`);
+    }
+    assert.ok(f.prep, `${key} needs a prep step; berries do not`);
+    const r = buildRecipe(at(0, 1, 0), key, 'square20');
+    assert.ok(r.score.overall > 0.5 && r.filling.tapiocaG > 0);
+  }
+});
+
+test('an uncharted thickener figure is flagged as uncharted', () => {
+  // The argument for using thickener demand as the free-liquid measure is that
+  // it is MEASURED. Apple and peach are placed by analogy, so they must not
+  // silently borrow that claim.
+  for (const key of ['apple', 'peach']) {
+    assert.equal(BERRIES[key].charted, false, `${key} should be flagged as not charted`);
+  }
+  for (const key of ['strawberry', 'raspberry', 'blackberry', 'blueberry', 'mixed']) {
+    assert.equal(BERRIES[key].charted, true, `${key} is from the chart`);
+  }
+});
+
+test('apple demands the least thickening, matching the crumbles that use none', () => {
+  const load = (k) => fruitLoad(BERRIES[k], DISHES.square20).loadNorm;
+  assert.ok(load('apple') < load('mixed'), 'apple is the low-demand fruit');
+  assert.ok(load('apple') <= load('blueberry') + 1e-9, 'at the blueberry end, for the same reasons');
+  assert.ok(load('peach') > load('apple'), 'peach is wetter and lower in pectin');
 });

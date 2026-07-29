@@ -179,7 +179,8 @@ export function renderRecipe(el, r) {
             : ''
         }
         ${hasFlax ? `<li>Stir the ground flaxseed into ${g(t.groundFlaxG * 3)} of the milk and leave it 10 minutes to gel — this is the egg replacement.</li>` : ''}
-        <li>Toss the berries with the sugar, tapioca, lemon and salt. Rest 15 minutes so the starch hydrates${poured ? '.' : ', then tip into the dish and level.'}</li>
+        ${context.berry.prep ? `<li>${esc(context.berry.prep)}</li>` : ''}
+        <li>Toss the ${esc(context.berry.label.toLowerCase())} with the sugar, tapioca, lemon and salt. Rest 15 minutes so the starch hydrates${poured ? '.' : ', then tip into the dish and level.'}</li>
         ${poured ? `
         <li>Whisk the ${esc(r.diet.glutenFree ? 'flour blend' : 'flour')}, sugar, salt${hasXanthan ? ', xanthan' : ''}${hasLeaven ? ' and baking powder' : ''} together, then whisk in the ${esc(L.buttermilk.toLowerCase())}${hasEgg ? ' and eggs' : ''}${hasFlax ? ' and the flax gel' : ''} until just smooth. It should pour.</li>
         ${bake.prebake ? `<li>Bake the fruit alone for ${bake.prebakeMinutes} minutes, until it is hot and bubbling.</li>` : ''}
@@ -274,10 +275,15 @@ export function renderRecipe(el, r) {
         }
 
         <h4>Filling</h4>
-        <p class="prose">${esc(context.berry.note)} At pH ${esc(f.pH)}. Thickener comes from King
-        Arthur's per-fruit chart — ${g(f.pieDosageG)} for a double-crust pie — scaled to
-        ${pct(f.openFaceFactor)} because an open topping evaporates water throughout the bake.
-        Tapioca over cornstarch for setting clear and thickening harder per gram.</p>
+        <p class="prose">${esc(context.berry.note)} At pH ${esc(f.pH)}. ${
+          context.berry.charted === false
+            ? `Thickener here is <strong>placed by analogy</strong> with the charted berries rather than
+               read off King Arthur's chart — ${g(f.pieDosageG)} for a double-crust pie — so it does not
+               carry the "measured demand" claim the berry figures do.`
+            : `Thickener comes from King Arthur's per-fruit chart — ${g(f.pieDosageG)} for a
+               double-crust pie —`
+        } scaled to ${pct(f.openFaceFactor)} because an open topping evaporates water throughout the
+        bake. Tapioca over cornstarch for setting clear and thickening harder per gram.</p>
 
         ${
           r.substitutions.length

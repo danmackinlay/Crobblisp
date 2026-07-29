@@ -19,11 +19,10 @@
     </p>
     <p>
       <strong>Technique</strong> switches to a second triangle — batter cobbler,
-      sonker and pudding cake — where the fat is melted, the batter is poured, and
-      the layers change places in the oven. It is separate rather than joined
-      because the survey found no recipes between the two: cobbler liquid clusters
-      at 41–72 parts per 100 flour and again at 94–176, and a mixture in the gap is
-      too slack to drop and too stiff to pour.
+      sonker and pudding cake. Separate rather than joined because the survey found
+      nothing between them: cobbler liquid clusters at 41–72 parts per 100 flour and
+      again at 94–176, and a mixture in the gap is too slack to drop and too stiff
+      to pour.
     </p>
   </header>
 
@@ -33,7 +32,7 @@
       <select id="family"></select>
     </div>
     <div class="field">
-      <label for="berry">Berry</label>
+      <label for="berry">Fruit</label>
       <select id="berry"></select>
     </div>
     <div class="field">
@@ -66,12 +65,17 @@
           Click or drag to choose a blend; arrow keys nudge it. The surface is
           <em>not</em> corrected — the model scores each point and shows the terrain.
           <strong>The two techniques have separate scales and are not comparable:</strong>
-          the rubbed surface is calibrated against eight recipes rated 4.5★ or better,
-          none of which scores below 0.70; not one poured or sonker source in the
-          corpus carries a rating at all.
+          the rubbed one is calibrated against eight recipes rated 4.5★ or better;
+          no poured source carries a rating at all.
           <span id="surface-note"></span>
         </figcaption>
       </figure>
+
+      <label class="switch anchors-toggle">
+        <input type="checkbox" id="show-anchors" checked>
+        Plot the surveyed recipes
+        <span class="muted" id="anchor-count"></span>
+      </label>
 
       <div class="legend">
         <span id="lo">0.62</span>
@@ -99,7 +103,10 @@
       </details>
     </div>
 
-    <div class="panel" id="recipe"></div>
+    <div class="panel">
+      <div id="recipe"></div>
+      <div id="rate"></div>
+    </div>
 
   </div>
 </div>

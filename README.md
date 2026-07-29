@@ -298,6 +298,78 @@ General Store's runs 14.5 parts fat per 100 flour against a rubbed-family floor
 of 45. It is rollable because of very low fat, not low water, and no point in
 either triangle can produce it. Recorded as a gap rather than faked.
 
+## The surveyed recipes, plotted
+
+Every recipe in the corpus is projected onto the triangles and drawn as a marker
+(`node scripts/build-anchors.mjs` → `data/anchors.json`). Hover one for its
+source and rating; click to go to that point.
+
+The projection is a constrained least-squares fit, and it reports a **residual**
+alongside the position — because the triangle is a 2-D slice of a much larger
+space and real recipes are not on it. A recipe with a small residual really is
+the blend the model says it is; one with a large residual has been forced onto a
+plane it does not lie near, and its position would be a shadow rather than a
+location. Those are **not drawn at all**, and the count is shown next to the
+toggle.
+
+Two things fall out that were not visible before:
+
+- **The surveyed recipes avoid the middle of the triangle.** They cluster at the
+  crisp corner and along the crumble↔cobbler edge, and the interior — where the
+  model's surface dips — is nearly empty. That is independent corroboration of
+  the surface's shape from data that had no part in building it.
+- **Five recipes do not fit either triangle**, and each names its own reason:
+
+  | recipe | worst field | reading |
+  |---|---|---|
+  | Rockford rolled sonker | butter 0.50 *below* | the documented low-fat gap — rollable because of fat, not water |
+  | Dorie Greenspan cobbler | buttermilk 0.69 *above* | sits in the batter liquid cluster, not the dough one |
+  | Nigel Slater crumble | butter 0.50 *above* | richer than any vertex |
+  | Cook's Country crisp | butter 0.45 *above* | same |
+  | OUAC oat-pecan crisp | sugar 0.49 *above* | the sweet end of a 3.9× spread |
+
+## Made it? Rate it
+
+The model's three stated weaknesses are one weakness: **missing outcomes.** The
+crumble corner has no recipe rated ≥4.5★ anywhere in the corpus; no poured or
+sonker source carries a rating at all; and filling set is a two-sided target the
+model scores neither side of. None of that is fixable by surveying more recipes,
+because a published recipe reports what its author did, not how it turned out for
+somebody else.
+
+So there is a **"Made it? Rate this point"** panel. It records a rating, a set of
+structured observations, and optional free text, and pairs them with the model's
+prediction *at bake time* — including the per-component breakdown and a
+fingerprint of the vertices, so a rating can never be silently reattributed to a
+later model.
+
+Three destinations, and the first two need nothing from anyone:
+
+1. **This browser.** The bake becomes a marker on the surface, so a point you
+   liked can be found again.
+2. **A file.** Download the JSON.
+3. **A pull request.** Opens GitHub's own new-file editor with the record filled
+   in; you review and commit it yourself. Nothing is transmitted by the page, and
+   no name or email is collected anywhere.
+
+Records land in `data/bakes/`, one file per bake so contributions cannot
+conflict. Read them back with:
+
+```bash
+node scripts/bakes-report.mjs
+```
+
+which reports predicted-vs-actual and, per component, what the model predicted
+when somebody reported that component succeeding versus failing. **A component
+whose "bad" mean is not clearly below its "good" mean is not measuring what it
+claims to** — that is the check the whole loop exists for.
+
+The observations are deliberately structured rather than parsed out of prose. The
+review-mining pass on the Food.com corpus is the cautionary tale: 43.5% of "too
+sweet" matches were actually *"not* too sweet". One of the options —
+"underside steamed and soft (and I liked it)" — exists specifically to settle the
+unresolved argument with the sonker source described above.
+
 ## A fourth vertex
 
 The obvious candidate is **baked oatmeal**, which would sit at the missing

@@ -59,12 +59,21 @@ export class TriangleChart {
     this.dish = null;
     this.surface = null; // offscreen heat field
     this.geom = null;
+    this.anchors = [];      // surveyed recipes, projected
+    this.bakes = [];        // the viewer's own rated bakes
+    this.showAnchors = true;
     this.setFamily(family, false);
 
     canvas.tabIndex = 0;
     canvas.setAttribute('role', 'application');
 
     const pick = (ev) => {
+      // Clicking a marker snaps to it exactly, and REMEMBERS it. Without that
+      // the citation vanished the moment you clicked: selecting fires a re-render
+      // that redraws the readout from coordinates alone, so the one thing you
+      // clicked to find out — which recipe this is — was the thing that got lost.
+      const m = this.markerAt(ev);
+      if (m) { this.select(m.coords, m); return; }
       const c = this.fromEvent(ev);
       if (c) this.select(c);
     };
@@ -75,8 +84,11 @@ export class TriangleChart {
       pick(ev);
     });
     canvas.addEventListener('pointermove', (ev) => {
-      if (this.dragging) pick(ev);
-      else this.onHover(this.fromEvent(ev));
+      if (this.dragging) { pick(ev); return; }
+      const m = this.markerAt(ev);
+      this.hovered = m;
+      this.onHover(this.fromEvent(ev), m);
+      if (m) this.render();
     });
     canvas.addEventListener('pointerup', () => { this.dragging = false; });
     canvas.addEventListener('pointerleave', () => { this.dragging = false; this.onHover(null); });
@@ -101,6 +113,64 @@ export class TriangleChart {
 
     this.themeQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this.themeQuery.addEventListener('change', () => { this.surface = null; this.render(); });
+  }
+
+  /**
+   * Surveyed recipes, projected onto this family. Only plottable ones are drawn
+   * — see project.js on why an off-plane recipe must not be given a position.
+   */
+  setAnchors(anchors) {
+    this.anchors = anchors ?? [];
+    this.render();
+  }
+
+  /** The viewer's own rated bakes, so a point they liked can be found again. */
+  setBakes(bakes) {
+    this.bakes = bakes ?? [];
+    this.render();
+  }
+
+  setShowAnchors(on) {
+    this.showAnchors = !!on;
+    this.render();
+  }
+
+  /** Every marker currently drawn, in one list, so hit-testing sees all of them. */
+  markers() {
+    const out = [];
+    if (this.showAnchors) {
+      for (const a of this.anchors) {
+        if (a.family !== this.family.key || !a.plottable) continue;
+        out.push({ kind: 'anchor', ...a });
+      }
+    }
+    for (const b of this.bakes) {
+      if (b.point?.family !== this.family.key) continue;
+      out.push({
+        kind: 'bake',
+        id: b.id,
+        coords: b.point.coords,
+        rating: b.outcome?.rating ?? null,
+        title: b.naming || 'Your bake',
+        source: b.bakedOn ? `baked ${b.bakedOn}` : 'your bake',
+      });
+    }
+    return out;
+  }
+
+  markerAt(ev) {
+    if (!this.geom) return null;
+    const r = this.canvas.getBoundingClientRect();
+    const x = ev.clientX - r.left;
+    const y = ev.clientY - r.top;
+    let best = null;
+    let bestD = 11; // px
+    for (const m of this.markers()) {
+      const [mx, my] = this.toXY(m.coords, this.geom);
+      const d = Math.hypot(mx - x, my - y);
+      if (d < bestD) { bestD = d; best = m; }
+    }
+    return best;
   }
 
   /**
@@ -142,14 +212,17 @@ export class TriangleChart {
     this.render();
   }
 
-  select(coords) {
+  select(coords, marker = null) {
     let total = 0;
     for (const k of this.keys) total += Math.max(0, coords[k] ?? 0);
     if (total <= 0) return;
     const out = {};
     for (const k of this.keys) out[k] = Math.max(0, coords[k] ?? 0) / total;
     this.selected = out;
-    this.onPick(this.selected);
+    // Cleared when you pick anywhere else, so the citation never outlives the
+    // point it describes.
+    this.selectedMarker = marker;
+    this.onPick(this.selected, marker);
     this.render();
   }
 
@@ -337,6 +410,8 @@ export class TriangleChart {
     ctx.fillText(this.family.axisLabel, (g.L[0] + g.R[0]) / 2, g.R[1] + 21);
     ctx.restore();
 
+    this.drawMarkers(ctx, g, ink, surface);
+
     // Selected point: 2px surface ring so it reads against both ends of the ramp.
     const [sx, sy] = this.toXY(this.selected, g);
     ctx.save();
@@ -354,6 +429,62 @@ export class TriangleChart {
     ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
     ctx.fillStyle = ink;
     ctx.fill();
+    ctx.restore();
+  }
+
+  /**
+   * Recipe markers.
+   *
+   * Drawn in text ink with a surface-coloured halo, never in a ramp colour. The
+   * surface already uses the full blue ramp to encode quality, so a marker in
+   * any of those colours would read as a value on that scale. The halo is what
+   * keeps a dot legible at both ends of the ramp.
+   *
+   * Rating is encoded by FILL, not by hue: a well-rated recipe is solid, an
+   * unrated one is hollow. There is a lot of unrated data here — every poured
+   * source, for one — and a hollow ring says "no outcome recorded" without
+   * inventing a colour for a number that does not exist.
+   */
+  drawMarkers(ctx, g, ink, surface) {
+    const markers = this.markers();
+    if (!markers.length) return;
+
+    ctx.save();
+    for (const m of markers) {
+      const [x, y] = this.toXY(m.coords, g);
+      const hovered = (this.hovered && this.hovered.id === m.id)
+        || (this.selectedMarker && this.selectedMarker.id === m.id);
+      const rated = m.rating != null;
+      const strong = rated && m.rating >= 4.5;
+      const r = (m.kind === 'bake' ? 5 : 3.6) + (hovered ? 2 : 0);
+
+      ctx.beginPath();
+      if (m.kind === 'bake') {
+        // A diamond, so your own bakes are distinguishable from the survey at a
+        // glance and without relying on colour.
+        ctx.moveTo(x, y - r); ctx.lineTo(x + r, y);
+        ctx.lineTo(x, y + r); ctx.lineTo(x - r, y);
+        ctx.closePath();
+      } else {
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+      }
+
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = surface;
+      ctx.stroke();
+      ctx.lineWidth = m.kind === 'bake' ? 1.8 : 1.4;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+      if (strong || m.kind === 'bake') {
+        ctx.fillStyle = ink;
+        ctx.fill();
+      } else if (rated) {
+        ctx.globalAlpha = 0.45;
+        ctx.fillStyle = ink;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
     ctx.restore();
   }
 

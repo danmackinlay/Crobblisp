@@ -3,8 +3,10 @@ import { buildRecipe, scoreAt } from '../model/recipe.js';
 import { FAMILIES, FAMILY_KEYS, getFamily } from '../model/families.js';
 import { TriangleChart, rampCss } from './triangle.js';
 import { renderRecipe } from './recipe-view.js';
+import { renderRateForm, loadBakes } from './rate-view.js';
 
 const $ = (sel) => document.querySelector(sel);
+const esc = (s) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
 const state = {
   familyKey: 'rubbed',
@@ -12,9 +14,30 @@ const state = {
   berryKey: 'mixed',
   dishKey: 'square20',
   diet: { vegan: false, glutenFree: false },
+  // The plotted recipe the current point came from, if it came from one.
+  marker: null,
 };
 
 function family() { return getFamily(state.familyKey); }
+
+/**
+ * Surveyed recipes, projected onto the triangles by scripts/build-anchors.mjs.
+ *
+ * Fetched rather than imported so a missing or stale file degrades to "no
+ * markers" instead of a blank page — the surface is the point, the markers are
+ * an overlay on it.
+ */
+let ANCHORS = [];
+async function loadAnchors() {
+  try {
+    const res = await fetch('data/anchors.json');
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.anchors ?? [];
+  } catch {
+    return [];
+  }
+}
 
 function berry() { return BERRIES[state.berryKey]; }
 function dish() { return DISHES[state.dishKey]; }
@@ -32,15 +55,36 @@ function cornerRunOn() {
   return f.keys.map((k) => (f.vertices[k].short ?? f.vertices[k].label).toLowerCase()).join('/');
 }
 
-function renderReadout(coords, isHover) {
+/** One citation line for a plotted recipe or a saved bake. */
+function citation(m, { hover = false } = {}) {
+  const stars = m.rating != null
+    ? `<b>${m.rating}★</b>${m.ratingCount ? `/${m.ratingCount}` : ''}`
+    : '<span class="muted">unrated</span>';
+  const name = m.kind === 'bake'
+    ? `Your bake${m.title ? ` — ${esc(m.title)}` : ''}`
+    : `${esc(m.source)} — ${esc(m.title)}`;
+  const link = m.url ? `<a href="${esc(m.url)}" target="_blank" rel="noopener">${name}</a>` : name;
+  const off = m.kind === 'anchor' && m.onPlane === false
+    ? ` <span class="muted">${m.worst.field} ${m.worst.delta.toFixed(2)} ${m.worst.direction}</span>`
+    : '';
+  return `<span class="cite">${link} ${stars}${off}${
+    hover ? ' <span class="muted">— click to go there</span>' : ''}</span>`;
+}
+
+function renderReadout(coords, isHover, marker) {
   const el = $('#readout');
+  if (marker) {
+    el.innerHTML = citation(marker, { hover: true });
+    return;
+  }
   if (!coords) {
     const r = recipe(state.coords);
     el.innerHTML = `
       <span>Selected <b>${fmtCoords(state.coords)}</b> ${cornerRunOn()}</span>
       <span>Quality <b>${r.score.overall.toFixed(2)}</b></span>
       <span>Hydration <b>${r.axes.hydration.toFixed(0)}%</b></span>
-      <span>${r.morphology.label}</span>`;
+      <span>${r.morphology.label}</span>
+      ${state.marker ? citation(state.marker) : ''}`;
     return;
   }
   const s = scoreAt(coords, berry(), dish(), state.diet, state.familyKey);
@@ -64,8 +108,27 @@ function renderTable() {
   $('#tablebody').innerHTML = rows;
 }
 
-function refresh() {
-  renderRecipe($('#recipe'), recipe(state.coords));
+function refreshMarkers(chart) {
+  chart.setAnchors(ANCHORS);
+  chart.setBakes(loadBakes());
+  const n = ANCHORS.filter((a) => a.family === state.familyKey && a.plottable).length;
+  const off = ANCHORS.filter((a) => a.family === state.familyKey && !a.plottable).length;
+  $('#anchor-count').textContent = ANCHORS.length
+    ? `— ${n} fit this triangle${off ? `, ${off} sit too far off it to place` : ''}`
+    : '';
+}
+
+function refresh(chart) {
+  const r = recipe(state.coords);
+  renderRecipe($('#recipe'), r);
+  renderRateForm($('#rate'), r, family(), (_bakes, goTo) => {
+    // Re-render rather than patching the list in place: a saved bake changes the
+    // markers, the "your bakes" list and (if you jumped to it) the whole recipe,
+    // and selecting the point already routes back through here.
+    if (goTo && chart) { chart.select(goTo.coords); return; }
+    if (chart) refreshMarkers(chart);
+    refresh(chart);
+  });
   renderReadout(null);
   renderTable();
   const [lo, hi] = family().scoreDomain;
@@ -77,13 +140,11 @@ function refresh() {
 
   // The visible seam on the poured surface is a real branch, not an artefact.
   // Saying so is cheaper than having it read as a rendering bug.
+  if (chart) refreshMarkers(chart);
   $('#surface-note').innerHTML =
     state.familyKey === 'poured'
-      ? ' The visible seam across the poured surface is not a rendering fault: it is where the'
-        + ' assembly flips. Past half a sonker the fruit is baked first and the batter goes on top,'
-        + ' which forecloses the inversion. Pre-baking is an either/or, so the step is honest —'
-        + ' though the model rating the sonker\u2019s own technique below inverting is an'
-        + ' unresolved argument with the source, recorded rather than tuned away.'
+      ? ' The seam is real, not a rendering fault: past half a sonker the fruit is pre-baked and'
+        + ' the batter goes on top, which forecloses the inversion.'
       : '';
 }
 
@@ -102,7 +163,7 @@ function renderPresets(chart) {
     presetBox.appendChild(b);
   }
   const best = document.createElement('button');
-  best.textContent = 'Best for this berry';
+  best.textContent = 'Best for this fruit';
   best.className = 'primary';
   best.addEventListener('click', () => chart.select(chart.bestPoint()));
   presetBox.appendChild(best);
@@ -124,11 +185,12 @@ function init() {
 
   const chart = new TriangleChart(
     $('#triangle'),
-    (coords) => {
+    (coords, marker) => {
       state.coords = coords;
-      refresh();
+      state.marker = marker ?? null;
+      refresh(chart);
     },
-    (coords) => renderReadout(coords, true),
+    (coords, marker) => renderReadout(coords, true, marker),
     family(),
   );
 
@@ -159,13 +221,13 @@ function init() {
   berrySel.addEventListener('change', () => {
     state.berryKey = berrySel.value;
     chart.setContext(berry(), dish(), state.diet);
-    refresh();
+    refresh(chart);
   });
 
   dishSel.addEventListener('change', () => {
     state.dishKey = dishSel.value;
     chart.setContext(berry(), dish(), state.diet);
-    refresh();
+    refresh(chart);
   });
 
   // Diet switches. Each one changes the chemistry, so the whole surface is
@@ -175,9 +237,12 @@ function init() {
     box.addEventListener('change', () => {
       state.diet = { ...state.diet, [flag]: box.checked };
       chart.setContext(berry(), dish(), state.diet);
-      refresh();
+      refresh(chart);
     });
   }
+
+  const anchorBox = $('#show-anchors');
+  anchorBox.addEventListener('change', () => chart.setShowAnchors(anchorBox.checked));
 
   renderPresets(chart);
 
@@ -190,7 +255,13 @@ function init() {
 
   chart.setContext(berry(), dish(), state.diet);
   chart.select(state.coords);
-  refresh();
+  refresh(chart);
+
+  // Markers arrive when the file does; the surface never waits on them.
+  loadAnchors().then((a) => {
+    ANCHORS = a;
+    refreshMarkers(chart);
+  });
 }
 
 init();

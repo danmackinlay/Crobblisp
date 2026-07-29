@@ -1270,3 +1270,141 @@ unreachable **in both families**: Rockford's runs 14.5 parts fat per 100 flour
 against a rubbed floor of 45, and §6 already established that its rollability
 comes from very low fat rather than low water. Neither triangle has a low-fat
 direction. Recorded as a gap.
+
+
+## 12. Closing the loop: plotted recipes and contributed outcomes
+
+### 12.1 Projection, and why the residual is half the answer
+
+`scripts/build-anchors.mjs` projects every corpus recipe onto both triangles by
+constrained least squares and writes `data/anchors.json`. 47 placed, 12 skipped
+for want of a usable fat or sugar figure.
+
+The triangle is a 2-D slice of a larger space, so a projection discards
+something. The residual measures how much, in units of "fraction of the range the
+whole space spans on each field". Recipes past the threshold are kept in the file
+and **marked unplottable rather than dropped**, because "these recipes do not fit
+either triangle" is a finding about the model.
+
+**Two bugs were found by distrusting the first output.**
+
+*Per-family scaling.* Fields were first weighted by their spread within each
+family. But the two families' residuals were then **compared**, to decide which
+triangle a recipe belongs to — and per-family scaling put them in different
+units. One cobbler came out rubbed 0.361 vs poured 0.359, a coin flip between
+numbers that were never on the same scale. A second symptom: egg has zero spread
+across the rubbed vertices, so a cobbler containing egg hit an arbitrary floor and
+scored a residual of **8.51**. The direction was right; the magnitude was an
+artefact. Scales are now taken over every family's vertices.
+
+*RMS hides a single decisive field.* Averaging over six fields let the rolled
+sonker look on-plane: 14.5 parts fat against a rubbed floor of 45 — the single
+property that makes it rollable and the documented reason it is out of reach —
+was diluted by five fields that fitted. The worst single-field deviation is now
+reported and tested alongside the RMS, with its sign.
+
+A third defect was in the *data*, not the projection: `self-rising` flour is
+recorded as flour and nothing else, so those rows carry zero leavening while the
+poured vertices unpack it. The detector first matched on the flags column (which
+never mentions the flour) and then on `/self[- ]r[ai]ising/`, which matches the
+British "self-**raising**" but not the American "self-**rising**" — missing both
+recipes the batter vertex is built from. ATK now lands at residual **0.01** on
+the vertex it defines.
+
+### 12.2 What the plotted corpus shows
+
+**The surveyed recipes avoid the middle of the triangle.** They cluster at the
+crisp corner and along the crumble↔cobbler edge; the interior, where the modelled
+surface dips, is nearly empty. The corpus played no part in shaping that dip — the
+score model is built from mechanisms — so this is independent corroboration of
+the surface's shape.
+
+Five recipes fit neither triangle, and each names its own reason. Two of them
+recover findings already documented from other directions: Rockford's rolled
+sonker (butter 0.50 *below*, §11.8) and Dorie Greenspan's cobbler (buttermilk
+0.69 *above* — the batter cluster of §11.1).
+
+### 12.3 Contributed bake records
+
+`data/bakes/`, one JSON file per bake, schema in `src/model/bake-record.js`.
+
+A record pairs the prediction with the outcome and is designed to be able to
+embarrass the model. It freezes the **resolved quantities**, not just the
+barycentric coordinates, because coordinates identify a recipe only relative to
+vertices that have already been revised once. It carries a **fingerprint of the
+vertices** — computed, not hand-versioned, so it cannot go stale when somebody
+edits a vertex and forgets to bump a number. Poured records carry
+`calibrated: false` on their face.
+
+Observations are structured and keyed to score components, so a report of a
+specific failure can be checked against the specific term that claimed it. A test
+asserts every observation names a component that actually exists.
+`scripts/bakes-report.mjs` reports, per component, the predicted value when that
+component was reported succeeding versus failing. **If the "bad" mean is not
+clearly below the "good" mean, the term is not measuring what it claims to.**
+
+`outcome.followedRecipe` / `deviations` is the honesty field. A deviated bake is
+still useful; an *undeclared* one is worse than no data because it looks clean.
+Validation rejects a record that says the recipe was not followed without saying
+what changed, and the report excludes deviated bakes from the fit.
+
+Nothing is transmitted by the page. Contributing opens GitHub's own editor with
+the record prefilled; the contributor commits it themselves. No name or email is
+collected anywhere in the flow.
+
+
+## 13. What the model discards — a coverage audit
+
+`node scripts/audit-coverage.mjs`
+
+The question this answers: how much is a surveyed recipe modified to make it fit?
+59 records, 312 topping lines.
+
+| | records | share |
+|---|---|---|
+| pass through with nothing collapsed or dropped | 13 | **22%** |
+| at least one ingredient FLATTENED onto a field meaning something else | 41 | 69% |
+| at least one ingredient DROPPED entirely | 15 | 25% |
+
+**Dropped** (no field exists; the mass is gone): nuts ×10 — which in Delia's
+crumble run to **63% of flour weight** — plus ground/sliced almonds ×5, almond
+flour ×1 and cornmeal ×2. The almond forms matter more than the count suggests:
+they behave as a fat-rich flour, so dropping them understates both fat and dry
+structure at once.
+
+**Collapsed**: sugar type ×30 (brown and demerara both forced to the fixed 60/40
+blend), liquid type ×14, self-raising flour ×4, shortening ×2.
+
+### 13.1 Where a collapse becomes a real error
+
+The liquid collapse corrupts the soda constraint in **two records, in opposite
+directions**:
+
+- `cobbler-dorie` — the model **over-credits**. A cup of heavy cream is counted
+  as buttermilk alongside the half-cup that really is buttermilk, inflating the
+  acid ceiling roughly threefold.
+- `cobbler-ka-individual-berry` — the model **under-credits**. Its acid is
+  *Bakewell Cream*, a dry leavening acid the model has no field for, so the
+  constraint would cut a correctly-dosed soda by about two thirds.
+
+An earlier version of this check simply asked "soda plus a non-acid liquid?" and
+reported both as acid-free. Reading the two records showed neither is. The error
+is the accounting, not the chemistry.
+
+### 13.2 The category the corpus cannot see
+
+**Zero of 59 records contain a single spice, vanilla or zest line.** That is not
+a fact about the recipes — 18 of them are apple crisps, and cinnamon-free apple
+crisp barely exists in American recipe writing. It is a capture failure in the
+original survey.
+
+It is also the more dangerous kind. A dropped ingredient leaves a visible gap
+that this audit can count. An uncaptured one leaves nothing downstream able to
+notice it is missing, and every median, vertex and residual computed from these
+records inherits the blind spot silently.
+
+**11 of 59 records have no fruit line captured at all**, which is the same
+failure in a place that feeds the filling calculation.
+
+Neither is fixed here. Both are recorded so that no figure derived from this
+corpus is read as more complete than it is.
