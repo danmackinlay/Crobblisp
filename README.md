@@ -10,8 +10,13 @@ Honestly though take it with a grain of salt, heh, and if it differs we should r
 
 ```bash
 npm test          # 42 model tests, no dependencies
-python3 -m http.server 8765   # then open http://localhost:8765
+npm run serve     # then open http://localhost:8765
 ```
+
+Use that server rather than `python3 -m http.server`: it sends `Cache-Control:
+no-store`, and without it a browser will heuristically cache an ES module and
+serve you the old code after an edit — a silent failure that looks exactly like
+a bug in the model. See the docstring in `scripts/serve.py`.
 <img width="817" height="915" alt="Screenshot 2026-07-27 at 5 30 02 PM" src="https://github.com/user-attachments/assets/af76b87f-643a-405d-86b0-332d5bc973e2" />
 
 

@@ -6,6 +6,6 @@
   "private": true,
   "scripts": {
     "test": "node --test test/*.test.js",
-    "serve": "node --run-serve || npx --yes serve ."
+    "serve": "python3 scripts/serve.py"
   }
 }
