@@ -230,31 +230,8 @@ src/model/     pure, testable, no DOM
   recipe.js      orchestration and gram scaling
 src/ui/        canvas ternary chart + recipe view
 test/          42 tests
-assets/        favicon + social card, generated from the chart
+assets/        favicon + social card, rendered from the chart (see end)
 ```
-
-### The icon is the chart
-
-`assets/` is not hand-drawn art. `scripts/make-images.mjs` serves the repo,
-loads `src/ui/triangle.js` in a headless Chromium and renders the same
-`TriangleChart` the page renders, then crops it:
-
-- the **favicon** is the rubbed quality surface alone — the offscreen heat field
-  with no gridlines, labels or selection ring, none of which survive 16 px;
-- the **social card** is both triangles at their real proportions, markers and
-  all, beside the wordmark.
-
-So a change to a vertex value or to the score changes the icon. Re-run it when
-that happens:
-
-```bash
-npm i -D playwright-core && npx playwright install chromium
-node scripts/make-images.mjs
-```
-
-The browser is a build-time tool; the site itself still has no dependencies.
-GitHub's repository social preview cannot be set from the API — upload
-`assets/social-preview.png` under **Settings → General → Social preview**.
 
 ## The second triangle — poured batters
 
@@ -438,3 +415,18 @@ Three ways forward, none of them free:
 - The poured family rests on two, one and one source per vertex, against 13–18
   for each rubbed vertex. It is a sketch of a real region, not the same grade of
   evidence, and nothing in it is rating-validated.
+
+## Regenerating the images
+
+`assets/` is not hand-drawn: `scripts/make-images.mjs` loads `src/ui/triangle.js`
+in a headless Chromium and crops the same chart the page draws, so the favicon is
+the quality surface itself and changing a vertex value changes the icon.
+
+```bash
+npm i -D playwright-core && npx playwright install chromium
+node scripts/make-images.mjs
+```
+
+The browser is a build-time tool only; the site still has no dependencies. The
+repository social preview can't be set from the API — upload
+`assets/social-preview.png` under **Settings → General → Social preview**.
